@@ -1,0 +1,11 @@
+export const SEARCH_RECIPES = "search_recipes";
+export const FETCH_RECIPES = "fetch_recipes";
+export const IS_LOADING_RECIPES = "is_loading_recipes";
+export const IS_LOADING_RECIPE = "is_loading_recipe";
+export const FETCH_RECIPE = 'fetch_recipe'
+export const RECIPES_SEARCH_ERROR = 'recipes_search_error'
+export const RECIPE_ERROR = 'recipe_error'
+export const CREATE_SHOPPING_LIST = 'create_shopping_list'
+// export const UPDATE_SHOPPING_LIST = 'update_shopping_list'
+export const FETCH_SHOPPING_LIST = 'fetch_shopping_list'
+export const IS_LOADING_SHOPPING_LIST = "is_loading_shopping_list";

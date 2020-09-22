@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> Renders the app properly 1`] = `
+<App>
+  <ThemeProvider
+    theme={
+      Object {
+        "backgroundColor": "mistyrose",
+        "backgroundMain": "green",
+        "fontSize": "1.5rem",
+        "headerColor": "#F9F5F3",
+        "mainButtonGradientFrom": "#fbdb89",
+        "mainButtonGradientTo": "#f48982",
+        "mainContainerColor": "beige",
+      }
+    }
+  >
+    <div>
+      <Memo(GlobalStyleComponent) />
+    </div>
+  </ThemeProvider>
+</App>
+`;

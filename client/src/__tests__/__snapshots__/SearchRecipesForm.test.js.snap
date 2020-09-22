@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchRecipesForm /> Renders the component properly and matches the snapshot 1`] = `
+Array [
+  <styled.form
+    data-test="recipes-search-form"
+    onSubmit={[Function]}
+  >
+    <form
+      className="sc-AxjAm fQhSYg"
+      data-test="recipes-search-form"
+      onSubmit={[Function]}
+    >
+      <input
+        className="search__field"
+        onChange={[Function]}
+        placeholder="Search recipe..."
+        type="text"
+        value=""
+      />
+      <styled.button
+        type="submit"
+      >
+        <button
+          className="sc-AxirZ jA-dooq"
+          type="submit"
+        >
+          Search
+        </button>
+      </styled.button>
+    </form>
+  </styled.form>,
+  <form
+    className="sc-AxjAm fQhSYg"
+    data-test="recipes-search-form"
+    onSubmit={[Function]}
+  >
+    <input
+      className="search__field"
+      onChange={[Function]}
+      placeholder="Search recipe..."
+      type="text"
+      value=""
+    />
+    <styled.button
+      type="submit"
+    >
+      <button
+        className="sc-AxirZ jA-dooq"
+        type="submit"
+      >
+        Search
+      </button>
+    </styled.button>
+  </form>,
+]
+`;
