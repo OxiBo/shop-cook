@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
 import theme from "./styles/theme";
-
+import Header from "./Header";
+import Container from "./styles/Container";
 const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
@@ -29,7 +30,7 @@ body {
   min-height: calc(100vh - 2 * 4vw);
 }`;
 
-const Container = styled.div`
+const AppContainer = styled.div`
   margin: 0 auto;
   max-width: 120rem;
 `;
@@ -38,10 +39,12 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <Container>
+        <AppContainer>
+          <Container>
+        <Header />
           <GlobalStyle />
-          {this.props.children}
-        </Container>
+          {this.props.children}</Container>
+        </AppContainer>
       </ThemeProvider>
     );
   }

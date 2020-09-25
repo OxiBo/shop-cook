@@ -1,4 +1,6 @@
+import axios from 'axios'
 import recipes from "../utils/spoonacularAPI";
+
 import {
   SEARCH_RECIPES,
   FETCH_RECIPES,
@@ -10,7 +12,22 @@ import {
   CREATE_SHOPPING_LIST,
   FETCH_SHOPPING_LIST,
   IS_LOADING_SHOPPING_LIST,
+  CHANGE_SERVINGS,
 } from "./types";
+import Axios from "axios";
+
+export const signUp = (userInfo) => async (dispatch) => {
+  try {
+    console.log(userInfo);
+    if(userInfo.name){
+      const res = await axios.post("/api/signup", userInfo)
+      console.log(res)
+    }
+  } catch (err) {
+    console.log(err);
+    // dispatch()
+  }
+};
 
 export const searchRecipes = (name, resultsNumber = 10) => async (dispatch) => {
   try {
@@ -18,7 +35,7 @@ export const searchRecipes = (name, resultsNumber = 10) => async (dispatch) => {
     const res = await recipes.get(
       `/complexSearch?query=${name}&number=${resultsNumber}`
     );
-    console.log(res);
+    // console.log(res);
     dispatch({ type: SEARCH_RECIPES, payload: res.data });
   } catch (error) {
     console.error(error);
@@ -95,25 +112,28 @@ export const createShoppingList = (ingredients) => async (
   dispatch,
   getState
 ) => {
-  const newShoppingItems = [...ingredients]
+  // need to create a deep copy of the current shopping list. https://redux.js.org/recipes/structuring-reducers/immutable-update-patterns
   const currentShoppingList = getState().shoppingLists.shoppingList;
-  // console.log(currentShoppingList);
-  // console.log(ingredients);
+
   if (currentShoppingList.length) {
-    // console.log(ingredients)
-    const updatedList = [...currentShoppingList, ...newShoppingItems].reduce((acc, item) => {
-      const isExists = acc.findIndex((old) => old.name === item.name && old.unit === item.unit);
-      // console.log(isExists)
+    const joinedLists = [...currentShoppingList, ...ingredients];
+    // https://www.freecodecamp.org/news/how-to-clone-an-array-in-javascript-1d3183468f6a/
+    const deepCopy = JSON.parse(JSON.stringify(joinedLists));
+
+    const updatedList = deepCopy.reduce((acc, item) => {
+      const isExists = acc.findIndex(
+        (old) => old.name === item.name && old.unit === item.unit
+      );
+
       if (isExists >= 0) {
         acc[isExists].amount = acc[isExists].amount + item.amount;
-        // console.log(acc[isExists])
-        // console.log(item)
       } else {
         acc.push(item);
       }
       return acc;
     }, []);
     // console.log(updatedList)
+
     dispatch({
       type: CREATE_SHOPPING_LIST,
       payload: updatedList,
@@ -121,7 +141,7 @@ export const createShoppingList = (ingredients) => async (
   } else {
     dispatch({
       type: CREATE_SHOPPING_LIST,
-      payload: newShoppingItems
+      payload: ingredients,
     });
   }
 };
@@ -135,5 +155,22 @@ export const fetchShoppingList = () => {
 export const isLoadingShoppingList = () => {
   return {
     type: IS_LOADING_SHOPPING_LIST,
+  };
+};
+
+export const changeServings = (currentServings, newServing, ingredients) => {
+  const updatesIngredients = ingredients.map((ingredient) => {
+    const newAmount =
+      newServing === 1
+        ? ingredient.amount + ingredient.amount / currentServings
+        : ingredient.amount - ingredient.amount / currentServings;
+    return { ...ingredient, amount: Math.ceil(newAmount * 100) / 100 };
+  });
+  return {
+    type: CHANGE_SERVINGS,
+    payload: {
+      ingredients: updatesIngredients,
+      servings: currentServings + newServing,
+    },
   };
 };

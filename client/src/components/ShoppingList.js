@@ -163,13 +163,17 @@ const ShoppingList = ({
   };
   const handleAdd = (item) => {
     const values = [...shoppingItems];
-
-    const itemExists = shoppingItems.findIndex(({ name, unit }) =>
-      unit ? name === item.name && unit === item.unit : name === item.name
-    );
-    if (itemExists) {
-      const newAmount = values[itemExists].amount + item.amount;
-      values[itemExists].amount = newAmount;
+    if (shoppingItems.length) {
+      const itemExists = shoppingItems.findIndex(({ name, unit }) =>
+        unit ? name === item.name && unit === item.unit : name === item.name
+      );
+      console.log(itemExists)
+      if (itemExists >= 0) {
+        const newAmount = values[itemExists].amount + item.amount;
+        values[itemExists].amount = newAmount;
+      } else {
+        values.push(item);
+      }
     } else {
       values.push(item);
     }
@@ -191,7 +195,7 @@ const ShoppingList = ({
   return (
     <ShoppingListStyles>
       <Heading2>My Shopping List</Heading2>
-      {shoppingList.length > 0 ? (
+      {shoppingItems.length > 0 ? (
         <>
           <form
             action=""
@@ -246,58 +250,62 @@ const ShoppingList = ({
               </Button>
             </SingleButtonDiv>
           </form>
-          <AddItemForm
-            action=""
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleAdd(addedItem);
-              setAddedItem({});
-            }}
-          >
-            <div>
-              <input
-                type="number"
-                placeholder="Amount"
-                name="amount"
-                value={addedItem.amount || ""}
-                onChange={(e) => handleAddItemChange(e)}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="Unit"
-                name="unit"
-                value={addedItem.unit || ""}
-                onChange={(e) => handleAddItemChange(e)}
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="Item Name"
-                name="name"
-                value={addedItem.name || ""}
-                onChange={(e) => handleAddItemChange(e)}
-              />
-            </div>
-            <SingleButtonDiv>
-              <Button type="submit">
-                {" "}
-                <i className="fas fa-plus-circle"></i> <span>Add Item</span>
-              </Button>
-            </SingleButtonDiv>
-          </AddItemForm>
-          <Button>
-            {" "}
-            <i className="fas fa-trash-alt"></i>
-            <span>Delete all </span>
-          </Button>
         </>
       ) : (
         <div>
           <h3>Your shopping list is empty</h3>
         </div>
+      )}
+      <AddItemForm
+        action=""
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleAdd(addedItem);
+          setAddedItem({});
+        }}
+      >
+        <div>
+          <input
+            type="number"
+            placeholder="Amount"
+            name="amount"
+            value={addedItem.amount || ""}
+            onChange={(e) => handleAddItemChange(e)}
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="Unit"
+            name="unit"
+            value={addedItem.unit || ""}
+            onChange={(e) => handleAddItemChange(e)}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="Item Name"
+            name="name"
+            value={addedItem.name || ""}
+            onChange={(e) => handleAddItemChange(e)}
+            required
+          />
+        </div>
+        <SingleButtonDiv>
+          <Button type="submit">
+            {" "}
+            <i className="fas fa-plus-circle"></i> <span>Add Item</span>
+          </Button>
+        </SingleButtonDiv>
+      </AddItemForm>
+      {shoppingItems.length > 0 && (
+        <Button onClick={() => setShoppingItems([])}>
+          {" "}
+          <i className="fas fa-trash-alt"></i>
+          <span>Delete all </span>
+        </Button>
       )}
     </ShoppingListStyles>
   );

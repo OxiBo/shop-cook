@@ -7,6 +7,7 @@ import reduxThunk from "redux-thunk";
 
 import App from "./components/App";
 import HomePage from './components/HomePage'
+import SignIn from './components/SignIn'
 import MyShoppingLists from './components/MyShoppingLists'
 import FavoriteRecipes from "./components/FavoriteRecipes"
 import * as serviceWorker from "./serviceWorker";
@@ -38,6 +39,7 @@ ReactDOM.render(
       <Switch>
         <App>
           <Route exact path="/" component={HomePage} />
+          <Route exact path="/signin" component={SignIn} />
           <Route exact path="/lists" component={MyShoppingLists} />
           <Route exact path="/recipes" component={FavoriteRecipes} />
         </App>

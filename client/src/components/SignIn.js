@@ -1,0 +1,199 @@
+import React, { useState } from "react";
+import { Formik } from "formik";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import Button from "./styles/Button";
+import { signUp as signUpAction } from "../actions";
+const Container = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  background-color: #f2efee;
+
+  h3 {
+    text-align: center;
+    margin: 1rem;
+    font-size: 3rem;
+  }
+
+  @media only screen and (min-width: 40rem) {
+    width: 70%;
+  }
+  @media only screen and (min-width: 60rem) {
+    width: 50%;
+  }
+`;
+
+const LogInForm = styled.form`
+  margin: 1rem auto;
+  padding: 2rem;
+  /* border: 1px solid ${(props) => props.theme.lightGrey}; */
+  border-radius: 5px;
+  box-shadow: -1px -5px 52px -5px rgba(222, 209, 222, 1);
+
+  div {
+    display: flex;
+    flex-direction: row;
+    margin: 0.4rem;
+    align-items: center;
+    justify-content: center;
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    font-size: 1.5rem;
+    label {
+      width: 7rem;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      input {
+        height: 3rem;
+        border-radius: 10rem;
+        align-items: center;
+        padding-left: 1.5rem;
+        transition: all 0.3s;
+        border: none;
+        background: white;
+        font-family: inherit;
+        color: inherit;
+        font-size: ${(props) => props.theme.fontSize};
+        width: 25rem;
+        focus-within {
+          transform: translateY(-2px);
+          box-shadow: 0 0.7rem 3rem rgba(101, 90, 86, 0.08);
+        }
+      }
+      input:focus {
+        outline: none;
+      }
+      input:placeholder {
+        color: #dad0cc;
+      }
+      p {
+        font-size: 1.3rem;
+        font-style: italic;
+        padding: 0.4rem;
+        color: ${(props) => props.theme.themeColor};
+      }
+    }
+  }
+  div.buttons {
+    display: flex;
+    flex-direction: row;
+    /* width: 50%; */
+    align-items: center;
+    justify-content: center;
+    button {
+      margin: 1rem;
+    }
+  }
+`;
+
+const SignIn = ({ signUpAction }) => {
+  const [signUp, setSignUp] = useState(false);
+  return (
+    <Container>
+      <h3>Welcome to our cooking helper!</h3>
+      <Formik
+        initialValues={{ name: "", password: "", email: "" }}
+        validate={({ name, password, email }) => {
+          const errors = {};
+          if (!email) {
+            errors.email = "You must provide your email";
+          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+            errors.email = "Invalid email address";
+          }
+
+          if (signUp && !name) {
+            errors.name = "You must provide your name";
+          } else if (signUp && (name.length < 2 || name.length > 15)) {
+            errors.name =
+              "Name cannot be less than 3 or more than 15 characters";
+          }
+          if (password.length < 8 || password.length > 20) {
+            errors.password = "Password has to be at least 8 characters long";
+          }
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          console.log(values);
+          signUpAction(values)
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <LogInForm onSubmit={handleSubmit}>
+            {signUp && (
+              <div>
+                <label htmlFor="name">Name: </label>
+                <div>
+                  {" "}
+                  <input
+                    type="text"
+                    name="name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.name}
+                  />{" "}
+                  <p>
+                    {errors.name && touched.name && errors.name}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div>
+              {" "}
+              <label htmlFor="email">Email:</label>{" "}
+              <div>
+                {" "}
+                <input
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                />
+                <p> {errors.email && touched.email && errors.email}</p>
+              </div>
+            </div>
+
+            <div>
+              {" "}
+              <label htmlFor="password">Password:</label>{" "}
+              <div>
+                {" "}
+                <input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                />{" "}
+                <p>{errors.password && touched.password && errors.password}</p>
+              </div>
+            </div>
+            <div className="buttons">
+              {" "}
+              <Button type="submit" disabled={isSubmitting}>
+                {signUp ? "Sign Up" : "Log In"}
+              </Button>
+              <Button type="button" onClick={() => setSignUp(!signUp)}>
+                {signUp ? "Already Have An Account?" : "Need An Account?"}
+              </Button>
+            </div>
+          </LogInForm>
+        )}
+      </Formik>
+    </Container>
+  );
+};
+
+export default connect(null, { signUpAction })(SignIn);

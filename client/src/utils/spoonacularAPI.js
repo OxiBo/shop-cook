@@ -10,7 +10,7 @@ import axios from 'axios'
 // console.log(res1)
 
 export default axios.create({
-    baseURL: "https://api.spoonacular.com/recipes",
+    baseURL: "https://aaaaaapi.spoonacular.com/recipes",
     params: {
         apiKey: process.env.REACT_APP_SPOONACULAR_API_KEY,
         // number: 10

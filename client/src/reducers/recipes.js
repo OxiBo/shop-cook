@@ -6,6 +6,7 @@ import {
   IS_LOADING_RECIPE,
   RECIPES_SEARCH_ERROR,
   RECIPE_ERROR,
+  CHANGE_SERVINGS
 } from "../actions/types";
 
 const defaultRecipesState = {
@@ -55,6 +56,7 @@ export default (state = defaultRecipesState, action) => {
         ...state,
         isLoadingRecipe: false,
         recipe: action.payload,
+      
       };
     case RECIPE_ERROR:
       return {
@@ -62,6 +64,15 @@ export default (state = defaultRecipesState, action) => {
         recipeError: action.payload,
         isLoadingRecipe: false,
       };
+      case CHANGE_SERVINGS:
+        return {
+          ...state,
+          recipe: {
+            ...state.recipe,
+            ingredients: action.payload.ingredients,
+            servings: action.payload.servings
+          }
+        }
     default:
       return state;
   }

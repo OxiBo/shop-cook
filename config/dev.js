@@ -11,7 +11,7 @@ module.exports = {
     
     // facebookCallBackURL: "http://localhost:3030/auth/facebook/callback",
     mongoURI: "mongodb://localhost:27017/cook-shop-app", // mongodb+srv://OxiBo:63RVFI98Vw9XMm59@cluster0-utoom.mongodb.net/test?retryWrites=true&w=majority
-    // cookieKey: "anyStringskdfj;lskdjf3lk4jflkdjf000",
+    cookieKey: "anyStringskdfj;lskdjf3lk4jflkdjf000",
     // stripePublishableKey: 'pk_test_upCU3MtNHwG5x9o6WO1zkpGK00cJOUCZZE',
     // stripeSecretKey: "sk_test_jk2Qyu5mGnMER8LPRVfr4jp300kRKA8n83",
     // sendGridKey: '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',

@@ -9,3 +9,5 @@ export const CREATE_SHOPPING_LIST = 'create_shopping_list'
 // export const UPDATE_SHOPPING_LIST = 'update_shopping_list'
 export const FETCH_SHOPPING_LIST = 'fetch_shopping_list'
 export const IS_LOADING_SHOPPING_LIST = "is_loading_shopping_list";
+export const CHANGE_SERVINGS = "change_servings"
+export const SIGNUP = "signup"

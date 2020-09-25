@@ -1,45 +1,94 @@
 const express = require("express"),
-keys = require("./config/keys"),
+  keys = require("./config/keys"),
   cors = require("cors"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose"),
-  app = express();
+  passport = require("passport"),
+  cookieSession = require("cookie-session"),
+ 
+app = express();
+
+// have to require the model before requiring passport
+require("./models/User");
+const User = mongoose.model("users");
+// const User = mongoose.model("users");
+require("./services/passportLocal");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
-
+app.use(
+  cookieSession({
+    name: "sessionsldkfsldkjflskdjf",
+    maxAge: 31 * 24 * 60 * 60 * 1000, // a month?
+    keys: [keys.cookieKey],
+  })
+);
 
 // database configuration
 try {
-    mongoose.connect(keys.mongoURI, {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-      useFindAndModify: false
-    });
-    console.log("Connected to DB!");
-  } catch (err) {
-    console.log("ERROR:", err.message);
-  }
+  mongoose.connect(keys.mongoURI, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  });
+  console.log("Connected to DB!");
+} catch (err) {
+  console.log("ERROR:", err.message);
+}
 
 if (process.env.NODE_ENV === "production") {
-    // Express will serve production assets like main.css  or main.js files
-    app.use(express.static("client/build"));
-  
-    // Express will serve index.html if it does not recognize the route
-    const path = require("path");
-    app.get("*", (req, res) => {
-      res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  // Express will serve production assets like main.css  or main.js files
+  app.use(express.static("client/build"));
+
+  // Express will serve index.html if it does not recognize the route
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
+app.use(passport.initialize()); // has to be put before requiring auth routes
+app.use(passport.session()); // has to be put before requiring auth routes - require("./routes/authRoutes")(app);'
+
+// require routes
+
+const localAuthRoutes = require("./routes/authLocal");
+
+// user routes
+app.use(localAuthRoutes);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  try {
+    User.findById(id, (err, user) => {
+      done(err, user);
     });
+  } catch (err) {
+    done(new Error("Failed to deserialize user"));
   }
+});
 
 
 app.get("/", (req, res) => {
-  res.send("Running???");
+  // console.log(req.body)
+  res.send("Running!!!");
 });
 
-const PORT = process.env.PORT || 4455; // if getting error about server already running on this port - https://stackoverflow.com/questions/9898372/how-to-fix-error-listen-eaddrinuse-while-using-nodejs
+// logout route
+app.get("/api/logout", (req, res) => {
+  req.logout();
+ 
+  // console.log(req.user);
+  // res.send(req.user);
+  res.redirect("/");
+});
+
+const PORT = process.env.PORT ||8080; // if getting error about server already running on this port - https://stackoverflow.com/questions/9898372/how-to-fix-error-listen-eaddrinuse-while-using-nodejs
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
 });

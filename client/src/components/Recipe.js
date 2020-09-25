@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Spinner from "./Spinner";
-import { fetchRecipe, isLoadingRecipe , createShoppingList} from "../actions";
+import { fetchRecipe, isLoadingRecipe, createShoppingList, changeServings } from "../actions";
 import Button from "./styles/Button";
 import ButtonRound from "./styles/ButtonRound";
 import { Heading2, ErrorText } from "./styles/text";
@@ -185,15 +185,19 @@ const Recipe = ({
   error,
   recipe,
   createShoppingList,
+  changeServings,
   ...props
 }) => {
   // is this needed??
   const [recipeDisplay, setRecipe] = useState({}); // {} or null??
+
+  const [newServings, setNewServings] = useState(recipe.servings);
+
   // TODO - make a route on the backend to store current recipe? it should be on "componentDidMount" ??? is there any point to do that?
   useEffect(() => {
     isLoadingRecipe();
     fetchRecipe(recipeId);
-    setRecipe(recipe)
+    // setRecipe(recipe);
     // console.log("componentdidmount");
     // console.log(recipe);
   }, []);
@@ -201,10 +205,16 @@ const Recipe = ({
   useEffect(() => {
     isLoadingRecipe();
     fetchRecipe(recipeId);
-    setRecipe(recipe)
+
+    // console.log(newServings)
+    // setRecipe(recipe);
     // setRecipe(recipe);
     // console.log(recipe)
   }, [recipeId]);
+
+  useEffect(() => {
+    setNewServings(recipe.servings);
+  }, [recipe]);
 
   return (
     <RecipeContainerStyles>
@@ -237,10 +247,16 @@ const Recipe = ({
                 <span> servings</span>
 
                 <div className="tiny-buttons">
-                  <ButtonTiny>
+                  <ButtonTiny onClick={async () => changeServings(recipe.servings,  1, recipe.ingredients)}>
                     <i className="fas fa-plus-circle"></i>
                   </ButtonTiny>
-                  <ButtonTiny>
+                  <ButtonTiny
+                    onClick={() => {
+                      if (newServings >= 2) {
+                        changeServings(recipe.servings,  -1, recipe.ingredients)
+                      }
+                    }}
+                  >
                     <i className="fas fa-minus-circle"></i>
                   </ButtonTiny>
                 </div>
@@ -268,10 +284,12 @@ const Recipe = ({
                   )}
               </ul>
 
-              <Button onClick={() => console.log(recipe.ingredients) || createShoppingList(recipe.ingredients)}>
-                <i className="fas fa-shopping-cart"></i>
-                <span>Add to shopping list</span>
-              </Button>
+              {recipe && recipe.ingredients && (
+                <Button onClick={() => createShoppingList(recipe.ingredients)}>
+                  <i className="fas fa-shopping-cart"></i>
+                  <span>Add to shopping list</span>
+                </Button>
+              )}
             </IngredientsStyles>
 
             <DirectionsStyles>
@@ -301,6 +319,9 @@ const mapStateToProps = ({ recipes }) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchRecipe, isLoadingRecipe, createShoppingList })(
-  Recipe
-);
+export default connect(mapStateToProps, {
+  fetchRecipe,
+  isLoadingRecipe,
+  createShoppingList, 
+  changeServings
+})(Recipe);

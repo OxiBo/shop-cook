@@ -55,6 +55,10 @@ const HeaderStyles = styled.header`
   justify-content: center;
   align-items: center;
   .brand {
+    :visited {
+      color: inherit;
+    }
+    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,12 +89,14 @@ const ButtonRoundMedium = styled(ButtonRound)`
 const Header = () => {
   return (
     <HeaderStyles>
-      <div className="brand">
-        <ButtonRoundMedium>
-          {" "}
-          <img src="icon.png" alt="brand_icon" />
-        </ButtonRoundMedium>
-        Cook&Shop
+      <div>
+        <Link to="/" className="brand">
+          <ButtonRoundMedium>
+            {" "}
+            <img src="icon.png" alt="brand_icon" />
+          </ButtonRoundMedium>
+          Cook&Shop
+        </Link>
       </div>
       <SearchRecipesForm />
       <Nav>
@@ -115,10 +121,12 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link>Logout</Link>
+            <a href="/api/logout">Logout</a>
           </li>
-          {/* <li><Link>Login with G</Link></li>
-          <li><Link>Login</Link></li> */}
+          {/* <li><Link>Login with G</Link></li>*/}
+          <li>
+            <Link to="/signin">Sign In/Up</Link>
+          </li>
         </ul>
       </Nav>
     </HeaderStyles>
