@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Spinner from "./Spinner";
-import { fetchRecipe, isLoadingRecipe, createShoppingList, changeServings } from "../actions";
+import { fetchRecipe, isLoadingRecipe, createShoppingList, changeServings, isLoadingRecipes } from "../actions";
 import Button from "./styles/Button";
 import ButtonRound from "./styles/ButtonRound";
 import { Heading2, ErrorText } from "./styles/text";
@@ -189,18 +189,18 @@ const Recipe = ({
   ...props
 }) => {
   // is this needed??
-  const [recipeDisplay, setRecipe] = useState({}); // {} or null??
+  // const [recipeDisplay, setRecipe] = useState({}); // {} or null??
 
   const [newServings, setNewServings] = useState(recipe.servings);
 
   // TODO - make a route on the backend to store current recipe? it should be on "componentDidMount" ??? is there any point to do that?
-  useEffect(() => {
-    isLoadingRecipe();
-    fetchRecipe(recipeId);
-    // setRecipe(recipe);
-    // console.log("componentdidmount");
-    // console.log(recipe);
-  }, []);
+  // useEffect(() => {
+  //   isLoadingRecipe();
+  //   fetchRecipe(recipeId);
+  //   // setRecipe(recipe);
+  //   // console.log("componentdidmount");
+  //   // console.log(recipe);
+  // }, []);
 
   useEffect(() => {
     isLoadingRecipe();
@@ -210,7 +210,7 @@ const Recipe = ({
     // setRecipe(recipe);
     // setRecipe(recipe);
     // console.log(recipe)
-  }, [recipeId]);
+  }, [recipeId, fetchRecipe]);
 
   useEffect(() => {
     setNewServings(recipe.servings);

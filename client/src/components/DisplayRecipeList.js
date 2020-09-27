@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { fetchRecipes } from "../actions";
+import { fetchRecipe, fetchRecipes } from "../actions";
 import Spinner from "./Spinner";
 import { ErrorText } from "./styles/text";
 const DisplayRecipesStyles = styled.div`
@@ -70,7 +70,7 @@ const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
   useEffect(() => {
     fetchRecipes();
     //    console.log(recipes)
-  }, []); // runs like componentDidMount (to fetch recipes which are already in the redux store)
+  }, [fetchRecipes]); // runs like componentDidMount (to fetch recipes which are already in the redux store)
 
   useEffect(() => {
     setRecipes(recipes);

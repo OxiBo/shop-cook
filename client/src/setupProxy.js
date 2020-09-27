@@ -3,7 +3,7 @@
 const proxy = require('http-proxy-middleware')
  
 module.exports = (app) => {
-    app.use(proxy(['/api', '/auth/google'], { target: 'http://localhost:8080' }));// server localhost port
+    app.use(proxy(['/api', '/auth/google'], { target: 'http://localhost:4040' }));// server localhost port
 }
 
 // or 

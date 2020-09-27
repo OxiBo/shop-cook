@@ -5,8 +5,7 @@ const express = require("express"),
   mongoose = require("mongoose"),
   passport = require("passport"),
   cookieSession = require("cookie-session"),
- 
-app = express();
+  app = express();
 
 // have to require the model before requiring passport
 require("./models/User");
@@ -73,22 +72,30 @@ passport.deserializeUser((id, done) => {
   }
 });
 
-
 app.get("/", (req, res) => {
   // console.log(req.body)
   res.send("Running!!!");
 });
 
+app.get("/api/user", async (req, res) => {
+  try {
+    res.send(req.user);
+  } catch (err) {
+    console.error(err);
+    res.status(401).send(err);
+  }
+});
+
 // logout route
 app.get("/api/logout", (req, res) => {
   req.logout();
- 
+
   // console.log(req.user);
   // res.send(req.user);
   res.redirect("/");
 });
 
-const PORT = process.env.PORT ||8080; // if getting error about server already running on this port - https://stackoverflow.com/questions/9898372/how-to-fix-error-listen-eaddrinuse-while-using-nodejs
+const PORT = process.env.PORT || 4040; // if getting error about server already running on this port - https://stackoverflow.com/questions/9898372/how-to-fix-error-listen-eaddrinuse-while-using-nodejs
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
 });

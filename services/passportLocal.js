@@ -22,7 +22,7 @@ passport.use(
           });
           newUser.local.password = newUser.generateHash(password);
           const user = await newUser.save();
-          console.log(user);
+          // console.log(user);
           done(null, user);
         }
       } catch (err) {

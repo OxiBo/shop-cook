@@ -14,13 +14,14 @@ router.post("/api/signup", async (req, res) => {
       "local.email": req.body.email,
     });
     if (foundUser) {
-      res.send({ error: "This email has been already taken" });
+      res.status(401).send({ message: "This email has been already taken" });
     } else {
       passport.authenticate("local")(req, res, () => {
-        const newUser = {
-          local: { email: req.user.local.email, name: req.user.local.name },
-        };
-        res.send(newUser);
+        // const newUser = {
+        //   local: { email: req.user.local.email, name: req.user.local.name },
+        // };
+        // console.log(req.user)
+        res.send(req.user);
       });
     }
   } catch (err) {
@@ -36,17 +37,19 @@ router.post("/api/login", async (req, res) => {
       "local.email": req.body.email,
     });
     if (!foundUser) {
-      res.status(401).send({ error: "No user found" });
+      res.status(401).send({ message: "No user found" });
+      //   res.status(401).send({ error: "No user found" });
     } else if (!foundUser.validPassword(req.body.password)) {
-      res.status(401).send({ error: "Wrong password" });
+      res.status(401).send({ message: "Wrong password" });
     } else {
       passport.authenticate("local")(req, res, () => {
         // console.log(req.user);
+        console.log(foundUser)
         res.send(foundUser);
       });
     }
   } catch (error) {
-    console.error(error);
+    console.error(error); 
     res.status(422).send(error);
   }
 });

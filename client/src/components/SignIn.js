@@ -3,7 +3,8 @@ import { Formik } from "formik";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Button from "./styles/Button";
-import { signUp as signUpAction } from "../actions";
+import ErrorMessage from "./styles/ErrorMessage";
+import { signUp as signUpAction, clearAuthError } from "../actions";
 const Container = styled.div`
   margin: 0 auto;
   width: 100%;
@@ -11,7 +12,7 @@ const Container = styled.div`
 
   h3 {
     text-align: center;
-    margin: 1rem;
+    margin: 4rem 3rem 1rem 3rem;
     font-size: 3rem;
   }
 
@@ -24,12 +25,14 @@ const Container = styled.div`
 `;
 
 const LogInForm = styled.form`
-  margin: 1rem auto;
+  margin: 1rem;
   padding: 2rem;
   /* border: 1px solid ${(props) => props.theme.lightGrey}; */
   border-radius: 5px;
   box-shadow: -1px -5px 52px -5px rgba(222, 209, 222, 1);
-
+  @media only screen and (min-width: 40rem) {
+    margin: 5rem;
+  }
   div {
     display: flex;
     flex-direction: row;
@@ -88,12 +91,18 @@ const LogInForm = styled.form`
   }
 `;
 
-const SignIn = ({ signUpAction }) => {
+const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
   const [signUp, setSignUp] = useState(false);
   return (
     <Container>
-      <h3>Welcome to our cooking helper!</h3>
+      <h3>Welcome To Our Cooking Helper!</h3>
+      {error && (
+        <ErrorMessage>
+          <p>{error}</p>
+        </ErrorMessage>
+      )}
       <Formik
+        enableReinitialize={true}
         initialValues={{ name: "", password: "", email: "" }}
         validate={({ name, password, email }) => {
           const errors = {};
@@ -115,8 +124,8 @@ const SignIn = ({ signUpAction }) => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
-          signUpAction(values)
+          signUpAction(values, props.history);
+          setSubmitting(false);
         }}
       >
         {({
@@ -127,6 +136,8 @@ const SignIn = ({ signUpAction }) => {
           handleBlur,
           handleSubmit,
           isSubmitting,
+          setFieldValue,
+          setFieldTouched
           /* and other goodies */
         }) => (
           <LogInForm onSubmit={handleSubmit}>
@@ -142,9 +153,7 @@ const SignIn = ({ signUpAction }) => {
                     onBlur={handleBlur}
                     value={values.name}
                   />{" "}
-                  <p>
-                    {errors.name && touched.name && errors.name}
-                  </p>
+                  <p>{errors.name && touched.name && errors.name}</p>
                 </div>
               </div>
             )}
@@ -185,7 +194,21 @@ const SignIn = ({ signUpAction }) => {
               <Button type="submit" disabled={isSubmitting}>
                 {signUp ? "Sign Up" : "Log In"}
               </Button>
-              <Button type="button" onClick={() => setSignUp(!signUp)}>
+              <Button
+                type="button"
+                onClick={() => {
+                  clearAuthError();
+                  // clear the form
+                  setFieldValue("name", "");
+                  setFieldValue("email", "");
+                  setFieldValue("password", "");
+                  // make sure there will be more error messages arrear
+                  setFieldTouched("name", false)
+                  setFieldTouched("email", false)
+                  setFieldTouched("password", false)
+                  setSignUp(!signUp);
+                }}
+              >
                 {signUp ? "Already Have An Account?" : "Need An Account?"}
               </Button>
             </div>
@@ -196,4 +219,12 @@ const SignIn = ({ signUpAction }) => {
   );
 };
 
-export default connect(null, { signUpAction })(SignIn);
+const mapStateToProps = ({ auth }) => {
+  return {
+    error: auth.authError,
+  };
+};
+
+export default connect(mapStateToProps, { signUpAction, clearAuthError })(
+  SignIn
+);

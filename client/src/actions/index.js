@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios";
 import recipes from "../utils/spoonacularAPI";
 
 import {
@@ -13,20 +13,48 @@ import {
   FETCH_SHOPPING_LIST,
   IS_LOADING_SHOPPING_LIST,
   CHANGE_SERVINGS,
+  AUTH_ERROR,
+  SIGN_UP,
+  FETCH_USER,
 } from "./types";
-import Axios from "axios";
 
-export const signUp = (userInfo) => async (dispatch) => {
+export const fetchUser = () => async (dispatch) => {
   try {
-    console.log(userInfo);
-    if(userInfo.name){
-      const res = await axios.post("/api/signup", userInfo)
-      console.log(res)
-    }
+    const res = await axios.get("/api/user");
+    dispatch({ type: FETCH_USER, payload: res.data });
   } catch (err) {
-    console.log(err);
-    // dispatch()
+    console.error(err);
+    dispatch({ type: AUTH_ERROR, payload: err.message });
   }
+};
+
+export const signUp = (userInfo, history) => async (dispatch) => {
+  //   console.log("????")
+  //   const res = await axios.post(
+  //   `/api/${userInfo.name ? "signup" : "login"}`,
+  //   userInfo
+  // );
+
+  // console.log(res)
+  try {
+    const res = await axios.post(
+      `/api/${userInfo.name !== "" ? "signup" : "login"}`,
+      userInfo
+    );
+    console.log(res);
+    dispatch({ type: SIGN_UP, payload: res.data });
+    history.push("/");
+  } catch (err) {
+    console.error(err);
+    dispatch({ type: AUTH_ERROR, payload: err.response.data.message });
+  }
+};
+
+export const clearAuthError = () => {
+  return {
+    type: AUTH_ERROR,
+    payload: "",
+  };
 };
 
 export const searchRecipes = (name, resultsNumber = 10) => async (dispatch) => {

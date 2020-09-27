@@ -137,16 +137,16 @@ const ShoppingList = ({
   // state for the form "add item"
   const [addedItem, setAddedItem] = useState({});
 
+  // useEffect(() => {
+  //   isLoadingShoppingList();
+  //   fetchShoppingList();
+  //   setShoppingItems(shoppingList);
+  // }, [isLoadingShoppingList, fetchShoppingList, setShoppingItems]);
   useEffect(() => {
     isLoadingShoppingList();
     fetchShoppingList();
     setShoppingItems(shoppingList);
-  }, []);
-  useEffect(() => {
-    isLoadingShoppingList();
-    fetchShoppingList();
-    setShoppingItems(shoppingList);
-  }, [shoppingList, fetchShoppingList]);
+  }, [shoppingList, fetchShoppingList, isLoadingShoppingList]);
 
   const handleChange = (e, index, name, unit, original = "") => {
     // const newValue = Number(e.target.value);
@@ -167,7 +167,7 @@ const ShoppingList = ({
       const itemExists = shoppingItems.findIndex(({ name, unit }) =>
         unit ? name === item.name && unit === item.unit : name === item.name
       );
-      console.log(itemExists)
+      console.log(itemExists);
       if (itemExists >= 0) {
         const newAmount = values[itemExists].amount + item.amount;
         values[itemExists].amount = newAmount;
