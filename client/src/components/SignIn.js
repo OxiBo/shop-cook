@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import Button from "./styles/Button";
 import ErrorMessage from "./styles/ErrorMessage";
+// import User from "./RenderProp/User";
 import { signUp as signUpAction, clearAuthError } from "../actions";
 const Container = styled.div`
   margin: 0 auto;
@@ -93,6 +94,10 @@ const LogInForm = styled.form`
 
 const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
   const [signUp, setSignUp] = useState(false);
+  // return (
+  //   <User>
+  //     {(user) => {
+  //       if (user) return props.history.push("/");
   return (
     <Container>
       <h3>Welcome To Our Cooking Helper!</h3>
@@ -137,7 +142,7 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
           handleSubmit,
           isSubmitting,
           setFieldValue,
-          setFieldTouched
+          setFieldTouched,
           /* and other goodies */
         }) => (
           <LogInForm onSubmit={handleSubmit}>
@@ -203,9 +208,9 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
                   setFieldValue("email", "");
                   setFieldValue("password", "");
                   // make sure there will be more error messages arrear
-                  setFieldTouched("name", false)
-                  setFieldTouched("email", false)
-                  setFieldTouched("password", false)
+                  setFieldTouched("name", false);
+                  setFieldTouched("email", false);
+                  setFieldTouched("password", false);
                   setSignUp(!signUp);
                 }}
               >
@@ -216,6 +221,9 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
         )}
       </Formik>
     </Container>
+    //     );
+    //   }}
+    // </User>
   );
 };
 

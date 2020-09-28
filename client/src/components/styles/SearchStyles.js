@@ -3,6 +3,7 @@ import styled from "styled-components";
 const SearchStyles = styled.form`
   flex: 1;
   height: 4rem;
+  margin-left: 1rem;
   background-color: #fff;
   border-radius: 10rem;
   display: flex;

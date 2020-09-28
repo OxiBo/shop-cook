@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import SearchRecipesForm from "./SearchRecipesForm";
 import ButtonRound from "./styles/ButtonRound";
-import Nav from './Nav'
-
-
+import Nav from "./Nav";
 
 const HeaderStyles = styled.header`
   height: 9rem;
@@ -13,6 +11,14 @@ const HeaderStyles = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
+  div,
+  nav {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .brand {
     :visited {
       color: inherit;
@@ -40,6 +46,16 @@ const HeaderStyles = styled.header`
     margin-right: 0;
   }
 `;
+
+const BrandName = styled.span`
+  @media only screen and (min-width: 320px) {
+    display: ${(props) => props.hide && "none"};
+  }
+  @media only screen and (min-width: 425px) {
+    display: inline;
+  }
+`;
+
 const ButtonRoundMedium = styled(ButtonRound)`
   width: 5rem;
   height: 5rem;
@@ -54,11 +70,11 @@ const Header = () => {
             {" "}
             <img src="icon.png" alt="brand_icon" />
           </ButtonRoundMedium>
-          Cook&Shop
+          <BrandName hide={true}>Cook&Shop</BrandName>
         </Link>
       </div>
       <SearchRecipesForm />
-     <Nav />
+      <Nav />
     </HeaderStyles>
   );
 };

@@ -5,6 +5,12 @@ import SearchStyles from "./styles/SearchStyles";
 import Button from "./styles/Button";
 import { searchRecipes, isLoadingRecipes } from "../actions";
 const SearchBtn = styled.button``;
+const SearchSpan = styled.span`
+  display: ${(props) => (props.hide ? "none" : "inline")};
+  @media only screen and (min-width: 768px) {
+    display: inline;
+  }
+`;
 
 const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes }) => {
   const [searchValue, setInput] = useState("");
@@ -29,7 +35,7 @@ const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes }) => {
         />
         <Button type="submit">
           {" "}
-          <i className="fas fa-search"></i> <span> Search</span>
+          <i className="fas fa-search"></i> <SearchSpan hide={true}> Search</SearchSpan>
         </Button>
       </SearchStyles>
     </div>

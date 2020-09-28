@@ -9,7 +9,7 @@ const User = ({fetchUser, user, error, children }) => {
     fetchUser();
   }, [fetchUser]);
 
-  return <div>{children(user, error)}</div>;
+  return <>{children(user, error)}</>;
 };
 
 const mapStateToProps = ({ auth }) => {

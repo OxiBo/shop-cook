@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ const RoundSpan = styled(ButtonRound).attrs({
   /* width: 3rem; */
   /* height: 3rem; */
   i {
-    width: 2rem;
+    /* width: 2rem; */
     height: 2rem;
     font-size: 2rem;
   }
@@ -25,13 +25,25 @@ const RoundSpan = styled(ButtonRound).attrs({
 `;
 
 const NavStyles = styled.nav`
+  margin-left: auto;
+  margin-right: 1rem;
+  position: relative;
   ul {
     text-decoration: none;
-    display: flex;
-    height: 4rem;
+    background-color: ${(props) => props.theme.headerColor};
+    display: ${(props) => (props.menuOpen ? "flex" : "none")};
+    flex-direction: column;
+    /* height: 4rem; */
+    width: 350px;
+    z-index: 4;
+    position: absolute;
+    top: 87px;
+    right: -10px;
+    border-radius: 1px;
     /* flex-wrap: wrap; */
     li {
       /* width: 12rem; */
+      height: 5rem;
       min-width: 6rem;
       padding: 0.5rem;
       font-size: 1.3rem;
@@ -40,67 +52,130 @@ const NavStyles = styled.nav`
       align-items: center;
       text-transform: uppercase;
       justify-content: center;
+      border-bottom: 1px solid #fff;
       a {
+        width: 100%;
         text-decoration: none;
         display: flex;
         align-items: center;
         justify-content: center;
+        :visited {
+          color: inherit;
+        }
+      }
+
+      :hover {
+        background-color: #f2efee;
+      }
+    }
+  }
+  @media only screen and (min-width: 768px) {
+    .menu-bar {
+      display: none;
+    }
+
+    ul {
+      display: flex;
+      flex-direction: row;
+      width: auto;
+      z-index: 0;
+
+      border-radius: 0;
+      position: static;
+      li {
+        border: none;
       }
     }
   }
 `;
 const Nav = () => {
   //   console.log(user);
+  const [menuOpen, setToggleMenu] = useState(false);
   // TODO - fetchUser when component mounts???
+
+  // catch click outside of ul with navigation links - https://medium.com/@pitipatdop/little-neat-trick-to-capture-click-outside-with-react-hook-ba77c37c7e82
+  const node = useRef();
+  useEffect(() => {
+    // add when mounted
+    document.addEventListener("mousedown", handleClick);
+    // return function to be called when unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
+
+  const handleClick = (e) => {
+    if (node.current.contains(e.target)) {
+      // inside click
+      return;
+    }
+    // outside click
+    setToggleMenu(false);
+  };
 
   return (
     <User>
       {(user) => (
-        <NavStyles>
-          <ul>
-            {" "}
-            {user ? (
-              <>
-                <li>
-                  <Link to="/recipes">
-                    My{" "}
-                    <RoundSpan>
-                      <i className="far fa-heart"></i>
-                    </RoundSpan>
-                    Recipes
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/lists">
-                    My{" "}
-                    <RoundSpan>
-                      <i className="fas fa-shopping-cart"></i>
-                    </RoundSpan>
-                    Lists
-                  </Link>
-                </li>
-                <li>
-                  <a href="/api/logout">
-                    <RoundSpan>
-                      <i class="fas fa-sign-out-alt"></i>
-                    </RoundSpan>
-                    Logout
-                  </a>
-                </li>
-              </>
-            ) : (
-              <>
-                {" "}
-                <li>
-                  <Link>Login with G</Link>
-                </li>
-                <li>
-                  <Link to="/signin">Sign In/Up</Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </NavStyles>
+        <>
+          <NavStyles menuOpen={menuOpen} ref={node}>
+            <ul onClick={() => setToggleMenu(false)} >
+              {" "}
+              {user ? (
+                <>
+                  <li>
+                    <Link to="/recipes">
+                      <RoundSpan>
+                        <i className="fas fa-heart"></i>
+                      </RoundSpan>
+                      Recipes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/lists">
+                      <RoundSpan>
+                        <i className="fas fa-shopping-cart"></i>
+                      </RoundSpan>
+                      Lists
+                    </Link>
+                  </li>
+                  <li>
+                    <a href="/api/logout">
+                      <RoundSpan>
+                        <i className="fas fa-sign-out-alt"></i>
+                      </RoundSpan>
+                      Logout
+                    </a>
+                  </li>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <li>
+                    <Link>Login with G</Link>
+                  </li>
+                  <li>
+                    <Link to="/signin">
+                      <RoundSpan>
+                        <i className="fas fa-sign-in-alt"></i>
+                      </RoundSpan>
+                      Sign In/Up
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+            <div className="menu-bar">
+              {" "}
+              <RoundSpan onClick={() => setToggleMenu(!menuOpen)}>
+                {!menuOpen ? (
+                  <i className="fas fa-bars"></i>
+                ) : (
+                  <i className="fas fa-times-circle"></i>
+                )}
+              </RoundSpan>
+            </div>
+          </NavStyles>
+        </>
       )}
     </User>
   );
@@ -113,3 +188,32 @@ const Nav = () => {
 
 // export default connect(mapStateToProps, { fetchUser })(Nav);
 export default Nav;
+
+/*
+
+
+
+ ul {
+    text-decoration: none;
+    display: none;
+    height: 4rem;
+   // flex-wrap: wrap;
+    li {
+        // width: 12rem; 
+        min-width: 6rem;
+        padding: 0.5rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        justify-content: center;
+        a {
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+*/

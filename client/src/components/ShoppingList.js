@@ -125,6 +125,15 @@ const SingleButtonDiv = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
+const SmallButton = styled(Button)`
+  padding: 1rem;
+  font-size: 1.2rem;
+  span {
+    padding: 0.1rem;
+  }
+`;
+
 const ShoppingList = ({
   shoppingList,
   fetchShoppingList,
@@ -294,10 +303,10 @@ const ShoppingList = ({
           />
         </div>
         <SingleButtonDiv>
-          <Button type="submit">
+          <SmallButton type="submit">
             {" "}
             <i className="fas fa-plus-circle"></i> <span>Add Item</span>
-          </Button>
+          </SmallButton>
         </SingleButtonDiv>
       </AddItemForm>
       {shoppingItems.length > 0 && (
