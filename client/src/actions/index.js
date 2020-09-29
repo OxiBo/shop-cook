@@ -7,6 +7,7 @@ import {
   IS_LOADING_RECIPES,
   IS_LOADING_RECIPE,
   FETCH_RECIPE,
+  LIKE_RECIPE,
   RECIPES_SEARCH_ERROR,
   RECIPE_ERROR,
   CREATE_SHOPPING_LIST,
@@ -67,7 +68,6 @@ export const searchRecipes = (name, resultsNumber = 10) => async (dispatch) => {
     dispatch({ type: SEARCH_RECIPES, payload: res.data });
   } catch (error) {
     console.error(error);
-
     dispatch({ type: RECIPES_SEARCH_ERROR, payload: "Failed to load recipes" });
   }
 };
@@ -88,6 +88,21 @@ export const isLoadingRecipes = () => {
 export const isLoadingRecipe = () => {
   return {
     type: IS_LOADING_RECIPE,
+  };
+};
+
+export const likeRecipe = (details) => async (dispatch) => {
+  // console.log(details);
+  try {
+    const res = await axios.post("/api/recipes/add", details);
+    console.log(res.data);
+    dispatch({ type: LIKE_RECIPE, payload: res.data });
+  } catch (err) {
+    console.error(err);
+  }
+
+  return {
+    type: LIKE_RECIPE,
   };
 };
 

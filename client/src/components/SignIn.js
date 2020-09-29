@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { Formik } from "formik";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Button from "./styles/Button";
 import ErrorMessage from "./styles/ErrorMessage";
-// import User from "./RenderProp/User";
+import User from "./RenderProp/User";
 import { signUp as signUpAction, clearAuthError } from "../actions";
 const Container = styled.div`
   margin: 0 auto;
@@ -94,136 +95,149 @@ const LogInForm = styled.form`
 
 const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
   const [signUp, setSignUp] = useState(false);
-  // return (
-  //   <User>
-  //     {(user) => {
-  //       if (user) return props.history.push("/");
   return (
-    <Container>
-      <h3>Welcome To Our Cooking Helper!</h3>
-      {error && (
-        <ErrorMessage>
-          <p>{error}</p>
-        </ErrorMessage>
-      )}
-      <Formik
-        enableReinitialize={true}
-        initialValues={{ name: "", password: "", email: "" }}
-        validate={({ name, password, email }) => {
-          const errors = {};
-          if (!email) {
-            errors.email = "You must provide your email";
-          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-            errors.email = "Invalid email address";
-          }
+    <User>
+      {(user) => {
+        if (user) {
+          return <Redirect to="/" />;
+        } else {
+          return (
+            <Container>
+              <h3>Welcome To Our Cooking Helper!</h3>
+              {error && (
+                <ErrorMessage>
+                  <p>{error}</p>
+                </ErrorMessage>
+              )}
+              <Formik
+                enableReinitialize={true}
+                initialValues={{ name: "", password: "", email: "" }}
+                validate={({ name, password, email }) => {
+                  const errors = {};
+                  if (!email) {
+                    errors.email = "You must provide your email";
+                  } else if (
+                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
+                  ) {
+                    errors.email = "Invalid email address";
+                  }
 
-          if (signUp && !name) {
-            errors.name = "You must provide your name";
-          } else if (signUp && (name.length < 2 || name.length > 15)) {
-            errors.name =
-              "Name cannot be less than 3 or more than 15 characters";
-          }
-          if (password.length < 8 || password.length > 20) {
-            errors.password = "Password has to be at least 8 characters long";
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          signUpAction(values, props.history);
-          setSubmitting(false);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          setFieldValue,
-          setFieldTouched,
-          /* and other goodies */
-        }) => (
-          <LogInForm onSubmit={handleSubmit}>
-            {signUp && (
-              <div>
-                <label htmlFor="name">Name: </label>
-                <div>
-                  {" "}
-                  <input
-                    type="text"
-                    name="name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.name}
-                  />{" "}
-                  <p>{errors.name && touched.name && errors.name}</p>
-                </div>
-              </div>
-            )}
-
-            <div>
-              {" "}
-              <label htmlFor="email">Email:</label>{" "}
-              <div>
-                {" "}
-                <input
-                  type="email"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                />
-                <p> {errors.email && touched.email && errors.email}</p>
-              </div>
-            </div>
-
-            <div>
-              {" "}
-              <label htmlFor="password">Password:</label>{" "}
-              <div>
-                {" "}
-                <input
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                />{" "}
-                <p>{errors.password && touched.password && errors.password}</p>
-              </div>
-            </div>
-            <div className="buttons">
-              {" "}
-              <Button type="submit" disabled={isSubmitting}>
-                {signUp ? "Sign Up" : "Log In"}
-              </Button>
-              <Button
-                type="button"
-                onClick={() => {
-                  clearAuthError();
-                  // clear the form
-                  setFieldValue("name", "");
-                  setFieldValue("email", "");
-                  setFieldValue("password", "");
-                  // make sure there will be more error messages arrear
-                  setFieldTouched("name", false);
-                  setFieldTouched("email", false);
-                  setFieldTouched("password", false);
-                  setSignUp(!signUp);
+                  if (signUp && !name) {
+                    errors.name = "You must provide your name";
+                  } else if (signUp && (name.length < 2 || name.length > 15)) {
+                    errors.name =
+                      "Name cannot be less than 3 or more than 15 characters";
+                  }
+                  if (password.length < 8 || password.length > 20) {
+                    errors.password =
+                      "Password has to be at least 8 characters long";
+                  }
+                  return errors;
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                  values.email = values.email.toLowerCase();
+                  signUpAction(values, props.history);
+                  setSubmitting(false);
                 }}
               >
-                {signUp ? "Already Have An Account?" : "Need An Account?"}
-              </Button>
-            </div>
-          </LogInForm>
-        )}
-      </Formik>
-    </Container>
-    //     );
-    //   }}
-    // </User>
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                  setFieldValue,
+                  setFieldTouched,
+                  /* and other goodies */
+                }) => (
+                  <LogInForm onSubmit={handleSubmit}>
+                    {signUp && (
+                      <div>
+                        <label htmlFor="name">Name: </label>
+                        <div>
+                          {" "}
+                          <input
+                            type="text"
+                            name="name"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.name}
+                          />{" "}
+                          <p>{errors.name && touched.name && errors.name}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div>
+                      {" "}
+                      <label htmlFor="email">Email:</label>{" "}
+                      <div>
+                        {" "}
+                        <input
+                          type="email"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                        />
+                        <p> {errors.email && touched.email && errors.email}</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      {" "}
+                      <label htmlFor="password">Password:</label>{" "}
+                      <div>
+                        {" "}
+                        <input
+                          type="password"
+                          name="password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                        />{" "}
+                        <p>
+                          {errors.password &&
+                            touched.password &&
+                            errors.password}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="buttons">
+                      {" "}
+                      <Button type="submit" disabled={isSubmitting}>
+                        {signUp ? "Sign Up" : "Log In"}
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          clearAuthError();
+                          // clear the form
+                          setFieldValue("name", "");
+                          setFieldValue("email", "");
+                          setFieldValue("password", "");
+                          // make sure there will be more error messages arrear
+                          setFieldTouched("name", false);
+                          setFieldTouched("email", false);
+                          setFieldTouched("password", false);
+                          setSignUp(!signUp);
+                        }}
+                      >
+                        {signUp
+                          ? "Already Have An Account?"
+                          : "Need An Account?"}
+                      </Button>
+                    </div>
+                  </LogInForm>
+                )}
+              </Formik>
+            </Container>
+          );
+        }
+      }}
+    </User>
   );
 };
 

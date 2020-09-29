@@ -1,8 +1,8 @@
 // dev.js  don't commit this
 module.exports = { 
     // googleAPIkey: 'AIzaSyAEGxENpFRvhnfcbUA7tYjReZBHI6z3PyA',
-    // googleClientID:'498085947888-ugl43jhg8s3s5220roqt2sg852q0etqe.apps.googleusercontent.com',
-    // googleClientSecret:'IQ8dx2OD5SsEJVESZ2r9JAjQ',
+    googleClientID:'897241139526-npain7ioqbnofjcs8kreeuf4p7lspglg.apps.googleusercontent.com',
+    googleClientSecret:'qcoTF4Ujxt1BflxSKauEsFfx',
     // githubClientId: 'd19121232a4ab29629f9',
     // githubClientSecret: '2f4be6568dcda91f16b597716c207947ebb869c3',
     // https://stackoverflow.com/questions/55284254/twitter-creating-app-failed-due-to-invalid-web-url

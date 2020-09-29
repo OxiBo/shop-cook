@@ -41,6 +41,25 @@ const NavStyles = styled.nav`
     right: -10px;
     border-radius: 1px;
     /* flex-wrap: wrap; */
+    li.with-google {
+        /* https://stackoverflow.com/questions/52578726/fontawesome-5-multi-color-icon */
+      i {
+        padding-right: 0.5rem;
+        font-size: 3rem;
+        background: conic-gradient(
+            from -45deg,
+            #ea4335 110deg,
+            #4285f4 90deg 180deg,
+            #34a853 180deg 270deg,
+            #fbbc05 270deg
+          )
+          73% 55%/150% 150% no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+    }
     li {
       /* width: 12rem; */
       height: 5rem;
@@ -118,7 +137,7 @@ const Nav = () => {
       {(user) => (
         <>
           <NavStyles menuOpen={menuOpen} ref={node}>
-            <ul onClick={() => setToggleMenu(false)} >
+            <ul onClick={() => setToggleMenu(false)}>
               {" "}
               {user ? (
                 <>
@@ -150,8 +169,10 @@ const Nav = () => {
               ) : (
                 <>
                   {" "}
-                  <li>
-                    <Link>Login with G</Link>
+                  <li className="with-google">
+                    <a href="/auth/google">
+                     <i className="fab fa-google"></i> Sign in
+                    </a>
                   </li>
                   <li>
                     <Link to="/signin">

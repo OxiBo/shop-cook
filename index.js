@@ -9,9 +9,12 @@ const express = require("express"),
 
 // have to require the model before requiring passport
 require("./models/User");
+require("./models/Recipe");
 const User = mongoose.model("users");
+const Recipe = mongoose.model("recipes");
 // const User = mongoose.model("users");
 require("./services/passportLocal");
+require("./services/passportGoogle");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,9 +57,13 @@ app.use(passport.session()); // has to be put before requiring auth routes - req
 // require routes
 
 const localAuthRoutes = require("./routes/authLocal");
+const googleAuthRoutes = require("./routes/authGoogle");
+const recipesRoutes = require("./routes/recipes");
 
 // user routes
 app.use(localAuthRoutes);
+app.use(googleAuthRoutes);
+app.use(recipesRoutes);
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

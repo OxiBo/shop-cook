@@ -2,6 +2,7 @@ import {
   SEARCH_RECIPES,
   FETCH_RECIPES,
   FETCH_RECIPE,
+  LIKE_RECIPE,
   IS_LOADING_RECIPES,
   IS_LOADING_RECIPE,
   RECIPES_SEARCH_ERROR,
@@ -26,6 +27,7 @@ export default (state = defaultRecipesState, action) => {
       return {
         ...state,
         isLoadingRecipes: false,
+        searchRecipesError: "",
         recipes: action.payload,
       };
     case RECIPES_SEARCH_ERROR:

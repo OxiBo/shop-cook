@@ -70,7 +70,7 @@ const Header = () => {
             {" "}
             <img src="icon.png" alt="brand_icon" />
           </ButtonRoundMedium>
-          <BrandName hide={true}>Cook&Shop</BrandName>
+          <BrandName hide={true}>Shop&Cook</BrandName>
         </Link>
       </div>
       <SearchRecipesForm />

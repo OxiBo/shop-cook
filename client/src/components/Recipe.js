@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import Spinner from "./Spinner";
-import { fetchRecipe, isLoadingRecipe, createShoppingList, changeServings, isLoadingRecipes } from "../actions";
+import {
+  fetchRecipe,
+  isLoadingRecipe,
+  createShoppingList,
+  changeServings,
+  isLoadingRecipes,
+  likeRecipe,
+} from "../actions";
 import Button from "./styles/Button";
 import ButtonRound from "./styles/ButtonRound";
 import { Heading2, ErrorText } from "./styles/text";
@@ -186,6 +193,7 @@ const Recipe = ({
   recipe,
   createShoppingList,
   changeServings,
+  likeRecipe,
   ...props
 }) => {
   // is this needed??
@@ -247,13 +255,17 @@ const Recipe = ({
                 <span> servings</span>
 
                 <div className="tiny-buttons">
-                  <ButtonTiny onClick={async () => changeServings(recipe.servings,  1, recipe.ingredients)}>
+                  <ButtonTiny
+                    onClick={async () =>
+                      changeServings(recipe.servings, 1, recipe.ingredients)
+                    }
+                  >
                     <i className="fas fa-plus-circle"></i>
                   </ButtonTiny>
                   <ButtonTiny
                     onClick={() => {
                       if (newServings >= 2) {
-                        changeServings(recipe.servings,  -1, recipe.ingredients)
+                        changeServings(recipe.servings, -1, recipe.ingredients);
                       }
                     }}
                   >
@@ -261,7 +273,18 @@ const Recipe = ({
                   </ButtonTiny>
                 </div>
               </div>
-              <ButtonRound>
+              <ButtonRound
+                onClick={() => {
+                  const { title, image, sourceName, sourceUrl } = recipe;
+                  likeRecipe({
+                    recipeId,
+                    title,
+                    image,
+                    sourceName,
+                    sourceUrl,
+                  });
+                }}
+              >
                 <i className="far fa-heart"></i>
               </ButtonRound>
             </RecipeDetailsStyles>
@@ -322,6 +345,7 @@ const mapStateToProps = ({ recipes }) => {
 export default connect(mapStateToProps, {
   fetchRecipe,
   isLoadingRecipe,
-  createShoppingList, 
-  changeServings
+  createShoppingList,
+  changeServings,
+  likeRecipe,
 })(Recipe);

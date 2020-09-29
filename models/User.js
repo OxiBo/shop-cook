@@ -4,14 +4,12 @@ const mongoose = require("mongoose"),
 
 const userSchema = new Schema({
   local: {
-    // id: String,
     email: String,
     name: String,
     password: String,
-    // token: String,
   },
   //   shoppingLists: [{ type: Schema.Types.ObjectId, ref: "ShoppingList" }],
-  //   recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+    recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
   google: {
     id: String,
     email: String,
