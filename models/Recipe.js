@@ -7,7 +7,7 @@ const recipeSchema = new Schema({
   recipeId: String,
   sourceName: String,
   sourceUrl: String,
-  user: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  users: [{ type: Schema.Types.ObjectId, ref: "User" }],
   createdAt: { type: Date, default: Date.now },
 });
 

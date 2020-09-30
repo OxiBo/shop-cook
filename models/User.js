@@ -9,7 +9,14 @@ const userSchema = new Schema({
     password: String,
   },
   //   shoppingLists: [{ type: Schema.Types.ObjectId, ref: "ShoppingList" }],
-    recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+  // recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+  recipesLiked: [
+    {
+      recipe: { type: Schema.Types.ObjectId, ref: "Recipe" },
+      // like: { type: Boolean, default: false },
+      recipeId: String, // use this field for quick check if the recipe has been added to favorites
+    },
+  ],
   google: {
     id: String,
     email: String,
