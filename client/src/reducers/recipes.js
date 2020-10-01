@@ -57,6 +57,7 @@ export default (state = defaultRecipesState, action) => {
       return {
         ...state,
         isLoadingRecipe: false,
+        recipeError: "",
         recipe: action.payload,
       
       };

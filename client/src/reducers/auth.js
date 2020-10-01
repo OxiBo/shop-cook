@@ -23,6 +23,7 @@ export default (state = defaultAuthState, action) => {
     case FETCH_USER: {
       return {
         ...state,
+        authError: "",
         user: action.payload,
       };
     }

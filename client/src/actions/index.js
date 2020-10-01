@@ -95,10 +95,15 @@ export const likeRecipe = (details) => async (dispatch) => {
   // console.log(details);
   try {
     const res = await axios.post("/api/recipes/add", details);
-    console.log(res.data);
-    dispatch({ type: LIKE_RECIPE, payload: res.data });
+    // console.log(res.data);
+    dispatch({ type: FETCH_USER, payload: res.data });
   } catch (err) {
     console.error(err);
+    //TODO Toast with warning that the recipe was not added
+    dispatch({
+      type: AUTH_ERROR,
+      payload: "Failed to add the recipe to favorites",
+    });
   }
 
   return {

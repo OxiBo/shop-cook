@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchUser } from "../../actions";
-const User = ({fetchUser, user, error, children }) => {
-
-    // ????
+const User = ({ fetchUser, user, error, children }) => {
+  // ????
   useEffect(() => {
-      console.log("it is running")
+    // console.log("it is running");
     fetchUser();
   }, [fetchUser]);
-
+  // console.log(user);
   return <>{children(user, error)}</>;
 };
 

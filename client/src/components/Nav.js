@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import ButtonRound from "./styles/ButtonRound";
 import User from "./RenderProp/User";
-import { fetchUser } from "../actions";
+// import { fetchUser } from "../actions";
 
 const RoundSpan = styled(ButtonRound).attrs({
   as: "span",
