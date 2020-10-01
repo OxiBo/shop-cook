@@ -1,3 +1,5 @@
+// TODO - add isLoggedin middleware
+
 const router = require("express").Router(),
   mongoose = require("mongoose"),
   bodyParser = require("body-parser"),
@@ -39,6 +41,7 @@ router.post("/api/recipes/add", async (req, res) => {
         if (!updatedRecipe.users.length) {
           await Recipe.findByIdAndRemove(updatedRecipe.id);
         }
+
         const updatedUser = await User.findByIdAndUpdate(
           req.user.id,
           {
@@ -90,5 +93,24 @@ router.post("/api/recipes/add", async (req, res) => {
     res.status(500).send({ message: "Failed to save the recipe" });
   }
 });
+router.get("/api/recipes", async (req, res) => {
+  try {
+    const { recipesLiked } = await User.findById(req.user.id)
+      .populate({
+        path: "recipesLiked.recipe",
+        model: Recipe,
+      })
+      .exec();
 
+    const favoriteRecipes = recipesLiked
+      .filter((item) => item.recipe && item)
+      .map(({ recipe: { recipeId, title, image, sourceName, sourceUrl } }) => {
+        return { recipeId, title, image, sourceName, sourceUrl };
+      });
+    res.send(favoriteRecipes);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err);
+  }
+});
 module.exports = router;

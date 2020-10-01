@@ -13,4 +13,5 @@ export const IS_LOADING_SHOPPING_LIST = "is_loading_shopping_list";
 export const CHANGE_SERVINGS = "change_servings";
 export const SIGN_UP = "sign_up";
 export const AUTH_ERROR = "auth_error";
-export const FETCH_USER ="fetch_user"
+export const FETCH_USER ="fetch_user";
+export const FETCH_FAV_RECIPES = 'fetch_fav_recipes'

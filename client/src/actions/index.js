@@ -17,6 +17,7 @@ import {
   AUTH_ERROR,
   SIGN_UP,
   FETCH_USER,
+  FETCH_FAV_RECIPES,
 } from "./types";
 
 export const fetchUser = () => async (dispatch) => {
@@ -153,6 +154,16 @@ export const fetchRecipe = (id) => async (dispatch) => {
   } catch (error) {
     console.error(error);
     dispatch({ type: RECIPE_ERROR, payload: "Failed to load recipe details" });
+  }
+};
+
+export const fetchFavRecipes = () => async (dispatch) => {
+  try {
+    const res = await axios.get("/api/recipes");
+    console.log(res.data);
+    dispatch({ type: FETCH_FAV_RECIPES, payload: res.data });
+  } catch (err) {
+    console.error(err);
   }
 };
 
