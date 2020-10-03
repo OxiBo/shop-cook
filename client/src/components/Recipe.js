@@ -11,6 +11,7 @@ import {
   likeRecipe,
   fetchUser,
 } from "../actions";
+import useWindowSize from "../utils/useWindowSize";
 import User from "./RenderProp/User";
 import Button from "./styles/Button";
 import ButtonRound from "./styles/ButtonRound";
@@ -203,13 +204,17 @@ const Recipe = ({
   const [newServings, setNewServings] = useState(recipe.servings);
 
   // TODO - make a route on the backend to store current recipe? it should be on "componentDidMount" ??? is there any point to do that?
-  // useEffect(() => {
-  //   isLoadingRecipe();
-  //   fetchRecipe(recipeId);
-  //   // setRecipe(recipe);
-  //   // console.log("componentdidmount");
-  //   // console.log(recipe);
-  // }, []);
+  useEffect(() => {
+    isLoadingRecipe();
+    // fetch random recipe
+    if (!recipeId) {
+      fetchRecipe(null, true);
+    }
+
+    fetchUser();
+    // console.log("componentdidmount");
+    // console.log(recipe);
+  }, []);
 
   useEffect(() => {
     isLoadingRecipe();
@@ -225,6 +230,8 @@ const Recipe = ({
     setNewServings(recipe.servings);
   }, [recipe]);
 
+  const size = useWindowSize();
+
   return (
     <User>
       {(user) => {
@@ -233,7 +240,7 @@ const Recipe = ({
             ? user.recipesLiked.some((item) => item.recipeId === recipeId)
             : false;
         return (
-          <RecipeContainerStyles>
+          <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
             {isLoading ? (
               <Spinner />
             ) : error ? (

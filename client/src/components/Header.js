@@ -9,6 +9,7 @@ const HeaderStyles = styled.header`
   height: 9rem;
   background-color: ${(props) => props.theme.headerColor};
   display: flex;
+
   justify-content: center;
   align-items: center;
   border-radius: 5px;

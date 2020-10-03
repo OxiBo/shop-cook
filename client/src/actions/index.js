@@ -112,11 +112,19 @@ export const likeRecipe = (details) => async (dispatch) => {
   };
 };
 
-export const fetchRecipe = (id) => async (dispatch) => {
+export const fetchRecipe = (id, random = false) => async (dispatch) => {
   try {
-    // https://api.spoonacular.com/recipes/511728/information?apiKey=${spoonacularAPI_KEY}
-    const res = await recipes.get(`/${id}/information?`);
-    // console.log(res);
+    let res;
+    if (random) {
+      res = await (await recipes.get("/random?number=1"));
+      res.data = res.data.recipes[0]
+      console.log(res.data)
+    } else {
+      // https://api.spoonacular.com/recipes/511728/information?apiKey=${spoonacularAPI_KEY}
+      res = await recipes.get(`/${id}/information?`);
+      console.log(res);
+    }
+
     const {
       extendedIngredients,
       image,
@@ -130,7 +138,7 @@ export const fetchRecipe = (id) => async (dispatch) => {
     const ingredients = extendedIngredients.reduce(
       (acc, { amount, name, measures, original }) => {
         const parsedIngredient = {
-          amount,
+          amount: Math.round(amount * 100) / 100,
           name: name === "seasoning" ? original : name,
           unit: measures.us.unitShort,
           original,
@@ -160,7 +168,7 @@ export const fetchRecipe = (id) => async (dispatch) => {
 export const fetchFavRecipes = () => async (dispatch) => {
   try {
     const res = await axios.get("/api/recipes");
-    console.log(res.data);
+    // console.log(res.data);
     dispatch({ type: FETCH_FAV_RECIPES, payload: res.data });
   } catch (err) {
     console.error(err);

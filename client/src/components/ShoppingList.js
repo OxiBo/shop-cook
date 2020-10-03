@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+// import useWindowSize from "../utils/useWindowSize";
 import { fetchShoppingList, isLoadingShoppingList } from "../actions";
 import { Heading2 } from "./styles/text";
 import Button from "./styles/Button";
@@ -10,6 +11,8 @@ const ShoppingListStyles = styled.div`
   display: flex;
   flex-direction: column;
   form {
+    width: 70%;
+    margin: 0 auto;
     ul {
       list-style: none;
       max-height: 77rem;
@@ -97,6 +100,11 @@ const ShoppingListStyles = styled.div`
   div {
     h3 {
       text-align: center;
+    }
+  }
+  @media only screen and (min-width: 768px) {
+    form {
+      width: 100%;
     }
   }
 `;
@@ -201,6 +209,7 @@ const ShoppingList = ({
     setAddedItem(values);
     // console.log(addedItem);
   };
+
   return (
     <ShoppingListStyles>
       <Heading2>My Shopping List</Heading2>

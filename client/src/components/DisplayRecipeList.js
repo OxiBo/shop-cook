@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchRecipe, fetchRecipes } from "../actions";
 import Spinner from "./Spinner";
+import ErrorMessage from './styles/ErrorMessage'
 import { ErrorText } from "./styles/text";
 const DisplayRecipesStyles = styled.div`
   grid-area: search-recipes-result;
@@ -19,9 +21,9 @@ const DisplayRecipesStyles = styled.div`
 `;
 
 const RecipeItemStyles = styled.li`
-:nth-child(even)  {
-      background-color: #F9F5F3;
-    }
+  :nth-child(even) {
+    background-color: #f9f5f3;
+  }
   a,
   a:visited {
     display: flex;
@@ -64,6 +66,8 @@ const RecipeItemStyles = styled.li`
   }
 `;
 
+
+
 const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
   const [recipesList, setRecipes] = useState([]);
 
@@ -83,6 +87,10 @@ const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
         <Spinner />
       ) : error ? (
         <ErrorText>{error}</ErrorText>
+      ) : recipesList.results && recipesList.results.length === 0 ? (
+        <ErrorMessage>
+          <p>No recipes found</p>
+        </ErrorMessage>
       ) : (
         <ul>
           {recipesList.results &&

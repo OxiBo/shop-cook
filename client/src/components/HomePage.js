@@ -25,21 +25,19 @@ import ShoppingList from "./ShoppingList";
 const MainContent = styled.main`
   flex: 1;
   display: grid;
-  grid-gap: 5px;
-  /* grid-template-columns: 20% 50% 30%; */
-  grid-template-columns: 1.2fr 2fr 1.2fr;
-  grid-template-rows: auto;
-  grid-template-areas: "search-recipes-result  recipe shopping-list";
-  @media only screen and (max-width: 40rem) {
-    margin: 0 auto;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "search-recipes-result"
-      "recipe"
-      "shopping-list";
+  grid-gap: 2px;
+  margin: 0 auto;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "search-recipes-result"
+    "recipe"
+    "shopping-list";
 
-    grid-gap: 2px;
-    /* grid-template-columns: 1fr 1fr 1fr; */
+  @media only screen and (min-width: 768px) {
+    grid-gap: 5px;
+    grid-template-columns: 1.2fr 2fr 1.2fr;
+    grid-template-rows: auto;
+    grid-template-areas: "search-recipes-result  recipe shopping-list";
   }
 `;
 
@@ -47,15 +45,14 @@ const HomePage = (props) => {
   // console.log(props)
   const recipeId = props.location.hash.replace("#", "");
   return (
-<>
+    <>
       <MainContent>
         <DisplayRecipeList />
         <Recipe recipeId={recipeId} />
         <ShoppingList />
       </MainContent>
       <footer>footer</footer>
-      </>
-  
+    </>
   );
 };
 export default HomePage;
