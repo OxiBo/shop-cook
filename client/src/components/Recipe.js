@@ -11,6 +11,7 @@ import {
   likeRecipe,
   fetchUser,
 } from "../actions";
+import LikeButton from './LikeButton'
 import useWindowSize from "../utils/useWindowSize";
 import User from "./RenderProp/User";
 import Button from "./styles/Button";
@@ -101,6 +102,7 @@ const RecipeFigStyles = styled.figure`
 const RecipeDetailsStyles = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 8rem 3rem 3rem 3rem;
 
   div {
@@ -298,7 +300,8 @@ const Recipe = ({
                         </ButtonTiny>
                       </div>
                     </div>
-                    <ButtonRound
+                    <LikeButton recipe={recipe} recipeId={recipeId} isLiked={isLiked}/>
+                    {/* <ButtonRound
                       onClick={() => {
                         const { title, image, sourceName, sourceUrl } = recipe;
                         likeRecipe({
@@ -315,7 +318,7 @@ const Recipe = ({
                       ) : (
                         <i className="far fa-heart"></i>
                       )}
-                    </ButtonRound>
+                    </ButtonRound> */}
                   </RecipeDetailsStyles>
 
                   <IngredientsStyles>

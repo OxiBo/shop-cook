@@ -11,7 +11,7 @@ const ButtonRound = styled.button`
   cursor: pointer;
   height: 3rem;
   width: 3rem;
-  margin-left: auto;
+  /* margin-left: auto; */
   transition: all 0.2s;
   display: flex;
   align-items: center;

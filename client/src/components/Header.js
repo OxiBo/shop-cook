@@ -62,7 +62,8 @@ const ButtonRoundMedium = styled(ButtonRound)`
   height: 5rem;
 `;
 
-const Header = () => {
+const Header = (props) => {
+  console.log(props)
   return (
     <HeaderStyles>
       <div>

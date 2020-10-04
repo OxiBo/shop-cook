@@ -35,15 +35,31 @@ const AppContainer = styled.div`
   max-width: 120rem;
 `;
 
+const Content = styled.div`
+  flex: 1;
+`;
+
+const Footer = styled.footer`
+  height: 6rem;
+  background-color: ${(props) => props.theme.headerColor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  border-radius: 5px;
+  font-weight: 700;
+`;
 class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
         <AppContainer>
           <Container>
-        <Header />
-          <GlobalStyle />
-          {this.props.children}</Container>
+            <Header />
+            <GlobalStyle />
+            <Content>{this.props.children}</Content>
+            <Footer>written and coded by OxiBo, 2020</Footer>
+          </Container>
         </AppContainer>
       </ThemeProvider>
     );

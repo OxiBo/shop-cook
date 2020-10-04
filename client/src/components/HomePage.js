@@ -51,7 +51,7 @@ const HomePage = (props) => {
         <Recipe recipeId={recipeId} />
         <ShoppingList />
       </MainContent>
-      <footer>footer</footer>
+      
     </>
   );
 };

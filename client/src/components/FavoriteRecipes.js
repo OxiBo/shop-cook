@@ -3,9 +3,11 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchFavRecipes } from "../actions";
 // import User from "./RenderProp/User";
+import LikeButton from "./LikeButton";
 import { Heading2, ErrorText } from "./styles/text";
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
+import ErrorMessage from "./styles/ErrorMessage";
 
 const Container = styled.div`
   background-color: #f2efee;
@@ -37,6 +39,9 @@ const Container = styled.div`
     width: 100%;
     li {
       display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
       :nth-child(odd) {
         background-color: #f9f5f3;
       }
@@ -52,14 +57,14 @@ const Container = styled.div`
         }
       }
       div.details {
-        width: 100%;
+        /* width: 80%; */
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
         h5 {
           /* flex: 1; */
-          width: 100%;
+          width: 10rem;
           font-size: 1.5rem;
           color: #f59a83;
           text-transform: uppercase;
@@ -86,20 +91,21 @@ const Container = styled.div`
       }
     }
   }
-  @media only screen and (min-width: 520px) {
+  @media only screen and (min-width: 768px) {
     /* background-color: red; */
     ul {
       li {
         div.details {
           /* background-color: green; */
           flex-wrap: nowrap;
-          h5{
-            width: auto;
+          h5 {
+            width: 25rem;
             margin: 0;
           }
         }
         div.recipeImage {
-          margin: 1rem 2rem;
+          margin: 2rem;
+          /* margin-left: auto; */
         }
       }
     }
@@ -111,8 +117,8 @@ const DirectionsButton = styled(Button).attrs({
 })`
   text-decoration: none;
   padding: 0.8rem 1.5rem;
-  margin-left: auto;
-  margin-right: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   font-size: 1.2rem;
   :visited {
     color: #fff !important;
@@ -125,7 +131,7 @@ const DirectionsButton = styled(Button).attrs({
 const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
   useEffect(() => {
     fetchFavRecipes();
-  }, [fetchFavRecipes]);
+  }, [fetchFavRecipes, favRecipes]);
   return (
     <Container>
       <Heading2>
@@ -134,7 +140,13 @@ const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
       {isLoading ? (
         <Spinner />
       ) : error ? (
-        <ErrorText>{error}</ErrorText>
+        <ErrorMessage>
+          <p>{error}</p>
+        </ErrorMessage>
+      ) : favRecipes.length === 0 ? (
+        <ErrorMessage>
+          <p>You Don't Have Favorite Recipes Yet</p>
+        </ErrorMessage>
       ) : (
         <ul>
           {favRecipes.map(
@@ -152,7 +164,11 @@ const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
                   <p>
                     by <span>{sourceName}</span>
                   </p>
-
+                  <LikeButton
+                    recipeId={recipeId}
+                    isLiked={true}
+                    recipe={{ sourceName, sourceUrl, image, title }}
+                  />
                   <DirectionsButton href={sourceUrl} target="_blank">
                     <span>Directions</span>
                     <i className="fas fa-arrow-alt-circle-right"></i>
