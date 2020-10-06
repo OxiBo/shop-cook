@@ -17,7 +17,7 @@ const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes, ...props }) => {
   const [searchValue, setInput] = useState("");
   // https://reactrouter.com/web/api/Hooks/usehistory
   const history = useHistory();
-  console.log(props);
+ 
   return (
     <div>
       <SearchStyles

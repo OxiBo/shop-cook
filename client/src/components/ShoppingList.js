@@ -2,7 +2,11 @@ import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 // import useWindowSize from "../utils/useWindowSize";
-import { fetchShoppingList, isLoadingShoppingList } from "../actions";
+import {
+  fetchShoppingList,
+  isLoadingShoppingList,
+  createShoppingList,
+} from "../actions";
 import { Heading2 } from "./styles/text";
 import Button from "./styles/Button";
 const ShoppingListStyles = styled.div`
@@ -11,7 +15,7 @@ const ShoppingListStyles = styled.div`
   display: flex;
   flex-direction: column;
   form {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
     ul {
       list-style: none;
@@ -100,6 +104,7 @@ const ShoppingListStyles = styled.div`
   div {
     h3 {
       text-align: center;
+      padding: 1rem;
     }
   }
   @media only screen and (min-width: 768px) {
@@ -112,6 +117,38 @@ const ShoppingListStyles = styled.div`
 const AddItemForm = styled.form`
   margin: 1rem 0;
   /* padding: 1rem; */
+  input {
+    padding: 1rem;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1.2rem;
+    border: 1px solid #f2efee;
+    border-radius: 3px;
+    width: 100%;
+    :focus {
+      outline: none;
+      background-color: #f2efee;
+    }
+  }
+`;
+
+const MailInputs = styled.div`
+  margin: 1rem 0;
+  div {
+    display: flex;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1.2rem;
+    align-items: center;
+    justify-content: center;
+    input {
+      width: 25%;
+      margin: 0.5rem;
+    }
+    label {
+      flex: 1;
+    }
+  }
   input {
     padding: 1rem;
     color: inherit;
@@ -146,6 +183,7 @@ const ShoppingList = ({
   shoppingList,
   fetchShoppingList,
   isLoadingShoppingList,
+  createShoppingList,
   ...props
 }) => {
   // console.log(shoppingList);
@@ -153,7 +191,8 @@ const ShoppingList = ({
   const [shoppingItems, setShoppingItems] = useState(shoppingList);
   // state for the form "add item"
   const [addedItem, setAddedItem] = useState({});
-
+  const [mailIt, setMailIt] = useState(false);
+  const [myEmail, setMyEmail] = useState("");
   // useEffect(() => {
   //   isLoadingShoppingList();
   //   fetchShoppingList();
@@ -219,9 +258,10 @@ const ShoppingList = ({
             action=""
             onSubmit={(e) => {
               e.preventDefault();
-              {
-                /* console.log(shoppingItems); */
-              }
+              //  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
+              const formValues = [...shoppingItems, {email: myEmail}];
+              console.log(formValues);
+              createShoppingList(formValues);
             }}
           >
             <ul>
@@ -234,6 +274,8 @@ const ShoppingList = ({
                     step = amount % amount;
                   } else if (amount > 10 && amount < 100) {
                     step = Math.ceil(amount / 10);
+                  } else if (amount < 1) {
+                    step = amount;
                   }
 
                   return (
@@ -259,6 +301,30 @@ const ShoppingList = ({
                   );
                 })}
             </ul>
+            {/* TODO mail and create should be only available for signed in users */}
+            <MailInputs>
+              <div>
+                <input
+                  type="checkbox"
+                  id="mail"
+                  name="mail"
+                  value={mailIt}
+                  onChange={() => setMailIt(!mailIt)}
+                />
+                <label htmlFor="mail"> Mail it</label>
+              </div>
+              {mailIt && (
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  placeholder="Enter email"
+                  value={myEmail}
+                  onChange={(e) => setMyEmail(e.target.value)}
+                  required
+                />
+              )}
+            </MailInputs>
             <SingleButtonDiv className="button">
               {" "}
               <Button type="submit">
@@ -287,6 +353,7 @@ const ShoppingList = ({
             type="number"
             placeholder="Amount"
             name="amount"
+            min="0"
             value={addedItem.amount || ""}
             onChange={(e) => handleAddItemChange(e)}
             required
@@ -340,4 +407,5 @@ const mapStateToProps = ({ shoppingLists }) => {
 export default connect(mapStateToProps, {
   fetchShoppingList,
   isLoadingShoppingList,
+  createShoppingList,
 })(ShoppingList);

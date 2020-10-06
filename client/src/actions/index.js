@@ -10,7 +10,9 @@ import {
   LIKE_RECIPE,
   RECIPES_SEARCH_ERROR,
   RECIPE_ERROR,
+  ADD_TO_SHOPPING_LIST,
   CREATE_SHOPPING_LIST,
+  SHOPPING_LIST_ERROR,
   FETCH_SHOPPING_LIST,
   IS_LOADING_SHOPPING_LIST,
   CHANGE_SERVINGS,
@@ -116,9 +118,9 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
   try {
     let res;
     if (random) {
-      res = await (await recipes.get("/random?number=1"));
-      res.data = res.data.recipes[0]
-      console.log(res.data)
+      res = await await recipes.get("/random?number=1");
+      res.data = res.data.recipes[0];
+      console.log(res.data);
     } else {
       // https://api.spoonacular.com/recipes/511728/information?apiKey=${spoonacularAPI_KEY}
       res = await recipes.get(`/${id}/information?`);
@@ -175,7 +177,7 @@ export const fetchFavRecipes = () => async (dispatch) => {
   }
 };
 
-export const createShoppingList = (ingredients) => async (
+export const addToShoppingList = (ingredients) => async (
   dispatch,
   getState
 ) => {
@@ -202,14 +204,25 @@ export const createShoppingList = (ingredients) => async (
     // console.log(updatedList)
 
     dispatch({
-      type: CREATE_SHOPPING_LIST,
+      type: ADD_TO_SHOPPING_LIST,
       payload: updatedList,
     });
   } else {
     dispatch({
-      type: CREATE_SHOPPING_LIST,
+      type: ADD_TO_SHOPPING_LIST,
       payload: ingredients,
     });
+  }
+};
+
+export const createShoppingList = (list) => async (dispatch) => {
+  try {
+    const res = await axios.patch("./api/shoppingList/new", list);
+    console.log(res);
+    dispatch({ type: CREATE_SHOPPING_LIST, payload: "Success! The list has been mailed to your email!"})
+  } catch (err) {
+    console.error(err);
+    dispatch({ type: SHOPPING_LIST_ERROR, payload: err });
   }
 };
 

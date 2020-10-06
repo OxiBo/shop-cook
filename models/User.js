@@ -10,6 +10,13 @@ const userSchema = new Schema({
   },
   //   shoppingLists: [{ type: Schema.Types.ObjectId, ref: "ShoppingList" }],
   // recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],
+  google: {
+    id: String,
+    email: String,
+    name: String,
+    token: String,
+  },
+  shoppingList: {type: Array, default: []},
   recipesLiked: [
     {
       recipe: { type: Schema.Types.ObjectId, ref: "Recipe" },
@@ -17,12 +24,6 @@ const userSchema = new Schema({
       recipeId: String, // use this field for quick check if the recipe has been added to favorites
     },
   ],
-  google: {
-    id: String,
-    email: String,
-    name: String,
-    token: String,
-  },
   createdAt: { type: Date, default: Date.now() },
 });
 

@@ -59,11 +59,13 @@ app.use(passport.session()); // has to be put before requiring auth routes - req
 const localAuthRoutes = require("./routes/authLocal");
 const googleAuthRoutes = require("./routes/authGoogle");
 const recipesRoutes = require("./routes/recipes");
+const shoppingListRoutes = require("./routes/shoppingList");
 
 // user routes
 app.use(localAuthRoutes);
 app.use(googleAuthRoutes);
 app.use(recipesRoutes);
+app.use(shoppingListRoutes)
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

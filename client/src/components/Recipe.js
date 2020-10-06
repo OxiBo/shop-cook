@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 import {
   fetchRecipe,
   isLoadingRecipe,
-  createShoppingList,
+  addToShoppingList,
   changeServings,
   isLoadingRecipes,
   likeRecipe,
@@ -192,12 +192,11 @@ const DirectionsStyles = styled.div`
 
 const Recipe = ({
   isLoading,
-
   fetchRecipe,
   recipeId,
   error,
   recipe,
-  createShoppingList,
+  addToShoppingList,
   changeServings,
   likeRecipe,
 
@@ -341,7 +340,7 @@ const Recipe = ({
 
                     {recipe && recipe.ingredients && (
                       <Button
-                        onClick={() => createShoppingList(recipe.ingredients)}
+                        onClick={() => addToShoppingList(recipe.ingredients)}
                       >
                         <i className="fas fa-shopping-cart"></i>
                         <span>Add to shopping list</span>
@@ -382,7 +381,7 @@ const mapStateToProps = ({ recipes }) => {
 export default connect(mapStateToProps, {
   fetchRecipe,
   isLoadingRecipe,
-  createShoppingList,
+  addToShoppingList,
   changeServings,
   likeRecipe,
 })(Recipe);

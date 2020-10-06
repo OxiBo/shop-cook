@@ -14,7 +14,7 @@ const Container = styled.div`
 
   h3 {
     text-align: center;
-    margin: 4rem 3rem 1rem 3rem;
+    margin: 4rem 3rem 3rem 3rem;
     font-size: 3rem;
   }
 
@@ -99,6 +99,7 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
     <User>
       {(user) => {
         if (user) {
+          //https://dev.to/projectescape/programmatic-navigation-in-react-3p1l#:~:text=import%20%7B%20Redirect%20%7D%20from%20%22react,the%20state%20of%20the%20component.&text=Whenever%20you%20want%20to%20redirect,rendering%20the%20component.
           return <Redirect to="/" />;
         } else {
           return (
