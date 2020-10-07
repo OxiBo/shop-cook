@@ -14,6 +14,6 @@ module.exports = {
     cookieKey: "anyStringskdfj;lskdjf3lk4jflkdjf000",
     // stripePublishableKey: 'pk_test_upCU3MtNHwG5x9o6WO1zkpGK00cJOUCZZE',
     // stripeSecretKey: "sk_test_jk2Qyu5mGnMER8LPRVfr4jp300kRKA8n83",
-    // sendGridKey: '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',
+    sendGridKey: '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',
     // redirectDomain: "http://localhost:3030"
 };

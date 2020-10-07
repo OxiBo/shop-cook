@@ -14,7 +14,7 @@ const Container = styled.div`
 
   h3 {
     text-align: center;
-    margin: 4rem 3rem 3rem 3rem;
+    padding: 4rem 3rem 0rem 3rem;
     font-size: 3rem;
   }
 

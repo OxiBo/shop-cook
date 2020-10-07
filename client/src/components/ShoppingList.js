@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-// import useWindowSize from "../utils/useWindowSize";
+import User from "./RenderProp/User";
 import {
   fetchShoppingList,
   isLoadingShoppingList,
@@ -145,7 +145,8 @@ const MailInputs = styled.div`
       width: 25%;
       margin: 0.5rem;
     }
-    label {
+    label,
+    p {
       flex: 1;
     }
   }
@@ -161,6 +162,11 @@ const MailInputs = styled.div`
       outline: none;
       background-color: #f2efee;
     }
+  }
+  p.error {
+    text-align: center;
+    font-style: italic;
+    color: ${(props) => props.theme.themeColor};
   }
 `;
 
@@ -186,13 +192,13 @@ const ShoppingList = ({
   createShoppingList,
   ...props
 }) => {
-  // console.log(shoppingList);
   // state for the main form
   const [shoppingItems, setShoppingItems] = useState(shoppingList);
   // state for the form "add item"
   const [addedItem, setAddedItem] = useState({});
   const [mailIt, setMailIt] = useState(false);
   const [myEmail, setMyEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   // useEffect(() => {
   //   isLoadingShoppingList();
   //   fetchShoppingList();
@@ -250,149 +256,177 @@ const ShoppingList = ({
   };
 
   return (
-    <ShoppingListStyles>
-      <Heading2>My Shopping List</Heading2>
-      {shoppingItems.length > 0 ? (
-        <>
-          <form
+    <User>
+      {(user) => (
+        <ShoppingListStyles>
+          <Heading2>My Shopping List</Heading2>
+          {shoppingItems.length > 0 ? (
+            <>
+              <form
+                action=""
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!emailError) {
+                    createShoppingList([...shoppingItems, { email: myEmail }]);
+                  }
+                }}
+              >
+                <ul>
+                  {shoppingList &&
+                    shoppingItems.length !== 0 &&
+                    shoppingItems.map(
+                      ({ amount, name, unit, original }, index) => {
+                        // TODO - need a better algorithm to calc step
+                        let step;
+                        if (amount < 10 && amount > 1) {
+                          step = amount % amount;
+                        } else if (amount > 10 && amount < 100) {
+                          step = Math.ceil(amount / 10);
+                        } else if (amount < 1) {
+                          step = amount;
+                        }
+                        //    {/* step={step} */}
+                        return (
+                          <li key={index}>
+                            <div>
+                              <input
+                                type="number"
+                                name={name}
+                                value={shoppingItems[index].amount}
+                                onChange={(e) =>
+                                  handleChange(e, index, name, unit, original)
+                                }
+                                min="0"
+                              />
+                              <p>{unit}</p>
+                            </div>
+                            <p>{name}</p>
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(index)}
+                            >
+                              <i className="fas fa-trash-alt"></i>
+                            </button>
+                          </li>
+                        );
+                      }
+                    )}
+                </ul>
+
+                {user && (
+                  <>
+                    {/* TODO mail and create should be only available for signed in users */}
+                    <MailInputs>
+                      <div>
+                        <input
+                          type="checkbox"
+                          id="mail"
+                          name="mail"
+                          value={mailIt}
+                          onChange={() => {
+                            setEmailError("");
+                            setMyEmail("");
+                            setMailIt(!mailIt);
+                          }}
+                        />
+                        <p htmlFor="mail"> Mail it</p>
+                      </div>
+                      {mailIt && (
+                        <>
+                          <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            placeholder="Enter email"
+                            value={myEmail}
+                            onChange={(e) => setMyEmail(e.target.value)}
+                            required
+                            onBlur={() => {
+                              if (
+                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+                                  myEmail
+                                )
+                              ) {
+                                setEmailError("Invalid email address");
+                              }
+                            }}
+                          />
+                          {emailError && <p className="error">{emailError}</p>}
+                        </>
+                      )}
+                    </MailInputs>
+                    <SingleButtonDiv className="button">
+                      {" "}
+                      <Button type="submit">
+                        {" "}
+                        <i className="fas fa-share"></i>
+                        <span>Create List</span>
+                      </Button>
+                    </SingleButtonDiv>
+                  </>
+                )}
+              </form>
+            </>
+          ) : (
+            <div>
+              <h3>Your shopping list is empty</h3>
+            </div>
+          )}
+          <AddItemForm
             action=""
             onSubmit={(e) => {
               e.preventDefault();
-              //  !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)
-              const formValues = [...shoppingItems, {email: myEmail}];
-              console.log(formValues);
-              createShoppingList(formValues);
+              handleAdd(addedItem);
+              setAddedItem({});
             }}
           >
-            <ul>
-              {shoppingList &&
-                shoppingItems.length !== 0 &&
-                shoppingItems.map(({ amount, name, unit, original }, index) => {
-                  // TODO - need a better algorithm to calc step
-                  let step;
-                  if (amount < 10 && amount > 1) {
-                    step = amount % amount;
-                  } else if (amount > 10 && amount < 100) {
-                    step = Math.ceil(amount / 10);
-                  } else if (amount < 1) {
-                    step = amount;
-                  }
-
-                  return (
-                    <li key={index}>
-                      <div>
-                        <input
-                          type="number"
-                          name={name}
-                          value={shoppingItems[index].amount}
-                          onChange={(e) =>
-                            handleChange(e, index, name, unit, original)
-                          }
-                          min="0"
-                          step={step}
-                        />
-                        <p>{unit}</p>
-                      </div>
-                      <p>{name}</p>
-                      <button onClick={() => handleDelete(index)}>
-                        <i className="fas fa-trash-alt"></i>
-                      </button>
-                    </li>
-                  );
-                })}
-            </ul>
-            {/* TODO mail and create should be only available for signed in users */}
-            <MailInputs>
-              <div>
-                <input
-                  type="checkbox"
-                  id="mail"
-                  name="mail"
-                  value={mailIt}
-                  onChange={() => setMailIt(!mailIt)}
-                />
-                <label htmlFor="mail"> Mail it</label>
-              </div>
-              {mailIt && (
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Enter email"
-                  value={myEmail}
-                  onChange={(e) => setMyEmail(e.target.value)}
-                  required
-                />
-              )}
-            </MailInputs>
-            <SingleButtonDiv className="button">
-              {" "}
-              <Button type="submit">
+            <div>
+              <input
+                type="number"
+                placeholder="Amount"
+                name="amount"
+                min="0"
+                value={addedItem.amount || ""}
+                onChange={(e) => handleAddItemChange(e)}
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Unit"
+                name="unit"
+                value={addedItem.unit || ""}
+                onChange={(e) => handleAddItemChange(e)}
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Item Name"
+                name="name"
+                value={addedItem.name || ""}
+                onChange={(e) => handleAddItemChange(e)}
+                required
+              />
+            </div>
+            <SingleButtonDiv>
+              <SmallButton type="submit">
                 {" "}
-                <i className="fas fa-share"></i>
-                <span>Create List</span>
-              </Button>
+                <i className="fas fa-plus-circle"></i> <span>Add Item</span>
+              </SmallButton>
             </SingleButtonDiv>
-          </form>
-        </>
-      ) : (
-        <div>
-          <h3>Your shopping list is empty</h3>
-        </div>
+          </AddItemForm>
+          {shoppingItems.length > 0 && (
+            <Button onClick={() => setShoppingItems([])}>
+              {" "}
+              <i className="fas fa-trash-alt"></i>
+              <span>Delete all </span>
+            </Button>
+          )}
+        </ShoppingListStyles>
       )}
-      <AddItemForm
-        action=""
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleAdd(addedItem);
-          setAddedItem({});
-        }}
-      >
-        <div>
-          <input
-            type="number"
-            placeholder="Amount"
-            name="amount"
-            min="0"
-            value={addedItem.amount || ""}
-            onChange={(e) => handleAddItemChange(e)}
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Unit"
-            name="unit"
-            value={addedItem.unit || ""}
-            onChange={(e) => handleAddItemChange(e)}
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Item Name"
-            name="name"
-            value={addedItem.name || ""}
-            onChange={(e) => handleAddItemChange(e)}
-            required
-          />
-        </div>
-        <SingleButtonDiv>
-          <SmallButton type="submit">
-            {" "}
-            <i className="fas fa-plus-circle"></i> <span>Add Item</span>
-          </SmallButton>
-        </SingleButtonDiv>
-      </AddItemForm>
-      {shoppingItems.length > 0 && (
-        <Button onClick={() => setShoppingItems([])}>
-          {" "}
-          <i className="fas fa-trash-alt"></i>
-          <span>Delete all </span>
-        </Button>
-      )}
-    </ShoppingListStyles>
+    </User>
   );
 };
 
@@ -401,6 +435,7 @@ const mapStateToProps = ({ shoppingLists }) => {
   return {
     shoppingList: shoppingLists.shoppingList,
     isLoading: shoppingLists.isLoading,
+    createListError: shoppingLists.createListError,
   };
 };
 
