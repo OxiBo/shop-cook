@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import ButtonRound from "./styles/ButtonRound";
 import User from "./RenderProp/User";

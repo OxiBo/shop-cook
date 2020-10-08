@@ -63,7 +63,7 @@ const ButtonRoundMedium = styled(ButtonRound)`
 `;
 
 const Header = (props) => {
-  console.log(props)
+  // console.log(props)
   return (
     <HeaderStyles>
       <div>

@@ -24,9 +24,6 @@ const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes, ...props }) => {
         data-test="recipes-search-form"
         onSubmit={(e) => {
           e.preventDefault();
-          {
-            /* console.log(searchValue); */
-          }
           isLoadingRecipes();
           searchRecipes(searchValue);
           setInput("");

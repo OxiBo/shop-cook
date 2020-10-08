@@ -9,13 +9,12 @@ import {
   changeServings,
   isLoadingRecipes,
   likeRecipe,
-  fetchUser,
+  fetchUser
 } from "../actions";
-import LikeButton from './LikeButton'
+import LikeButton from "./LikeButton";
 import useWindowSize from "../utils/useWindowSize";
 import User from "./RenderProp/User";
 import Button from "./styles/Button";
-import ButtonRound from "./styles/ButtonRound";
 import { Heading2, ErrorText } from "./styles/text";
 
 const RecipeContainerStyles = styled.div`
@@ -199,7 +198,6 @@ const Recipe = ({
   addToShoppingList,
   changeServings,
   likeRecipe,
-
   ...props
 }) => {
   const [newServings, setNewServings] = useState(recipe.servings);
@@ -211,11 +209,9 @@ const Recipe = ({
     if (!recipeId) {
       fetchRecipe(null, true);
     }
-
     fetchUser();
-    // console.log("componentdidmount");
-    // console.log(recipe);
-  }, []);
+ 
+  }, [fetchRecipe, recipeId]);
 
   useEffect(() => {
     isLoadingRecipe();
@@ -225,7 +221,7 @@ const Recipe = ({
     // setRecipe(recipe);
     // setRecipe(recipe);
     // console.log(recipe)
-  }, [recipeId, fetchRecipe, fetchUser]);
+  }, [recipeId, fetchRecipe]);
 
   useEffect(() => {
     setNewServings(recipe.servings);
@@ -299,7 +295,14 @@ const Recipe = ({
                         </ButtonTiny>
                       </div>
                     </div>
-                    <LikeButton recipe={recipe} recipeId={recipeId} isLiked={isLiked}/>
+                    {user && (
+                      <LikeButton
+                        recipe={recipe}
+                        recipeId={recipeId}
+                        isLiked={isLiked}
+                      />
+                    )}
+
                     {/* <ButtonRound
                       onClick={() => {
                         const { title, image, sourceName, sourceUrl } = recipe;

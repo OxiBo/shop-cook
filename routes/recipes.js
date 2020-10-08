@@ -3,12 +3,13 @@
 const router = require("express").Router(),
   mongoose = require("mongoose"),
   bodyParser = require("body-parser"),
+  isLoggedIn = require("../middlewares/isLoggedIn"),
   User = mongoose.model("users"),
   Recipe = mongoose.model("recipes");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.post("/api/recipes/add", async (req, res) => {
+router.post("/api/recipes/add", isLoggedIn, async (req, res) => {
   //   console.log(req.body);
   //   console.log(req.user);
 
@@ -93,7 +94,8 @@ router.post("/api/recipes/add", async (req, res) => {
     res.status(500).send({ message: "Failed to save the recipe" });
   }
 });
-router.get("/api/recipes", async (req, res) => {
+
+router.get("/api/recipes", isLoggedIn, async (req, res) => {
   try {
     const { recipesLiked } = await User.findById(req.user.id)
       .populate({

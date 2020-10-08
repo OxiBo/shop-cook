@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import User from "./RenderProp/User";
@@ -229,7 +229,7 @@ const ShoppingList = ({
       const itemExists = shoppingItems.findIndex(({ name, unit }) =>
         unit ? name === item.name && unit === item.unit : name === item.name
       );
-      console.log(itemExists);
+      // console.log(itemExists);
       if (itemExists >= 0) {
         const newAmount = values[itemExists].amount + item.amount;
         values[itemExists].amount = newAmount;
@@ -296,7 +296,8 @@ const ShoppingList = ({
                                 onChange={(e) =>
                                   handleChange(e, index, name, unit, original)
                                 }
-                                min="0"
+                                step={step}
+                                min={0}
                               />
                               <p>{unit}</p>
                             </div>
@@ -418,11 +419,13 @@ const ShoppingList = ({
             </SingleButtonDiv>
           </AddItemForm>
           {shoppingItems.length > 0 && (
-            <Button onClick={() => setShoppingItems([])}>
-              {" "}
-              <i className="fas fa-trash-alt"></i>
-              <span>Delete all </span>
-            </Button>
+            <SingleButtonDiv>
+              <Button onClick={() => setShoppingItems([])}>
+                {" "}
+                <i className="fas fa-trash-alt"></i>
+                <span>Delete all </span>
+              </Button>
+            </SingleButtonDiv>
           )}
         </ShoppingListStyles>
       )}

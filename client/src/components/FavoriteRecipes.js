@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchFavRecipes } from "../actions";
-// import User from "./RenderProp/User";
+import User from "./RenderProp/User";
 import LikeButton from "./LikeButton";
-import { Heading2, ErrorText } from "./styles/text";
+import { Heading2 } from "./styles/text";
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
 import ErrorMessage from "./styles/ErrorMessage";
@@ -132,54 +132,67 @@ const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
   useEffect(() => {
     fetchFavRecipes();
   }, [fetchFavRecipes, favRecipes]);
+
   return (
-    <Container>
-      <Heading2>
-        My <i className="fas fa-heart"></i> Recipes
-      </Heading2>
-      {isLoading ? (
-        <Spinner />
-      ) : error ? (
-        <ErrorMessage>
-          <p>{error}</p>
-        </ErrorMessage>
-      ) : favRecipes.length === 0 ? (
-        <ErrorMessage>
-          <p>You Don't Have Favorite Recipes Yet</p>
-        </ErrorMessage>
-      ) : (
-        <ul>
-          {favRecipes.map(
-            ({ recipeId, title, image, sourceName, sourceUrl }) => (
-              <li key={recipeId}>
-                <div className="recipeImage ">
-                  {" "}
-                  <img src={image} alt={title} />
-                </div>
-                <div className="details">
-                  <h5>
-                    {" "}
-                    <a href={`/#${recipeId}`}>{title}</a>
-                  </h5>
-                  <p>
-                    by <span>{sourceName}</span>
-                  </p>
-                  <LikeButton
-                    recipeId={recipeId}
-                    isLiked={true}
-                    recipe={{ sourceName, sourceUrl, image, title }}
-                  />
-                  <DirectionsButton href={sourceUrl} target="_blank">
-                    <span>Directions</span>
-                    <i className="fas fa-arrow-alt-circle-right"></i>
-                  </DirectionsButton>
-                </div>
-              </li>
-            )
+    <User>
+      {(user) => (
+        <Container>
+          {!user ? (
+            <ErrorMessage>
+              <p>You have to be logged in to see you favorite recipes!</p>
+            </ErrorMessage>
+          ) : (
+            <>
+              <Heading2>
+                My <i className="fas fa-heart"></i> Recipes
+              </Heading2>
+              {isLoading ? (
+                <Spinner />
+              ) : error ? (
+                <ErrorMessage>
+                  <p>{error}</p>
+                </ErrorMessage>
+              ) : favRecipes.length === 0 ? (
+                <ErrorMessage>
+                  <p>You Don't Have Favorite Recipes Yet</p>
+                </ErrorMessage>
+              ) : (
+                <ul>
+                  {favRecipes.map(
+                    ({ recipeId, title, image, sourceName, sourceUrl }) => (
+                      <li key={recipeId}>
+                        <div className="recipeImage ">
+                          {" "}
+                          <img src={image} alt={title} />
+                        </div>
+                        <div className="details">
+                          <h5>
+                            {" "}
+                            <a href={`/#${recipeId}`}>{title}</a>
+                          </h5>
+                          <p>
+                            by <span>{sourceName}</span>
+                          </p>
+                          <LikeButton
+                            recipeId={recipeId}
+                            isLiked={true}
+                            recipe={{ sourceName, sourceUrl, image, title }}
+                          />
+                          <DirectionsButton href={sourceUrl} target="_blank">
+                            <span>Directions</span>
+                            <i className="fas fa-arrow-alt-circle-right"></i>
+                          </DirectionsButton>
+                        </div>
+                      </li>
+                    )
+                  )}
+                </ul>
+              )}
+            </>
           )}
-        </ul>
+        </Container>
       )}
-    </Container>
+    </User>
   );
 };
 

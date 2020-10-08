@@ -120,11 +120,11 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
     if (random) {
       res = await await recipes.get("/random?number=1");
       res.data = res.data.recipes[0];
-      console.log(res.data);
+      // console.log(res.data);
     } else {
       // https://api.spoonacular.com/recipes/511728/information?apiKey=${spoonacularAPI_KEY}
       res = await recipes.get(`/${id}/information?`);
-      console.log(res);
+      // console.log(res);
     }
 
     const {

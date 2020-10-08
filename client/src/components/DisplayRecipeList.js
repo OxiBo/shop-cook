@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { fetchRecipe, fetchRecipes } from "../actions";
+import { fetchRecipes } from "../actions";
 import Spinner from "./Spinner";
 import ErrorMessage from './styles/ErrorMessage'
 import { ErrorText } from "./styles/text";
