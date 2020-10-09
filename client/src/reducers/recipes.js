@@ -1,5 +1,7 @@
 import {
   SEARCH_RECIPES,
+  FETCH_SEARCH_TERM,
+  SAVE_SEARCH_TERM,
   FETCH_RECIPES,
   FETCH_RECIPE,
   FETCH_FAV_RECIPES,
@@ -18,6 +20,7 @@ const defaultRecipesState = {
   searchRecipesError: "",
   recipeError: "",
   favRecipes: [],
+  searchTerm: "",
 };
 
 export default (state = defaultRecipesState, action) => {
@@ -41,6 +44,16 @@ export default (state = defaultRecipesState, action) => {
       return {
         ...state,
         isLoadingRecipes: true,
+      };
+    case SAVE_SEARCH_TERM:
+      return {
+        ...state,
+        searchTerm: action.payload,
+      };
+    case FETCH_SEARCH_TERM:
+      return {
+        ...state,
+        searchTerm: state.searchTerm,
       };
     case FETCH_RECIPES:
       return {

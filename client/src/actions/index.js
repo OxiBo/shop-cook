@@ -1,8 +1,11 @@
 import axios from "axios";
 import recipes from "../utils/spoonacularAPI";
-
+import { toast } from "react-toastify";
+import { toastOptions, errorToastStyle } from "../components/styles/toastify";
 import {
   SEARCH_RECIPES,
+  SAVE_SEARCH_TERM,
+  FETCH_SEARCH_TERM,
   FETCH_RECIPES,
   IS_LOADING_RECIPES,
   IS_LOADING_RECIPE,
@@ -61,11 +64,13 @@ export const clearAuthError = () => {
   };
 };
 
-export const searchRecipes = (name, resultsNumber = 10) => async (dispatch) => {
+export const searchRecipes = (name, recipesPerPage, offset = 0) => async (
+  dispatch
+) => {
   try {
     // console.log("dispatch");
     const res = await recipes.get(
-      `/complexSearch?query=${name}&number=${resultsNumber}`
+      `/complexSearch?query=${name}&number=${recipesPerPage}&offset=${offset}`
     );
     // console.log(res);
     dispatch({ type: SEARCH_RECIPES, payload: res.data });
@@ -75,6 +80,18 @@ export const searchRecipes = (name, resultsNumber = 10) => async (dispatch) => {
   }
 };
 
+export const saveSearchTerm = (term) => {
+  return {
+    type: SAVE_SEARCH_TERM,
+    payload: term,
+  };
+};
+
+export const fetchSearchTerm = () => {
+  return {
+    type: FETCH_SEARCH_TERM,
+  };
+};
 // ???? why
 export const fetchRecipes = () => {
   return {
@@ -217,10 +234,18 @@ export const addToShoppingList = (ingredients) => async (
 
 export const createShoppingList = (list) => async (dispatch) => {
   try {
-    console.log(list)
+    console.log(list);
     const res = await axios.patch("./api/shoppingList/new", list);
     console.log(res);
-    dispatch({ type: CREATE_SHOPPING_LIST, payload: "Success! The list has been mailed to your email!"})
+    dispatch({
+      type: CREATE_SHOPPING_LIST,
+      payload: "Success!The list has been emailed to the email provided!",
+    });
+
+    toast(
+      "Success! Your shopping list has been sent to provided email address!",
+      toastOptions
+    );
   } catch (err) {
     console.error(err);
     dispatch({ type: SHOPPING_LIST_ERROR, payload: err });
@@ -245,6 +270,7 @@ export const changeServings = (currentServings, newServing, ingredients) => {
       newServing === 1
         ? ingredient.amount + ingredient.amount / currentServings
         : ingredient.amount - ingredient.amount / currentServings;
+
     return { ...ingredient, amount: Math.ceil(newAmount * 100) / 100 };
   });
   return {

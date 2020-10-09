@@ -11,7 +11,7 @@ const Container = styled.div`
   margin: 0 auto;
   width: 100%;
   background-color: #f2efee;
-
+  padding: 2rem;
   h3 {
     text-align: center;
     padding: 4rem 3rem 0rem 3rem;
@@ -22,7 +22,7 @@ const Container = styled.div`
     width: 70%;
   }
   @media only screen and (min-width: 60rem) {
-    width: 50%;
+    width: 60%;
   }
 `;
 

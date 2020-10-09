@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchRecipes } from "../actions";
 import Spinner from "./Spinner";
-import ErrorMessage from './styles/ErrorMessage'
+import ErrorMessage from "./styles/ErrorMessage";
+import Pagination from "./RenderProp/Pagination";
 import { ErrorText } from "./styles/text";
 const DisplayRecipesStyles = styled.div`
   grid-area: search-recipes-result;
@@ -65,8 +66,6 @@ const RecipeItemStyles = styled.li`
   }
 `;
 
-
-
 const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
   const [recipesList, setRecipes] = useState([]);
 
@@ -107,6 +106,7 @@ const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
             ))}
         </ul>
       )}
+      {recipesList.results && <Pagination />}
     </DisplayRecipesStyles>
   );
 };

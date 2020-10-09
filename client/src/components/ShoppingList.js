@@ -1,3 +1,5 @@
+// TODO - notify user that the list was mailed successfully
+
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
@@ -190,20 +192,16 @@ const ShoppingList = ({
   fetchShoppingList,
   isLoadingShoppingList,
   createShoppingList,
-  ...props
 }) => {
   // state for the main form
   const [shoppingItems, setShoppingItems] = useState(shoppingList);
   // state for the form "add item"
   const [addedItem, setAddedItem] = useState({});
+  // state for the emailing the list
   const [mailIt, setMailIt] = useState(false);
   const [myEmail, setMyEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  // useEffect(() => {
-  //   isLoadingShoppingList();
-  //   fetchShoppingList();
-  //   setShoppingItems(shoppingList);
-  // }, [isLoadingShoppingList, fetchShoppingList, setShoppingItems]);
+
   useEffect(() => {
     isLoadingShoppingList();
     fetchShoppingList();
@@ -211,9 +209,6 @@ const ShoppingList = ({
   }, [shoppingList, fetchShoppingList, isLoadingShoppingList]);
 
   const handleChange = (e, index, name, unit, original = "") => {
-    // const newValue = Number(e.target.value);
-    // setShoppingItems({ [index]: { amount: newValue, name, unit, original } });
-    // console.log(e.target.value);
     const values = [...shoppingItems];
     values[index] = { ...values[index], amount: e.target.value };
     setShoppingItems(values);
@@ -239,10 +234,7 @@ const ShoppingList = ({
     } else {
       values.push(item);
     }
-    // console.log(itemExists);
-    // values = values.reduce((acc, item) => {
 
-    // }, [])
     setShoppingItems(values);
   };
   // for the form 'add item'
@@ -284,7 +276,12 @@ const ShoppingList = ({
                           step = Math.ceil(amount / 10);
                         } else if (amount < 1) {
                           step = amount;
+                        } else if (amount > 100) {
+                          step = 100;
+                        } else if (amount < 1) {
+                          step = Math.ceil(amount * 100) / 100;
                         }
+                        console.log(step);
                         //    {/* step={step} */}
                         return (
                           <li key={index}>
@@ -296,7 +293,8 @@ const ShoppingList = ({
                                 onChange={(e) =>
                                   handleChange(e, index, name, unit, original)
                                 }
-                                step={step}
+                              
+                                step={"any"}
                                 min={0}
                               />
                               <p>{unit}</p>

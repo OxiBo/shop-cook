@@ -148,14 +148,14 @@ const Nav = () => {
                       Recipes
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link to="/lists">
                       <RoundSpan>
                         <i className="fas fa-shopping-cart"></i>
                       </RoundSpan>
                       Lists
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <a href="/api/logout">
                       <RoundSpan>

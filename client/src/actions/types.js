@@ -1,4 +1,6 @@
 export const SEARCH_RECIPES = "search_recipes";
+export const SAVE_SEARCH_TERM = "save_search_term";
+export const FETCH_SEARCH_TERM = "fetch_search_term"
 export const FETCH_RECIPES = "fetch_recipes";
 export const IS_LOADING_RECIPES = "is_loading_recipes";
 export const IS_LOADING_RECIPE = "is_loading_recipe";

@@ -1,50 +1,59 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import reduxThunk from "redux-thunk";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import App from "./components/App";
-import HomePage from './components/HomePage'
-import SignIn from './components/SignIn'
-import MyShoppingLists from './components/MyShoppingLists'
-import FavoriteRecipes from "./components/FavoriteRecipes"
+import HomePage from "./components/HomePage";
+import SignIn from "./components/SignIn";
+import MyShoppingLists from "./components/MyShoppingLists";
+import FavoriteRecipes from "./components/FavoriteRecipes";
 import * as serviceWorker from "./serviceWorker";
 // import axios from 'axios'
-import reducers from './reducers';
-
+import reducers from "./reducers";
 
 // for redux debug tool in the browser
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
-
-
-
+const store = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware(reduxThunk))
+);
 
 // const res = axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${spoonacularAPI_KEY}&query=pasta`).then(response =>  console.log(response))
 // console.log(res)
 
-
 // const res1 = axios.get(`https://api.spoonacular.com/recipes/511728/information?apiKey=${spoonacularAPI_KEY}`).then(response =>  console.log(response))
 // console.log(res1)
-
 
 // https://api.spoonacular.com/recipes/511728/information
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <App>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/signin" component={SignIn} />
-          <Route exact path="/lists" component={MyShoppingLists} />
-          <Route exact path="/recipes" component={FavoriteRecipes} />
-        </App>
-      </Switch>
-    </BrowserRouter>
+      <BrowserRouter>
+        <ToastContainer
+          position="top-center"
+          autoClose={15000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange
+          draggable
+          pauseOnHover
+        />
+        <Switch>
+          <App>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/lists" component={MyShoppingLists} />
+            <Route exact path="/recipes" component={FavoriteRecipes} />
+          </App>
+        </Switch>
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

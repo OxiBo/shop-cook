@@ -33,8 +33,6 @@ router.patch("/api/shoppingList/new", async (req, res) => {
       console.log("MYSELF" + sendToMyself);
       email = sendToMyself;
     }
-    console.log(email);
-    console.log(sendToMyself);
 
     sendEmail(shoppingList, email, sendToMyself);
   } catch (err) {

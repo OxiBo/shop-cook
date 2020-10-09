@@ -9,7 +9,7 @@ import {
   changeServings,
   isLoadingRecipes,
   likeRecipe,
-  fetchUser
+  fetchUser,
 } from "../actions";
 import LikeButton from "./LikeButton";
 import useWindowSize from "../utils/useWindowSize";
@@ -210,7 +210,6 @@ const Recipe = ({
       fetchRecipe(null, true);
     }
     fetchUser();
- 
   }, [fetchRecipe, recipeId]);
 
   useEffect(() => {
@@ -302,25 +301,6 @@ const Recipe = ({
                         isLiked={isLiked}
                       />
                     )}
-
-                    {/* <ButtonRound
-                      onClick={() => {
-                        const { title, image, sourceName, sourceUrl } = recipe;
-                        likeRecipe({
-                          recipeId,
-                          title,
-                          image,
-                          sourceName,
-                          sourceUrl,
-                        });
-                      }}
-                    >
-                      {isLiked ? (
-                        <i className="fas fa-heart"></i>
-                      ) : (
-                        <i className="far fa-heart"></i>
-                      )}
-                    </ButtonRound> */}
                   </RecipeDetailsStyles>
 
                   <IngredientsStyles>

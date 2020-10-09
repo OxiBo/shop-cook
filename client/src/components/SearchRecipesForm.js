@@ -4,7 +4,8 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SearchStyles from "./styles/SearchStyles";
 import Button from "./styles/Button";
-import { searchRecipes, isLoadingRecipes } from "../actions";
+import { searchRecipes, isLoadingRecipes, saveSearchTerm } from "../actions";
+import { recipesPerPage } from "../utils/utilVars";
 
 const SearchSpan = styled.span`
   display: ${(props) => (props.hide ? "none" : "inline")};
@@ -13,11 +14,16 @@ const SearchSpan = styled.span`
   }
 `;
 
-const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes, ...props }) => {
+const SearchRecipesForm = ({
+  searchRecipes,
+  isLoadingRecipes,
+  saveSearchTerm,
+  ...props
+}) => {
   const [searchValue, setInput] = useState("");
   // https://reactrouter.com/web/api/Hooks/usehistory
   const history = useHistory();
- 
+
   return (
     <div>
       <SearchStyles
@@ -25,7 +31,9 @@ const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes, ...props }) => {
         onSubmit={(e) => {
           e.preventDefault();
           isLoadingRecipes();
-          searchRecipes(searchValue);
+          saveSearchTerm(searchValue);
+          console.log("?????");
+          searchRecipes(searchValue, recipesPerPage);
           setInput("");
           history.push("/");
         }}
@@ -53,6 +61,8 @@ const SearchRecipesForm = ({ searchRecipes, isLoadingRecipes, ...props }) => {
 //   };
 // };
 
-export default connect(null, { searchRecipes, isLoadingRecipes })(
-  SearchRecipesForm
-);
+export default connect(null, {
+  searchRecipes,
+  isLoadingRecipes,
+  saveSearchTerm,
+})(SearchRecipesForm);

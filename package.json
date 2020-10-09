@@ -22,9 +22,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "formik": "^2.1.4",
+    "glamor": "^2.20.40",
     "mongoose": "^5.10.2",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "react-toastify": "^5.5.0"
   }
 }
