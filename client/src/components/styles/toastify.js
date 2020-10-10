@@ -1,3 +1,5 @@
+//this file has not been used because with newer toastify version this styling approach did not work
+
 import { css } from "glamor";
 import theme from "./theme";
 export const toastOptions = {

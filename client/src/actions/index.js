@@ -1,7 +1,7 @@
 import axios from "axios";
 import recipes from "../utils/spoonacularAPI";
 import { toast } from "react-toastify";
-import { toastOptions, errorToastStyle } from "../components/styles/toastify";
+// import { toastOptions, errorToastStyle } from "../components/styles/toastify";
 import {
   SEARCH_RECIPES,
   SAVE_SEARCH_TERM,
@@ -48,7 +48,7 @@ export const signUp = (userInfo, history) => async (dispatch) => {
       `/api/${userInfo.name !== "" ? "signup" : "login"}`,
       userInfo
     );
-    console.log(res);
+    // console.log(res);
     dispatch({ type: SIGN_UP, payload: res.data });
     history.push("/");
   } catch (err) {
@@ -243,9 +243,12 @@ export const createShoppingList = (list) => async (dispatch) => {
     });
 
     toast(
-      "Success! Your shopping list has been sent to provided email address!",
-      toastOptions
+      "Success! Your shopping list has been sent to provided email address!"
     );
+    // toast(
+    //   "Success! Your shopping list has been sent to provided email address!",
+    //   toastOptions
+    // );
   } catch (err) {
     console.error(err);
     dispatch({ type: SHOPPING_LIST_ERROR, payload: err });

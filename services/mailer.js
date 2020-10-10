@@ -6,13 +6,13 @@ const keys = require("../config/keys"),
 sgMail.setApiKey(keys.sendGridKey);
 
 module.exports = (shoppingList, sendTo, sendFrom) => {
-
+  const sentAt = new Date();
   const msg = {
     to: sendTo, // Change to your recipient
     from: sendFrom, // Change to your verified sender
-    subject: "Shopping List",
+    subject: `Shopping List, ${sentAt.toDateString()} `,
     text: "Shopping List",
-    html: emailTemplate(shoppingList),
+    html: emailTemplate(shoppingList, sentAt),
   };
 
   sgMail

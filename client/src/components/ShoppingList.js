@@ -281,7 +281,7 @@ const ShoppingList = ({
                         } else if (amount < 1) {
                           step = Math.ceil(amount * 100) / 100;
                         }
-                        console.log(step);
+                        {/* console.log(step); */}
                         //    {/* step={step} */}
                         return (
                           <li key={index}>

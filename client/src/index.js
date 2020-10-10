@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import reduxThunk from "redux-thunk";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+import ToastContainerStyles from "./components/styles/ToastContainerStyles";
 import App from "./components/App";
 import HomePage from "./components/HomePage";
 import SignIn from "./components/SignIn";
@@ -34,7 +35,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ToastContainer
+        <ToastContainerStyles
           position="top-center"
           autoClose={15000}
           hideProgressBar
