@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { fetchRecipes } from "../actions";
 import Spinner from "./Spinner";
 import ErrorMessage from "./styles/ErrorMessage";
-import Pagination from "./RenderProp/Pagination";
+import Pagination from "./Pagination";
 import { ErrorText } from "./styles/text";
 const DisplayRecipesStyles = styled.div`
   grid-area: search-recipes-result;

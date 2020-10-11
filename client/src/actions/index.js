@@ -21,6 +21,7 @@ import {
   CHANGE_SERVINGS,
   AUTH_ERROR,
   SIGN_UP,
+  REQUEST_RESET,
   FETCH_USER,
   FETCH_FAV_RECIPES,
 } from "./types";
@@ -62,6 +63,13 @@ export const clearAuthError = () => {
     type: AUTH_ERROR,
     payload: "",
   };
+};
+
+export const requestReset = (email) => async (dispatch) => {
+  try {
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const searchRecipes = (name, recipesPerPage, offset = 0) => async (
@@ -234,9 +242,9 @@ export const addToShoppingList = (ingredients) => async (
 
 export const createShoppingList = (list) => async (dispatch) => {
   try {
-    console.log(list);
+    // console.log(list);
     const res = await axios.patch("./api/shoppingList/new", list);
-    console.log(res);
+    // console.log(res);
     dispatch({
       type: CREATE_SHOPPING_LIST,
       payload: "Success!The list has been emailed to the email provided!",

@@ -4,9 +4,9 @@ import {
   searchRecipes,
   isLoadingRecipes,
   fetchSearchTerm,
-} from "../../actions";
-import PaginationStyles from "../styles/PaginationStyles";
-import { recipesPerPage } from "../../utils/utilVars";
+} from "../actions";
+import PaginationStyles from "./styles/PaginationStyles";
+import { recipesPerPage } from "../utils/utilVars";
 
 const Pagination = ({
   totalResults,

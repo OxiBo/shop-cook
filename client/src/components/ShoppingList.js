@@ -11,6 +11,7 @@ import {
 } from "../actions";
 import { Heading2 } from "./styles/text";
 import Button from "./styles/Button";
+import ErrorText from './styles/ErrorText'
 const ShoppingListStyles = styled.div`
   grid-area: shopping-list;
   padding: 3rem 4rem;
@@ -165,11 +166,7 @@ const MailInputs = styled.div`
       background-color: #f2efee;
     }
   }
-  p.error {
-    text-align: center;
-    font-style: italic;
-    color: ${(props) => props.theme.themeColor};
-  }
+
 `;
 
 const SingleButtonDiv = styled.div`
@@ -350,7 +347,7 @@ const ShoppingList = ({
                               }
                             }}
                           />
-                          {emailError && <p className="error">{emailError}</p>}
+                          {emailError && <ErrorText>{emailError}</ErrorText>}
                         </>
                       )}
                     </MailInputs>

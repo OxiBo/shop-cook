@@ -7,6 +7,8 @@ const userSchema = new Schema({
     email: String,
     name: String,
     password: String,
+    resetToken: String,
+    resetTokenExpiry: Number
   },
   //   shoppingLists: [{ type: Schema.Types.ObjectId, ref: "ShoppingList" }],
   // recipes: [{ type: Schema.Types.ObjectId, ref: "Recipe" }],

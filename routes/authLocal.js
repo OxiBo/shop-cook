@@ -2,7 +2,10 @@ const router = require("express").Router(),
   mongoose = require("mongoose"),
   passport = require("passport"),
   bodyParser = require("body-parser"),
-  User = mongoose.model("users");
+  User = mongoose.model("users"),
+  { randomBytes } = require("crypto"),
+  { promisify } = require("util"),
+ resetMailer = require('../services/resetMailer')
 
 require("../services/passportLocal");
 
@@ -44,14 +47,58 @@ router.post("/api/login", async (req, res) => {
     } else {
       passport.authenticate("local")(req, res, () => {
         // console.log(req.user);
-        console.log(foundUser)
+        console.log(foundUser);
         res.send(foundUser);
       });
     }
   } catch (error) {
-    console.error(error); 
+    console.error(error);
     res.status(422).send(error);
   }
+});
+// post or patch??
+router.post("/api/request-reset", async (req, res) => {
+  console.log(req.body);
+  // res.send("email delivered");
+  // check if the user with provided email exists
+  let userExists;
+  try {
+    [userExists] = await User.find({
+      "local.email": req.body.email.toLowerCase(),
+    });
+    if (!userExists) {
+      res.status(401).send({ message: "No User Found For Provided Email" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Server error" });
+  }
+  // generate reset token and update user with the token and expiry reset token
+  // console.log(randomBytes)
+  // console.log(promisify(randomBytes))
+  const randomBytesPromisified = promisify(randomBytes);
+  const resetToken = (await randomBytesPromisified(20)).toString("hex");
+  const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+  let updatedUser;
+  try {
+    // console.log(userExists);
+    updatedUser = await User.findByIdAndUpdate(
+      userExists._id,
+      {
+        "local.resetToken": resetToken,
+        "local.resetTokenExpiry": resetTokenExpiry,
+      },
+      { new: true }
+    );
+    // console.log(updatedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Server error" });
+  }
+
+  // email them reset token, wrapping it in try{}catch is recommended for mail sending here
+  resetMailer(updatedUser.local.email, updatedUser.local.resetToken)
+
 });
 
 module.exports = router;

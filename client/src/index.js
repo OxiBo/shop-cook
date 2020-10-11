@@ -10,6 +10,8 @@ import ToastContainerStyles from "./components/styles/ToastContainerStyles";
 import App from "./components/App";
 import HomePage from "./components/HomePage";
 import SignIn from "./components/SignIn";
+import RequestReset from "./components/RequestReset";
+import ResetPassword from './components/ResetPassword'
 import MyShoppingLists from "./components/MyShoppingLists";
 import FavoriteRecipes from "./components/FavoriteRecipes";
 import * as serviceWorker from "./serviceWorker";
@@ -50,6 +52,8 @@ ReactDOM.render(
           <App>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/request-reset" component={RequestReset} />
+            <Route exact path="/reset" component={ResetPassword}/>
             <Route exact path="/lists" component={MyShoppingLists} />
             <Route exact path="/recipes" component={FavoriteRecipes} />
           </App>

@@ -1,6 +1,6 @@
 export const SEARCH_RECIPES = "search_recipes";
 export const SAVE_SEARCH_TERM = "save_search_term";
-export const FETCH_SEARCH_TERM = "fetch_search_term"
+export const FETCH_SEARCH_TERM = "fetch_search_term";
 export const FETCH_RECIPES = "fetch_recipes";
 export const IS_LOADING_RECIPES = "is_loading_recipes";
 export const IS_LOADING_RECIPE = "is_loading_recipe";
@@ -17,5 +17,6 @@ export const IS_LOADING_SHOPPING_LIST = "is_loading_shopping_list";
 export const CHANGE_SERVINGS = "change_servings";
 export const SIGN_UP = "sign_up";
 export const AUTH_ERROR = "auth_error";
+export const REQUEST_RESET = "request_reset";
 export const FETCH_USER = "fetch_user";
 export const FETCH_FAV_RECIPES = "fetch_fav_recipes";

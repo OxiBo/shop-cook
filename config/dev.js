@@ -16,4 +16,5 @@ module.exports = {
     // stripeSecretKey: "sk_test_jk2Qyu5mGnMER8LPRVfr4jp300kRKA8n83",
     sendGridKey: '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',
     // redirectDomain: "http://localhost:3030"
+    frontendURL: "http://localhost:3007"
 };

@@ -18,7 +18,7 @@ passport.use(
           done(null, existingUser);
         } else {
           const newUser = await new User({
-            local: { email: username, name },
+            local: { email: username.toLowerCase(), name },
           });
           newUser.local.password = newUser.generateHash(password);
           const user = await newUser.save();

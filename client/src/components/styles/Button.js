@@ -26,9 +26,17 @@ const Button = styled.button`
   :focus {
     outline: none;
   }
-  span{
+  span {
     padding: 0 0.5rem;
+  }
+`;
 
+export const LinkButton = styled(Button)`
+  a {
+    text-decoration: none;
+    color: inherit;
+    font-family: inherit;
+    text-align: center;
   }
 `;
 

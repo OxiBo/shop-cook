@@ -15,6 +15,7 @@ const theme = {
   btnTinyHeight: "1.75rem",
   btnTinyWidth: "1.75rem",
   recipeBackgroundColor: "#F9F5F3",
+  fontStyle: "Arial"
 //   toastBackground: `linear-gradient(
 //         to right bottom,
 //         ${theme.mainGradientFrom},
