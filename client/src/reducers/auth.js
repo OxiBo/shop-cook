@@ -14,18 +14,18 @@ export default (state = defaultAuthState, action) => {
       return {
         ...state,
         authError: "",
-        user: action.payload,
+        user: action.payload || null,
       };
     case AUTH_ERROR:
       return {
         ...state,
-        authError: action.payload,
+        authError: action.payload || null,
       };
     case FETCH_USER: {
       return {
         ...state,
         authError: "",
-        user: action.payload,
+        user: action.payload || null,
       };
     }
     default:

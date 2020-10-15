@@ -243,12 +243,12 @@ const Recipe = ({
               <p>{error}</p>
             </ErrorMessage>
           );
-        console.log("?????");
-        {/* const isLiked =
+        {/* console.log("?????"); */}
+        const isLiked =
           user && user
             ? user.recipesLiked.some((item) => item.recipeId === recipeId)
-            : false; */}
-            const isLiked = false
+            : false;
+            {/* const isLiked = false */}
         return (
           <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
             {isLoading ? (
