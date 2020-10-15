@@ -1,6 +1,7 @@
 import axios from "axios";
 import recipes from "../utils/spoonacularAPI";
 import { toast } from "react-toastify";
+
 // import { toastOptions, errorToastStyle } from "../components/styles/toastify";
 import {
   SEARCH_RECIPES,
@@ -21,7 +22,6 @@ import {
   CHANGE_SERVINGS,
   AUTH_ERROR,
   SIGN_UP,
-  REQUEST_RESET,
   FETCH_USER,
   FETCH_FAV_RECIPES,
 } from "./types";
@@ -65,10 +65,19 @@ export const clearAuthError = () => {
   };
 };
 
-export const requestReset = (email) => async (dispatch) => {
+export const resetPassword = (resetToken, password, history) => async (
+  dispatch
+) => {
   try {
+    const res = await axios.patch("/api/reset", { resetToken, password });
+
+    await dispatch({ type: FETCH_USER, payload: res.data });
+
+    toast("Your password has been reset successfully!");
+    history.push("/");
   } catch (err) {
     console.error(err);
+    dispatch({ type: AUTH_ERROR, payload: err.response.data.message });
   }
 };
 
@@ -139,6 +148,7 @@ export const likeRecipe = (details) => async (dispatch) => {
   };
 };
 
+// TODO - how to add recipeId to hash when it is a random recipe on page load
 export const fetchRecipe = (id, random = false) => async (dispatch) => {
   try {
     let res;

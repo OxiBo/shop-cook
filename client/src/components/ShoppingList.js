@@ -11,7 +11,7 @@ import {
 } from "../actions";
 import { Heading2 } from "./styles/text";
 import Button from "./styles/Button";
-import ErrorText from './styles/ErrorText'
+import ErrorText from "./styles/ErrorText";
 const ShoppingListStyles = styled.div`
   grid-area: shopping-list;
   padding: 3rem 4rem;
@@ -166,7 +166,6 @@ const MailInputs = styled.div`
       background-color: #f2efee;
     }
   }
-
 `;
 
 const SingleButtonDiv = styled.div`
@@ -278,7 +277,9 @@ const ShoppingList = ({
                         } else if (amount < 1) {
                           step = Math.ceil(amount * 100) / 100;
                         }
-                        {/* console.log(step); */}
+                        {
+                          /* console.log(step); */
+                        }
                         //    {/* step={step} */}
                         return (
                           <li key={index}>
@@ -290,8 +291,7 @@ const ShoppingList = ({
                                 onChange={(e) =>
                                   handleChange(e, index, name, unit, original)
                                 }
-                              
-                                step={"any"}
+                                step={step}
                                 min={0}
                               />
                               <p>{unit}</p>

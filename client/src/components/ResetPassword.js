@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Button, { LinkButton } from "./styles/Button";
+import Button from "./styles/Button";
 import ButtonsDiv from "./styles/ButtonsDiv";
 import ErrorMessage from "./styles/ErrorMessage";
-import User from "./RenderProp/User";
-// import { signUp as signUpAction, clearAuthError } from "../actions";
+// import User from "./RenderProp/User";
+import { resetPassword } from "../actions";
+
 export const Container = styled.div`
   margin: 0 auto;
   width: 100%;
@@ -86,139 +86,131 @@ export const LogInForm = styled.form`
   }
 `;
 
-const ResetPassword = ({ error }) => {
+const ResetPassword = ({ error, resetPassword, ...props }) => {
   const history = useHistory();
+
   return (
-    <User>
-      {(user) => {
-        if (user) {
-          //https://dev.to/projectescape/programmatic-navigation-in-react-3p1l#:~:text=import%20%7B%20Redirect%20%7D%20from%20%22react,the%20state%20of%20the%20component.&text=Whenever%20you%20want%20to%20redirect,rendering%20the%20component.
-          return <Redirect to="/" />;
-        } else {
-          return (
-            <Container>
-              <h3>Reset Your Password!</h3>
-              {error && (
-                <ErrorMessage>
-                  <p>{error}</p>
-                </ErrorMessage>
-              )}
-              <Formik
-                initialValues={{
-                  password: "",
-                  confirmPassword: "",
-                }}
-                validate={(values) => {
-                  const { password, confirmPassword } = values;
-                  const errors = {};
+    <Container>
+      <h3>Reset Your Password!</h3>
+      {error && (
+        <ErrorMessage>
+          <p>{error}</p>
+        </ErrorMessage>
+      )}
+      <Formik
+        initialValues={{
+          password: "",
+          confirmPassword: "",
+        }}
+        validate={(values) => {
+          const { password, confirmPassword } = values;
+          const errors = {};
 
-                  if (password.length < 8 || password.length > 20) {
-                    errors.password =
-                      "Password has to be at least 8 characters long";
-                  }
-                  if (
-                    confirmPassword.length < 8 ||
-                    confirmPassword.length > 20
-                  ) {
-                    errors.confirmPassword =
-                      "Password has to be at least 8 characters long";
-                  }
+          if (password.length < 8 || password.length > 20) {
+            errors.password = "Password has to be at least 8 characters long";
+          }
+          if (confirmPassword.length < 8 || confirmPassword.length > 20) {
+            errors.confirmPassword =
+              "Password has to be at least 8 characters long";
+          }
 
-                  if (password !== confirmPassword) {
-                    errors.confirmPassword = "Your passwords do not match";
-                  }
+          if (password !== confirmPassword) {
+            errors.confirmPassword = "Your passwords do not match";
+          }
 
-                  return errors;
-                }}
-                onSubmit={(values, { setSubmitting }) => {
-                  console.log(values);
-                  setSubmitting(false);
+          return errors;
+        }}
+        onSubmit={async (values, { setSubmitting }) => {
+          const resetToken = history.location.search.split("=")[1];
+          try {
+            resetPassword(resetToken, values.password, history);
+            setSubmitting(false);
+            {/* history.push("/"); */}
+          } catch (err) {
+            console.error(err);
+          }
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          setFieldValue,
+          setFieldTouched,
+          /* and other goodies */
+        }) => (
+          <LogInForm onSubmit={handleSubmit}>
+            <div>
+              {" "}
+              <label htmlFor="password">Password:</label>{" "}
+              <div>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                />
+                <p>
+                  {(errors.password && touched.password && errors.password) ||
+                    errors.passwordNoMatch}
+                </p>
+              </div>
+            </div>
+            <div>
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+
+              <div>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.confirmPassword}
+                />
+                <p>
+                  {/* passwords no match error handling */}
+                  {(errors.confirmPassword &&
+                    touched.confirmPassword &&
+                    errors.confirmPassword) ||
+                    errors.passwordNoMatch}
+                </p>
+              </div>
+            </div>
+
+            <ButtonsDiv>
+              <Button
+                type="button"
+                onClick={() => {
+                  history.push("/");
+                  {
+                    /* history.goBack(); // TODO - check when it redirects if there were error messages while logging in  */
+                  }
                 }}
               >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                  setFieldValue,
-                  setFieldTouched,
-                  /* and other goodies */
-                }) => (
-                  <LogInForm onSubmit={handleSubmit}>
-                    <div>
-                      {" "}
-                      <label htmlFor="password">Password:</label>{" "}
-                      <div>
-                        <input
-                          type="password"
-                          name="password"
-                          id="password"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.password}
-                        />
-                        <p>
-                          {(errors.password &&
-                            touched.password &&
-                            errors.password) ||
-                            errors.passwordNoMatch}
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="confirmPassword">Confirm Password:</label>
-
-                      <div>
-                        <input
-                          type="password"
-                          name="confirmPassword"
-                          id="confirmPassword"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.confirmPassword}
-                        />
-                        <p>
-                          {/* passwords no match error handling */}
-                          {(errors.confirmPassword &&
-                            touched.confirmPassword &&
-                            errors.confirmPassword) ||
-                            errors.passwordNoMatch}
-                        </p>
-                      </div>
-                    </div>
-
-                    <ButtonsDiv>
-                      <Button
-                        type="button"
-                        onClick={() => {
-                            history.push('/')
-                           {/* history.goBack(); // TODO - check when it redirects if there were error messages while logging in  */}
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button type="submit" disabled={isSubmitting}>
-                        Reset Password!
-                      </Button>
-                    </ButtonsDiv>
-                  </LogInForm>
-                )}
-              </Formik>
-            </Container>
-          );
-        }
-      }}
-    </User>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                Reset Password!
+              </Button>
+            </ButtonsDiv>
+          </LogInForm>
+        )}
+      </Formik>
+    </Container>
   );
 };
 
-// const mapStateToProps = ({ auth }) => {
-//   return {
-//     error: auth.authError,
-//   };
-// };
+const mapStateToProps = ({ auth }) => {
+  return {
+    error: auth.authError,
+  };
+};
 
-export default ResetPassword;
+export default connect(mapStateToProps, { resetPassword })(ResetPassword);

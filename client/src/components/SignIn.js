@@ -13,7 +13,7 @@ export const Container = styled.div`
   margin: 0 auto;
   width: 100%;
   background-color: #f2efee;
-  padding: 2rem;
+  padding: 0rem;
   h3 {
     text-align: center;
     padding: 4rem 3rem 0rem 3rem;
@@ -30,12 +30,13 @@ export const Container = styled.div`
 
 export const LogInForm = styled.form`
   margin: 1rem;
-  padding: 2rem;
+  padding: 0.5rem;
   /* border: 1px solid ${(props) => props.theme.lightGrey}; */
   border-radius: 5px;
   box-shadow: -1px -5px 52px -5px rgba(222, 209, 222, 1);
   @media only screen and (min-width: 40rem) {
     margin: 5rem;
+    padding: 2rem;
   }
   div {
     display: flex;

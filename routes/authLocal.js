@@ -2,10 +2,11 @@ const router = require("express").Router(),
   mongoose = require("mongoose"),
   passport = require("passport"),
   bodyParser = require("body-parser"),
-  User = mongoose.model("users"),
-  { randomBytes } = require("crypto"),
-  { promisify } = require("util"),
- resetMailer = require('../services/resetMailer')
+  bcrypt = require("bcryptjs");
+(User = mongoose.model("users")),
+  ({ randomBytes } = require("crypto")),
+  ({ promisify } = require("util")),
+  (resetMailer = require("../services/resetMailer"));
 
 require("../services/passportLocal");
 
@@ -46,8 +47,8 @@ router.post("/api/login", async (req, res) => {
       res.status(401).send({ message: "Wrong password" });
     } else {
       passport.authenticate("local")(req, res, () => {
-        // console.log(req.user);
-        console.log(foundUser);
+        console.log(req.user);
+        // console.log(foundUser);
         res.send(foundUser);
       });
     }
@@ -57,7 +58,7 @@ router.post("/api/login", async (req, res) => {
   }
 });
 // post or patch??
-router.post("/api/request-reset", async (req, res) => {
+router.patch("/api/request-reset", async (req, res) => {
   console.log(req.body);
   // res.send("email delivered");
   // check if the user with provided email exists
@@ -97,8 +98,47 @@ router.post("/api/request-reset", async (req, res) => {
   }
 
   // email them reset token, wrapping it in try{}catch is recommended for mail sending here
-  resetMailer(updatedUser.local.email, updatedUser.local.resetToken)
+  resetMailer(updatedUser.local.email, updatedUser.local.resetToken);
+  res.send({ message: "Reset link has been sent to your email" });
+});
 
+router.get("/api/reset", (req, res) => {
+  res.send("get reset");
+});
+
+router.patch("/api/reset", async (req, res) => {
+  try {
+    const foundUser = await User.findOne({
+      "local.resetToken": req.body.resetToken,
+    });
+   
+    if (!foundUser) {
+      res.status(401).send({ message: "Your link is invalid" });
+    }
+    if (foundUser.local.resetTokenExpiry < Date.now() - 3600000) {
+      return res.status(401).send({ message: "Your link has expired!" });
+    }
+
+    const newHashedPassword = await bcrypt.hashSync(
+      req.body.password,
+      bcrypt.genSaltSync(10),
+      null
+    );
+    // console.log(newHashedPassword)
+    foundUser.local.password = newHashedPassword;
+    foundUser.local.resetToken = "";
+    foundUser.local.resetTokenExpiry = null;
+    await foundUser.save();
+
+    // console.log(foundUser)
+    req.user = foundUser;
+    // console.log(foundUser)
+
+    res.send(req.user);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: "Server Error" });
+  }
 });
 
 module.exports = router;

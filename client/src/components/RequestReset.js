@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { Container, LogInForm } from "./SignIn";
 // import { requestReset } from "../action";
 import ErrorMessage from "./styles/ErrorMessage";
@@ -29,12 +30,13 @@ const RequestReset = (props) => {
             /* console.log(myEmail); */
 
             try {
-              const res = await axios.post("/api/request-reset", {
+              const res = await axios.patch("/api/request-reset", {
                 email: myEmail,
               });
-              console.log(res);
+              {/* console.log(res); */}
               setResetError("");
               setEmailError("");
+              toast(res.data.message);
               history.push("/");
             } catch (err) {
               console.error(err);

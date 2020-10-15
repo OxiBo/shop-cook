@@ -25,9 +25,7 @@ const Pagination = ({
   const getPage = (n) => {
     setPage(page + n);
   };
-  // console.log(totalResults)
-  // console.log(totalResults/recipesPerPage)
-  //   const pages = Math.ceil(totalResults / recipesPerPage);
+
   const offsetBack = page * recipesPerPage + recipesPerPage;
 //   const offsetForward = page * recipesPerPage - recipesPerPage;
   return (

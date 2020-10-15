@@ -106,7 +106,7 @@ const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
             ))}
         </ul>
       )}
-      {recipesList.results && <Pagination />}
+      {recipesList.results && recipesList.results.length > 0 && <Pagination />}
     </DisplayRecipesStyles>
   );
 };

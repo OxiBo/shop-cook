@@ -54,6 +54,22 @@ if (process.env.NODE_ENV === "production") {
 app.use(passport.initialize()); // has to be put before requiring auth routes
 app.use(passport.session()); // has to be put before requiring auth routes - require("./routes/authRoutes")(app);'
 
+// middleware that logs user in when in process of resetting password
+app.use("/api/reset", async (req, res, next) => {
+  // find the user by the resetToken; the actual route will check if the token expired and reset password
+  const foundUser = await User.findOne({
+    "local.resetToken": req.body.resetToken,
+  });
+  req.body = {
+    ...req.body,
+    // password: foundUser.local.password || "",
+    email: foundUser.local.email || "",
+  };
+
+  passport.authenticate("local")(req, res, () => {});
+  next();
+});
+
 // require routes
 
 const localAuthRoutes = require("./routes/authLocal");
@@ -65,7 +81,7 @@ const shoppingListRoutes = require("./routes/shoppingList");
 app.use(localAuthRoutes);
 app.use(googleAuthRoutes);
 app.use(recipesRoutes);
-app.use(shoppingListRoutes)
+app.use(shoppingListRoutes);
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -86,8 +102,9 @@ app.get("/", (req, res) => {
   res.send("Running!!!");
 });
 
-app.get("/api/user", async (req, res) => {
+app.get("/api/user", (req, res) => {
   try {
+    // console.log(req.user);
     res.send(req.user);
   } catch (err) {
     console.error(err);
@@ -98,9 +115,6 @@ app.get("/api/user", async (req, res) => {
 // logout route
 app.get("/api/logout", (req, res) => {
   req.logout();
-
-  // console.log(req.user);
-  // res.send(req.user);
   res.redirect("/");
 });
 

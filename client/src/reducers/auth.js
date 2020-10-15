@@ -3,6 +3,7 @@ import { SIGN_UP, AUTH_ERROR, FETCH_USER } from "../actions/types";
 const defaultAuthState = {
   user: null,
   authError: "",
+  email: ""
 };
 
 export default (state = defaultAuthState, action) => {

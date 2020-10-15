@@ -32,7 +32,6 @@ const SearchRecipesForm = ({
           e.preventDefault();
           isLoadingRecipes();
           saveSearchTerm(searchValue);
-          console.log("?????");
           searchRecipes(searchValue, recipesPerPage);
           setInput("");
           history.push("/");
