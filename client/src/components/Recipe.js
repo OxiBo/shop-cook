@@ -15,6 +15,7 @@ import LikeButton from "./LikeButton";
 import useWindowSize from "../utils/useWindowSize";
 import User from "./RenderProp/User";
 import Button from "./styles/Button";
+import ErrorMessage from './styles/ErrorMessage'
 import { Heading2, ErrorText } from "./styles/text";
 
 const RecipeContainerStyles = styled.div`
