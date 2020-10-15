@@ -9,7 +9,7 @@ import {
   changeServings,
   isLoadingRecipes,
   likeRecipe,
-  fetchUser
+  fetchUser,
 } from "../actions";
 import LikeButton from "./LikeButton";
 import useWindowSize from "../utils/useWindowSize";
@@ -210,7 +210,7 @@ const Recipe = ({
   //   if (!recipeId) {
   //     fetchRecipe(null, true);
   //   }
- 
+
   // }, []);
 
   useEffect(() => {
@@ -218,9 +218,8 @@ const Recipe = ({
     fetchUser();
     if (!recipeId) {
       fetchRecipe(null, true);
-    }else{
+    } else {
       fetchRecipe(recipeId);
-
     }
     // console.log(newServings)
     // setRecipe(recipe);
@@ -236,12 +235,19 @@ const Recipe = ({
 
   return (
     <User>
-      {(user) => {
-        console.log(user)
-        const isLiked =
+      {(user, error) => {
+        if (error)
+          return (
+            <ErrorMessage>
+              <p>{error}</p>
+            </ErrorMessage>
+          );
+        console.log("?????");
+        {/* const isLiked =
           user && user
             ? user.recipesLiked.some((item) => item.recipeId === recipeId)
-            : false;
+            : false; */}
+            const isLiked = false
         return (
           <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
             {isLoading ? (
@@ -308,7 +314,6 @@ const Recipe = ({
                         isLiked={isLiked}
                       />
                     )}
-
                   </RecipeDetailsStyles>
 
                   <IngredientsStyles>

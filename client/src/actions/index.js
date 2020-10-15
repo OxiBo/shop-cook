@@ -152,7 +152,7 @@ export const likeRecipe = (details) => async (dispatch) => {
 export const fetchRecipe = (id, random = false) => async (dispatch) => {
   try {
     let res;
-    console.log(random)
+    // console.log(random)
     if (random) {
       res = await recipes.get("/random?number=1");
       res.data = res.data.recipes[0];
