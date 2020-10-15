@@ -7,7 +7,7 @@ const User = ({ fetchUser, user, error, children }) => {
     // console.log("it is running");
     fetchUser();
   }, [fetchUser]);
-  // console.log(user);
+  console.log(user);
   return <>{children(user, error)}</>;
 };
 

@@ -97,10 +97,10 @@ passport.deserializeUser((id, done) => {
   }
 });
 
-app.get("/", (req, res) => {
-  // console.log(req.body)
-  res.send("Running!!!");
-});
+// app.get("/", (req, res) => {
+//   // console.log(req.body)
+//   res.send("Running!!!");
+// });
 
 app.get("/api/user", (req, res) => {
   try {

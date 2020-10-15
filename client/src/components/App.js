@@ -49,20 +49,18 @@ const Footer = styled.footer`
   border-radius: 5px;
   font-weight: 700;
 `;
-class App extends Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <AppContainer>
-          <Container>
-            <Header />
-            <GlobalStyle />
-            <Content>{this.props.children}</Content>
-            <Footer>written and coded by OxiBo, 2020</Footer>
-          </Container>
-        </AppContainer>
-      </ThemeProvider>
-    );
-  }
-}
+const App = (props) => {
+  return (
+    <ThemeProvider theme={theme}>
+      <AppContainer>
+        <Container>
+          <Header />
+          <GlobalStyle />
+          <Content>{props.children}</Content>
+          <Footer>written and coded by OxiBo, 2020</Footer>
+        </Container>
+      </AppContainer>
+    </ThemeProvider>
+  );
+};
 export default App;

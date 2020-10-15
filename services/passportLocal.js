@@ -11,7 +11,7 @@ passport.use(
 
     async (req, username, password, done) => {
       const { name, email } = req.body;
-        console.log(req.body)
+        // console.log(req.body)
       try {
         const existingUser = await User.findOne({ "local.email": username });
         if (existingUser) {
