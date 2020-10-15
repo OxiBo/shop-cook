@@ -203,20 +203,25 @@ const Recipe = ({
   const [newServings, setNewServings] = useState(recipe.servings);
 
   // TODO - make a route on the backend to store current recipe? it should be on "componentDidMount" ??? is there any point to do that?
-  useEffect(() => {
-    isLoadingRecipe();
-    // fetch random recipe
-    if (!recipeId) {
-      fetchRecipe(null, true);
-    }
-    fetchUser();
+  // useEffect(() => {
+  //   isLoadingRecipe();
+  //   fetchUser();
+  //   // fetch random recipe
+  //   if (!recipeId) {
+  //     fetchRecipe(null, true);
+  //   }
  
-  }, [fetchRecipe, recipeId]);
+  // }, []);
 
   useEffect(() => {
     isLoadingRecipe();
-    fetchRecipe(recipeId);
     fetchUser();
+    if (!recipeId) {
+      fetchRecipe(null, true);
+    }else{
+      fetchRecipe(recipeId);
+
+    }
     // console.log(newServings)
     // setRecipe(recipe);
     // setRecipe(recipe);
