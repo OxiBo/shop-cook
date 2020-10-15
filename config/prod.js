@@ -1,13 +1,14 @@
 module.exports = {
-    // googleClientID: process.env.GOOGLE_CLIENT_ID,
-    // googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // githubClientId: process.env.GITHUB_CLIENT_ID,
-    // githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
-    // twitterConsumerKey: process.env.TWITTER_CONSUMER_KEY,
-    // twitterConsumerSecret: process.env.TWITTER_CONSUMER_SECRET, 
-    // mongoURI: process.env.MONGO_URI,
+    googleClientID: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    sendGridKey: process.env.SENDGRID_KEY,
+    mongoURI: process.env.MONGO_URI,
     cookieKey: process.env.COOKIE_KEY,
-    
+    frontendURL: process.env.FRONTEND_URL
     // redirectDomain: process.env.REDIRECT_DOMAIN
   };
 
+
+
+
+// URI mongo atlass      ----     mongodb+srv://OxiBo:j3w50pGNFAbyJ0tx@cluster0.vfghl.mongodb.net/<dbname>?retryWrites=true&w=majority
