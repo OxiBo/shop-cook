@@ -12,7 +12,7 @@ const User = ({ fetchUser, user, error, children }) => {
 };
 
 const mapStateToProps = ({ auth }) => {
-  console.log(auth)
+  // console.log(auth)
   return {
     error: auth.authError,
     user: auth.user,
