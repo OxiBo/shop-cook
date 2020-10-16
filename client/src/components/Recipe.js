@@ -33,12 +33,12 @@ const ALikeButton = styled(Button).attrs({
 `;
 
 const ButtonTiny = styled(Button)`
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
   border: none;
   background: none;
   cursor: pointer;
-  padding: 1rem;
+  padding: 2rem!important;
   transform: scale(0.7);
   transition: all 0.4s;
   justify-content: center;
@@ -127,7 +127,7 @@ const RecipeDetailsStyles = styled.div`
     div.tiny-buttons {
       margin: 0 1rem;
       display: flex;
-      justify-content: space-around;
+      /* justify-content: space-around; */
     }
     .recipe__info-data {
       margin-right: 0.4rem;

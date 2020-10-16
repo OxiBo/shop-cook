@@ -11,9 +11,10 @@ import User from "./RenderProp/User";
 import { signUp as signUpAction, clearAuthError } from "../actions";
 export const Container = styled.div`
   margin: 0 auto;
+  min-width: fit-content;
   width: 100%;
   background-color: #f2efee;
-  padding: 0rem;
+  padding: 1rem;
   h3 {
     text-align: center;
     padding: 4rem 3rem 0rem 3rem;
@@ -36,7 +37,7 @@ export const LogInForm = styled.form`
   box-shadow: -1px -5px 52px -5px rgba(222, 209, 222, 1);
   @media only screen and (min-width: 40rem) {
     margin: 5rem;
-    padding: 2rem;
+    padding: 1.5rem;
   }
   div {
     display: flex;

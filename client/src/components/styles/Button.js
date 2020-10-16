@@ -12,13 +12,17 @@ const Button = styled.button`
   text-transform: uppercase;
   color: #fff;
   outline: none;
+  /* adjust SEARCH button for min screen
+   */
+  min-width: 14rem; 
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.1rem 2rem;
-  font-size: ${(props) => props.theme.fontSize};
+  padding: 1rem 1.6rem;
+  font-size: 1.3rem;
   transition: all 0.2s;
+  height: 4rem;
   /* text-align: center; */
   :hover {
     transform: scale(1.05);

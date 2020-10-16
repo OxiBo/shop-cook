@@ -1,3 +1,5 @@
+// TODO - add helmet for dynamic pages names 
+// TODO change time format in the reset password later and adjust it to the user time zone
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";

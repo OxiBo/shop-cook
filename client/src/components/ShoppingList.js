@@ -407,10 +407,10 @@ const ShoppingList = ({
               />
             </div>
             <SingleButtonDiv>
-              <SmallButton type="submit">
+              <Button type="submit">
                 {" "}
                 <i className="fas fa-plus-circle"></i> <span>Add Item</span>
-              </SmallButton>
+              </Button>
             </SingleButtonDiv>
           </AddItemForm>
           {shoppingItems.length > 0 && (

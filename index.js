@@ -109,6 +109,7 @@ app.get("/api/logout", (req, res) => {
   res.redirect("/");
 });
 
+// this has to be after all possible rotes!!!
 if (process.env.NODE_ENV === "production") {
   // Express will serve production assets like main.css  or main.js files
   app.use(express.static("client/build"));

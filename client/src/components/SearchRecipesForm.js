@@ -14,6 +14,13 @@ const SearchSpan = styled.span`
   }
 `;
 
+const SearchButton = styled(Button)`
+width: 5rem;
+@media only screen and (min-width: 768px) {
+    width: auto;
+  }
+`
+
 const SearchRecipesForm = ({
   searchRecipes,
   isLoadingRecipes,
@@ -44,11 +51,11 @@ const SearchRecipesForm = ({
           value={searchValue}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button type="submit">
+        <SearchButton type="submit">
           {" "}
           <i className="fas fa-search"></i>{" "}
           <SearchSpan hide={true}> Search</SearchSpan>
-        </Button>
+        </SearchButton>
       </SearchStyles>
     </div>
   );

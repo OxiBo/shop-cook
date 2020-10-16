@@ -21,7 +21,8 @@ const ButtonsDiv = styled.div`
     button {
       flex: 1 33%;
       margin: 1rem;
-      min-height: 6rem;
+      /* was min-height: 6rem */
+      height: 4rem; 
     }
   }
 `;
