@@ -7,11 +7,12 @@ const User = ({ fetchUser, user, error, children }) => {
     // console.log("it is running");
     fetchUser();
   }, [fetchUser]);
-  console.log(user);
+  // console.log(user);
   return <>{children(user, error)}</>;
 };
 
 const mapStateToProps = ({ auth }) => {
+  console.log(auth)
   return {
     error: auth.authError,
     user: auth.user,

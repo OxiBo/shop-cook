@@ -4,7 +4,7 @@ module.exports = {
     sendGridKey: process.env.SENDGRID_KEY,
     mongoURI: process.env.MONGO_URI,
     cookieKey: process.env.COOKIE_KEY,
-    frontendURL: process.env.FRONTEND_URL
+    frontendURL: process.env.REDIRECT_DOMAIN
     // redirectDomain: process.env.REDIRECT_DOMAIN
   };
 

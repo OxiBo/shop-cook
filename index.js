@@ -40,16 +40,7 @@ try {
   console.log("ERROR:", err.message);
 }
 
-if (process.env.NODE_ENV === "production") {
-  // Express will serve production assets like main.css  or main.js files
-  app.use(express.static("client/build"));
 
-  // Express will serve index.html if it does not recognize the route
-  const path = require("path");
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
 
 app.use(passport.initialize()); // has to be put before requiring auth routes
 app.use(passport.session()); // has to be put before requiring auth routes - require("./routes/authRoutes")(app);'
@@ -117,6 +108,17 @@ app.get("/api/logout", (req, res) => {
   req.logout();
   res.redirect("/");
 });
+
+if (process.env.NODE_ENV === "production") {
+  // Express will serve production assets like main.css  or main.js files
+  app.use(express.static("client/build"));
+
+  // Express will serve index.html if it does not recognize the route
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const PORT = process.env.PORT || 4040; // if getting error about server already running on this port - https://stackoverflow.com/questions/9898372/how-to-fix-error-listen-eaddrinuse-while-using-nodejs
 app.listen(PORT, () => {

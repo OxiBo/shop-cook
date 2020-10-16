@@ -13,7 +13,7 @@ module.exports = (sendTo, resetToken) => {
     subject: "Your Password Reset Token",
     text: "Shopping List",
     html: resetEmailTemplate(
-      `Your Password Reset Token is here! \n\n <a href="${keys.frontendURL}/reset?resetToken=${resetToken}">Click here to reset!</a>`,
+      `Your Password Reset Token is here! \n\n <a href="${keys.redirectDomain}/reset?resetToken=${resetToken}">Click here to reset!</a>`,
       sentAt
     ),
   };
