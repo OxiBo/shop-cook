@@ -14,7 +14,7 @@ const Button = styled.button`
   outline: none;
   /* adjust SEARCH button for min screen
    */
-  min-width: 14rem; 
+  min-width: 14rem;
   cursor: pointer;
   display: flex;
   align-items: center;

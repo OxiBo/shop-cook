@@ -15,7 +15,7 @@ import LikeButton from "./LikeButton";
 import useWindowSize from "../utils/useWindowSize";
 import User from "./RenderProp/User";
 import Button from "./styles/Button";
-import ErrorMessage from './styles/ErrorMessage'
+import ErrorMessage from "./styles/ErrorMessage";
 import { Heading2, ErrorText } from "./styles/text";
 
 const RecipeContainerStyles = styled.div`
@@ -33,27 +33,40 @@ const ALikeButton = styled(Button).attrs({
 `;
 
 const ButtonTiny = styled(Button)`
-  height: 3rem;
-  width: 3rem;
+  /* color: green; */
+  /* height: 4rem; */
+  min-width: 4rem !important;
   border: none;
   background: none;
   cursor: pointer;
-  padding: 2rem!important;
+  /* ??? */
+  padding: 1rem;
   transform: scale(0.7);
   transition: all 0.4s;
   justify-content: center;
+  font-size: 3rem !important;
   :hover {
     /* visibility: visible;
     opacity: 1; */
     transform: scale(0.9);
+  }
+  i {
+    /* height: inherit; */
+    display: flex;
+    justify-content: center;
+    min-width: inherit;
+    font-size: 3rem !important;
   }
 `;
 
 const RecipeFigStyles = styled.figure`
   height: 30rem;
   position: relative;
-  transform: scale(1.07) translateY(-1px);
   transform-origin: top;
+
+  @media only screen and (min-width: 768px) {
+    transform: scale(1.07) translateY(-1px);
+  }
   :before {
     content: "";
     display: block;
@@ -116,7 +129,7 @@ const RecipeDetailsStyles = styled.div`
     } */
 
     i {
-      height: 2rem;
+      /* height: 2rem; */
       width: 2rem;
       color: #f59a83;
       margin: 0 auto;
@@ -127,7 +140,7 @@ const RecipeDetailsStyles = styled.div`
     div.tiny-buttons {
       margin: 0 1rem;
       display: flex;
-      /* justify-content: space-around; */
+      justify-content: space-around;
     }
     .recipe__info-data {
       margin-right: 0.4rem;
@@ -243,12 +256,16 @@ const Recipe = ({
               <p>{error}</p>
             </ErrorMessage>
           );
-        {/* console.log("?????"); */}
+        {
+          /* console.log("?????"); */
+        }
         const isLiked =
           user && user
             ? user.recipesLiked.some((item) => item.recipeId === recipeId)
             : false;
-            {/* const isLiked = false */}
+        {
+          /* const isLiked = false */
+        }
         return (
           <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
             {isLoading ? (

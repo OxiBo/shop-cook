@@ -1,6 +1,6 @@
 const theme = {
-  backgroundColor: "mistyrose",
-  backgroundMain: "green",
+  // backgroundColor: "mistyrose",
+  // backgroundMain: "green",
   themeColor: "#f48982",
   spinnerColor: "#f48982",
   mainContainerColor: "#fff",

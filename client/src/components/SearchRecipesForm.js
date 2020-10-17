@@ -7,6 +7,13 @@ import Button from "./styles/Button";
 import { searchRecipes, isLoadingRecipes, saveSearchTerm } from "../actions";
 import { recipesPerPage } from "../utils/utilVars";
 
+const SearchButton = styled(Button)`
+  min-width: 6rem;
+ 
+  @media only screen and (min-width: 768px) {
+    width: auto;
+  }
+`;
 const SearchSpan = styled.span`
   display: ${(props) => (props.hide ? "none" : "inline")};
   @media only screen and (min-width: 768px) {
@@ -14,12 +21,6 @@ const SearchSpan = styled.span`
   }
 `;
 
-const SearchButton = styled(Button)`
-width: 5rem;
-@media only screen and (min-width: 768px) {
-    width: auto;
-  }
-`
 
 const SearchRecipesForm = ({
   searchRecipes,
