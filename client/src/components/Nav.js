@@ -36,7 +36,7 @@ const NavStyles = styled.nav`
     width: 350px;
     z-index: 4;
     position: absolute;
-    top: 87px;
+    top: 73px;
     right: -10px;
     border-radius: 1px;
     /* flex-wrap: wrap; */
