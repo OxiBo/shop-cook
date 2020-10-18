@@ -188,14 +188,16 @@ const ShoppingList = ({
   fetchShoppingList,
   isLoadingShoppingList,
   createShoppingList,
+  userDefaultEmail,
 }) => {
   // state for the main form
   const [shoppingItems, setShoppingItems] = useState(shoppingList);
   // state for the form "add item"
   const [addedItem, setAddedItem] = useState({});
+  
   // state for the emailing the list
   const [mailIt, setMailIt] = useState(false);
-  const [myEmail, setMyEmail] = useState("");
+  const [myEmail, setMyEmail] = useState(userDefaultEmail);
   const [emailError, setEmailError] = useState("");
 
   useEffect(() => {
@@ -246,7 +248,11 @@ const ShoppingList = ({
   return (
     <User>
       {(user) => {
-        setMyEmail(user && (user.local ? user.local.email : user.google.email));
+        {
+          /* setDefaultEmail(
+          user && (user.local ? user.local.email : user.google.email)
+        ); */
+        }
         return (
           <ShoppingListStyles>
             <Heading2>My Shopping List</Heading2>
@@ -326,7 +332,7 @@ const ShoppingList = ({
                             value={mailIt}
                             onChange={() => {
                               setEmailError("");
-                              setMyEmail("");
+                              setMyEmail(userDefaultEmail);
                               setMailIt(!mailIt);
                             }}
                           />
@@ -434,12 +440,15 @@ const ShoppingList = ({
   );
 };
 
-const mapStateToProps = ({ shoppingLists }) => {
+const mapStateToProps = ({ shoppingLists, auth: { user } }) => {
   // console.log(shoppingList)
   return {
     shoppingList: shoppingLists.shoppingList,
     isLoading: shoppingLists.isLoading,
     createListError: shoppingLists.createListError,
+    userDefaultEmail: user
+      ? user && (user.local ? user.local.email : user.google.email)
+      : "",
   };
 };
 
