@@ -95,7 +95,7 @@ passport.deserializeUser((id, done) => {
 
 app.get("/api/user", (req, res) => {
   // try {
-    console.log(req.user);
+    // console.log(req.user);
     res.send(req.user);
   // } catch (err) {
   //   console.error(err);

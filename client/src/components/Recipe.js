@@ -116,8 +116,8 @@ const RecipeDetailsStyles = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8rem 3rem 3rem 3rem;
-
+  padding: 4rem 0rem 1rem 0rem;
+margin: 0 auto;
   div {
     font-size: 1.5rem;
     text-transform: uppercase;
@@ -147,6 +147,11 @@ const RecipeDetailsStyles = styled.div`
       font-weight: 600;
     }
   }
+
+  @media only screen and (min-width: 768px) {
+    padding: 8rem 3rem 3rem 3rem;
+  }
+ 
 `;
 
 const IngredientsStyles = styled.div`

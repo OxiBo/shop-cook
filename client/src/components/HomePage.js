@@ -8,6 +8,7 @@ import ShoppingList from "./ShoppingList";
 
 const MainContent = styled.main`
   flex: 1;
+  width: 100%;
   display: grid;
   grid-gap: 2px;
   margin: 0 auto;

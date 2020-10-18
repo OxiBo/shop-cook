@@ -15,10 +15,10 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: inherit;
 }
 html{
-  font-size: 60%;
-  @media only screen and (max-width: 68.75em) {
+  font-size: 50%;
+  @media only screen and (min-width: 68.75em) {
     html {
-      font-size: 50%; } }
+      font-size: 60%; } }
 }
 body {
   box-sizing: border-box;

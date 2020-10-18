@@ -337,6 +337,12 @@ const ShoppingList = ({
                             value={myEmail}
                             onChange={(e) => setMyEmail(e.target.value)}
                             required
+                            defaultValue={
+                              user &&
+                              (user.local
+                                ? user.local.email
+                                : user.google.email)
+                            }
                             onBlur={() => {
                               if (
                                 !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
