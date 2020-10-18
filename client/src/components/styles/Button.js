@@ -21,6 +21,7 @@ const Button = styled.button`
   justify-content: center;
   padding: 1rem 1.6rem;
   font-size: 1.3rem;
+  font-weigh: 600;
   transition: all 0.2s;
   height: 4rem;
   /* text-align: center; */
