@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Container, LogInForm } from "./SignIn";
@@ -33,7 +32,7 @@ const RequestReset = (props) => {
               const res = await axios.patch("/api/request-reset", {
                 email: myEmail,
               });
-              {/* console.log(res); */}
+            
               setResetError("");
               setEmailError("");
               toast(res.data.message);

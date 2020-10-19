@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React  from "react";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -125,7 +125,6 @@ const ResetPassword = ({ error, resetPassword, ...props }) => {
           try {
             resetPassword(resetToken, values.password, history);
             setSubmitting(false);
-            {/* history.push("/"); */}
           } catch (err) {
             console.error(err);
           }
@@ -189,9 +188,6 @@ const ResetPassword = ({ error, resetPassword, ...props }) => {
                 type="button"
                 onClick={() => {
                   history.push("/");
-                  {
-                    /* history.goBack(); // TODO - check when it redirects if there were error messages while logging in  */
-                  }
                 }}
               >
                 Cancel

@@ -7,7 +7,6 @@ import {
   isLoadingRecipe,
   addToShoppingList,
   changeServings,
-  isLoadingRecipes,
   likeRecipe,
   fetchUser,
 } from "../actions";
@@ -221,17 +220,6 @@ const Recipe = ({
 }) => {
   const [newServings, setNewServings] = useState(recipe.servings);
 
-  // TODO - make a route on the backend to store current recipe? it should be on "componentDidMount" ??? is there any point to do that?
-  // useEffect(() => {
-  //   isLoadingRecipe();
-  //   fetchUser();
-  //   // fetch random recipe
-  //   if (!recipeId) {
-  //     fetchRecipe(null, true);
-  //   }
-
-  // }, []);
-
   useEffect(() => {
     isLoadingRecipe();
     fetchUser();
@@ -261,16 +249,12 @@ const Recipe = ({
               <p>{error}</p>
             </ErrorMessage>
           );
-        {
-          /* console.log("?????"); */
-        }
+      
         const isLiked =
           user && user
             ? user.recipesLiked.some((item) => item.recipeId === recipeId)
             : false;
-        {
-          /* const isLiked = false */
-        }
+      
         return (
           <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
             {isLoading ? (
@@ -404,202 +388,3 @@ export default connect(mapStateToProps, {
   changeServings,
   likeRecipe,
 })(Recipe);
-
-/*
-
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import Spinner from "./Spinner";
-import {
-  fetchRecipe,
-  isLoadingRecipe,
-  createShoppingList,
-  changeServings,
-  isLoadingRecipes,
-  likeRecipe,
-  fetchUser,
-} from "../actions";
-import User from "./RenderProp/User";
-import Button from "./styles/Button";
-import ButtonRound from "./styles/ButtonRound";
-import { Heading2, ErrorText } from "./styles/text";
-
-
-const Recipe = ({
-  isLoading,
-  fetchUser,
-  fetchRecipe,
-  recipeId,
-  error,
-  recipe,
-  createShoppingList,
-  changeServings,
-  likeRecipe,
-  isLiked,
-  ...props
-}) => {
-  const [newServings, setNewServings] = useState(recipe.servings);
-
-  // TODO - make a route on the backend to store current recipe? it should be on "componentDidMount" ??? is there any point to do that?
-  // useEffect(() => {
-  //   isLoadingRecipe();
-  //   fetchRecipe(recipeId);
-  //   // setRecipe(recipe);
-  //   // console.log("componentdidmount");
-  //   // console.log(recipe);
-  // }, []);
-
-  useEffect(() => {
-    isLoadingRecipe();
-    fetchRecipe(recipeId);
-    fetchUser();
-    // console.log(newServings)
-    // setRecipe(recipe);
-    // setRecipe(recipe);
-    // console.log(recipe)
-  }, [recipeId, fetchRecipe, fetchUser]);
-
-  useEffect(() => {
-    setNewServings(recipe.servings);
-  }, [recipe]);
-
-  return (
-    <RecipeContainerStyles>
-      {isLoading ? (
-        <Spinner />
-      ) : error ? (
-        <DirectionsStyles>
-          <ErrorText>{error}</ErrorText>
-        </DirectionsStyles>
-      ) : (
-        recipe && (
-          <>
-            <RecipeFigStyles>
-              <img src={recipe.image} alt={recipe.title} />
-              <h1>
-                <span>{recipe.title}</span>
-              </h1>
-            </RecipeFigStyles>
-            <RecipeDetailsStyles>
-              <div>
-                <i className="fas fa-stopwatch"></i>
-                <span className="recipe__info-data">
-                  {recipe.readyInMinutes}
-                </span>
-                <span> minutes</span>
-              </div>
-              <div>
-                <i className="fas fa-male"></i>
-                <span className="recipe__info-data">{recipe.servings}</span>
-                <span> servings</span>
-
-                <div className="tiny-buttons">
-                  <ButtonTiny
-                    onClick={async () =>
-                      changeServings(recipe.servings, 1, recipe.ingredients)
-                    }
-                  >
-                    <i className="fas fa-plus-circle"></i>
-                  </ButtonTiny>
-                  <ButtonTiny
-                    onClick={() => {
-                      if (newServings >= 2) {
-                        changeServings(recipe.servings, -1, recipe.ingredients);
-                      }
-                    }}
-                  >
-                    <i className="fas fa-minus-circle"></i>
-                  </ButtonTiny>
-                </div>
-              </div>
-              <ButtonRound
-                onClick={() => {
-                  const { title, image, sourceName, sourceUrl } = recipe;
-                  likeRecipe({
-                    recipeId,
-                    title,
-                    image,
-                    sourceName,
-                    sourceUrl,
-                  });
-                }}
-              >
-                {isLiked ? (
-                  <i className="fas fa-heart"></i>
-                ) : (
-                  <i className="far fa-heart"></i>
-                )}
-              </ButtonRound>
-            </RecipeDetailsStyles>
-
-            <IngredientsStyles>
-              <ul>
-                {recipe &&
-                  recipe.ingredients &&
-                  recipe.ingredients.map(
-                    ({ amount, name, unit, original }, index) => (
-                      <li key={index}>
-                        <i className="far fa-check-circle"></i>
-                        <div className="recipe__count">{amount}</div>
-                        <div>
-                          <span>{unit} </span>
-                          {name}
-                        </div>
-                      </li>
-                    )
-                  )}
-              </ul>
-
-              {recipe && recipe.ingredients && (
-                <Button onClick={() => createShoppingList(recipe.ingredients)}>
-                  <i className="fas fa-shopping-cart"></i>
-                  <span>Add to shopping list</span>
-                </Button>
-              )}
-            </IngredientsStyles>
-
-            <DirectionsStyles>
-              <Heading2>How to cook it</Heading2>
-              <p className="directions-text">
-                This recipe was carefully designed and tested by{" "}
-                <span className="recipe__by">{recipe.sourceName}</span>. Please
-                check out directions at their website.
-              </p>
-              <ALikeButton href={recipe.sourceUrl} target="_blank">
-                <span>Directions</span>
-                <i className="fas fa-arrow-alt-circle-right"></i>
-              </ALikeButton>
-            </DirectionsStyles>
-          </>
-        )
-      )}
-    </RecipeContainerStyles>
-  );
-};
-
-const mapStateToProps = ({ recipes, auth }, { recipeId }) => {
-  return {
-    recipe: recipes.recipe,
-    isLoading: recipes.isLoadingRecipe,
-    error: recipes.recipeError,
-    isLiked: auth.user
-      ? auth.user.recipesLiked.some((item) => item.recipeId === recipeId)
-      : false,
-  };
-};
-
-export default connect(mapStateToProps, {
-  fetchRecipe,
-  isLoadingRecipe,
-  createShoppingList,
-  changeServings,
-  likeRecipe,
-  fetchUser,
-})(Recipe);
-
-
-
-
-
-*/

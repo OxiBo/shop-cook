@@ -175,14 +175,6 @@ const SingleButtonDiv = styled.div`
   justify-content: center;
 `;
 
-const SmallButton = styled(Button)`
-  padding: 1rem;
-  font-size: 1.2rem;
-  span {
-    padding: 0.1rem;
-  }
-`;
-
 const ShoppingList = ({
   shoppingList,
   fetchShoppingList,
@@ -248,11 +240,7 @@ const ShoppingList = ({
   return (
     <User>
       {(user) => {
-        {
-          /* setDefaultEmail(
-          user && (user.local ? user.local.email : user.google.email)
-        ); */
-        }
+     
         return (
           <ShoppingListStyles>
             <Heading2>My Shopping List</Heading2>
@@ -288,9 +276,7 @@ const ShoppingList = ({
                           } else if (amount < 1) {
                             step = Math.ceil(amount * 100) / 100;
                           }
-                          {
-                            /* console.log(step); */
-                          }
+                       
                           //    {/* step={step} */}
                           return (
                             <li key={index}>

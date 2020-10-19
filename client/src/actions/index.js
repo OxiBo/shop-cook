@@ -254,7 +254,7 @@ export const addToShoppingList = (ingredients) => async (
 export const createShoppingList = (list) => async (dispatch) => {
   try {
     // console.log(list);
-    const res = await axios.patch("./api/shoppingList/new", list);
+    await axios.patch("./api/shoppingList/new", list);
     // console.log(res);
     dispatch({
       type: CREATE_SHOPPING_LIST,

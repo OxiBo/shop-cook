@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Button, { LinkButton } from "./styles/Button";
-import ButtonsDiv from './styles/ButtonsDiv'
+import ButtonsDiv from "./styles/ButtonsDiv";
 import ErrorMessage from "./styles/ErrorMessage";
 import User from "./RenderProp/User";
 import { signUp as signUpAction, clearAuthError } from "../actions";
@@ -85,7 +85,6 @@ export const LogInForm = styled.form`
       }
     }
   }
-
 `;
 
 const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
@@ -107,8 +106,13 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
               )}
               <Formik
                 enableReinitialize={true}
-                initialValues={{ name: "", password: "", email: "" }}
-                validate={({ name, password, email }) => {
+                initialValues={{
+                  name: "",
+                  password: "",
+                  confirm: "",
+                  email: "",
+                }}
+                validate={({ name, password, confirm, email }) => {
                   const errors = {};
                   if (!email) {
                     errors.email = "You must provide your email";
@@ -128,10 +132,15 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
                     errors.password =
                       "Password has to be at least 8 characters long";
                   }
+
+                  if (confirm !== password) {
+                    errors.confirm = "Passwords do not match";
+                  }
                   return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                   values.email = values.email.toLowerCase();
+                  delete values.confirm;
                   signUpAction(values, props.history);
                   setSubmitting(false);
                 }}
@@ -201,6 +210,27 @@ const SignIn = ({ signUpAction, clearAuthError, error, ...props }) => {
                         </p>
                       </div>
                     </div>
+                    {signUp && (
+                      <div>
+                        {" "}
+                        <label htmlFor="confirm">Confirm Password:</label>{" "}
+                        <div>
+                          {" "}
+                          <input
+                            type="password"
+                            name="confirm"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.confirm}
+                          />{" "}
+                          <p>
+                            {errors.confirm &&
+                              touched.confirm &&
+                              errors.confirm}
+                          </p>
+                        </div>
+                      </div>
+                    )}
                     <ButtonsDiv>
                       {" "}
                       <Button type="submit" disabled={isSubmitting}>

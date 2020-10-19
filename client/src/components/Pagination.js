@@ -26,14 +26,15 @@ const Pagination = ({
     setPage(page + n);
   };
 
-  const offsetBack = page * recipesPerPage + recipesPerPage;
+  const offset = page * recipesPerPage + recipesPerPage;
 //   const offsetForward = page * recipesPerPage - recipesPerPage;
   return (
     <PaginationStyles>
-      <a
+      {/* https://stackoverflow.com/questions/52801051/react-site-warning-the-href-attribute-requires-a-valid-address-provide-a-valid */}
+      <a href="/#"
         onClick={() => {
           getPage(-1);
-          searchRecipes(searchTerm, recipesPerPage, offsetBack);
+          searchRecipes(searchTerm, recipesPerPage, offset);
         }}
         aria-disabled={page <= 1}
       >
@@ -43,10 +44,10 @@ const Pagination = ({
         {page} of {pages || 1}
       </p>
 
-      <a
+      <a href="/#"
         onClick={() => {
           getPage(1);
-          searchRecipes(searchTerm, recipesPerPage, offsetBack);
+          searchRecipes(searchTerm, recipesPerPage, offset);
         }}
         aria-disabled={page >= pages}
       >

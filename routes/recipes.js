@@ -97,6 +97,24 @@ router.post("/api/recipes/add", isLoggedIn, async (req, res) => {
 
 router.get("/api/recipes", isLoggedIn, async (req, res) => {
   try {
+    // const agg = await User.aggregate([
+    //   { $match: { _id: req.user.id } },
+    //   {
+    //     count:  "$recipesLiked" ,
+    //   },
+      // { $match: { _id: req.user.id } },
+      // // { $skip: 0 },   // Always apply 'skip' before 'limit'
+      //       // { $limit: 2 },
+      // { $sum: "$recipesLiked" },
+    // ]);
+// const agg = await User.aggregate([
+//   { $match: { _id: req.user.id } ,
+//   $group: {
+//     _id: "recipesLiked",
+//     count: {$sum: "recipesLiked"}
+//   }
+// }])
+//     console.log(agg);
     const { recipesLiked } = await User.findById(req.user.id)
       .populate({
         path: "recipesLiked.recipe",
