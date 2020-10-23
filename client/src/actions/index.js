@@ -24,7 +24,9 @@ import {
   SIGN_UP,
   FETCH_USER,
   FETCH_FAV_RECIPES,
+  FETCH_TOTAL_FAV_RECIPES
 } from "./types";
+import { favRecipesPerPage } from "../utils/utilVars";
 
 export const fetchUser = () => async (dispatch) => {
   try {
@@ -129,10 +131,10 @@ export const isLoadingRecipe = () => {
 };
 
 export const likeRecipe = (details) => async (dispatch) => {
-  // console.log(details);
+  console.log(details);
   try {
     const res = await axios.post("/api/recipes/add", details);
-    // console.log(res.data);
+    console.log(res.data);
     dispatch({ type: FETCH_USER, payload: res.data });
   } catch (err) {
     console.error(err);
@@ -149,7 +151,9 @@ export const likeRecipe = (details) => async (dispatch) => {
 };
 
 // TODO - how to add recipeId to hash when it is a random recipe on page load
-export const fetchRecipe = (id, random = false) => async (dispatch) => {
+export const fetchRecipe = (recipeFromResultsId, random = false) => async (
+  dispatch
+) => {
   try {
     let res;
     // console.log(random)
@@ -159,11 +163,12 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
       // console.log(res.data);
     } else {
       // https://api.spoonacular.com/recipes/511728/information?apiKey=${spoonacularAPI_KEY}
-      res = await recipes.get(`/${id}/information?`);
+      res = await recipes.get(`/${recipeFromResultsId}/information?`);
       // console.log(res);
     }
-
+    // console.log(res.data);
     const {
+      id,
       extendedIngredients,
       image,
       readyInMinutes,
@@ -172,7 +177,7 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
       sourceUrl,
       title,
     } = res.data;
-
+    // console.log(id);
     const ingredients = extendedIngredients.reduce(
       (acc, { amount, name, measures, original }) => {
         const parsedIngredient = {
@@ -187,6 +192,7 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
       []
     );
     const recipe = {
+      recipeId: id.toString(),
       ingredients,
       image,
       readyInMinutes,
@@ -195,7 +201,7 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
       sourceUrl,
       title,
     };
-    // console.log(recipe);
+    console.log(recipe);
     dispatch({ type: FETCH_RECIPE, payload: recipe });
   } catch (error) {
     console.error(error);
@@ -203,11 +209,21 @@ export const fetchRecipe = (id, random = false) => async (dispatch) => {
   }
 };
 
-export const fetchFavRecipes = () => async (dispatch) => {
+export const fetchFavRecipes = (offset = 0, recipesPerPage = favRecipesPerPage) => async (
+  dispatch
+) => {
   try {
-    const res = await axios.get("/api/recipes");
-    // console.log(res.data);
-    dispatch({ type: FETCH_FAV_RECIPES, payload: res.data });
+    // const res = await axios.get("/api/recipes");
+
+    const res = await axios.get(
+      `/api/recipes?limit=${recipesPerPage}&offset=${offset}`
+    );
+    console.log(res.data);
+    dispatch({
+      type: FETCH_FAV_RECIPES,
+      payload: res.data.paginatedRecipesList,
+    });
+    dispatch({ type: FETCH_TOTAL_FAV_RECIPES, payload: res.data.total });
   } catch (err) {
     console.error(err);
   }

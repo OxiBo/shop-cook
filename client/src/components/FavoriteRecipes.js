@@ -8,6 +8,7 @@ import { Heading2 } from "./styles/text";
 import Spinner from "./Spinner";
 import Button from "./styles/Button";
 import ErrorMessage from "./styles/ErrorMessage";
+import FavoriteRecipesPagination from "./FavoriteRecipesPagination";
 
 const Container = styled.div`
   background-color: #f2efee;
@@ -76,6 +77,7 @@ const Container = styled.div`
         }
         a {
           text-decoration: none;
+          color: inherit;
         }
         a:visited {
           color: inherit;
@@ -120,6 +122,7 @@ const DirectionsButton = styled(Button).attrs({
   margin-left: 1rem;
   margin-right: 1rem;
   font-size: 1.2rem;
+  color: #fff !important;
   :visited {
     color: #fff !important;
   }
@@ -128,10 +131,17 @@ const DirectionsButton = styled(Button).attrs({
   }
 `;
 
-const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
+const FavoriteRecipes = ({
+  fetchFavRecipes,
+  favRecipes,
+  isLoading,
+  error,
+  recipesLiked,
+}) => {
   useEffect(() => {
-    fetchFavRecipes();
-  }, [fetchFavRecipes, favRecipes]);
+    fetchFavRecipes(0);
+  }, [recipesLiked, fetchFavRecipes]);
+  // console.log(favRecipes);
 
   return (
     <User>
@@ -157,36 +167,40 @@ const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
                   <p>You Don't Have Favorite Recipes Yet</p>
                 </ErrorMessage>
               ) : (
-                <ul>
-                  {favRecipes.map(
-                    ({ recipeId, title, image, sourceName, sourceUrl }) => (
-                      <li key={recipeId}>
-                        <div className="recipeImage ">
-                          {" "}
-                          <img src={image} alt={title} />
-                        </div>
-                        <div className="details">
-                          <h5>
+                <>
+                  <ul>
+                    {favRecipes.map(
+                      ({ recipeId, title, image, sourceName, sourceUrl }) => (
+                        <li key={recipeId}>
+                          <div className="recipeImage ">
                             {" "}
-                            <a href={`/#${recipeId}`}>{title}</a>
-                          </h5>
-                          <p>
-                            by <span>{sourceName}</span>
-                          </p>
-                          <LikeButton
-                            recipeId={recipeId}
-                            isLiked={true}
-                            recipe={{ sourceName, sourceUrl, image, title }}
-                          />
-                          <DirectionsButton href={sourceUrl} target="_blank">
-                            <span>Directions</span>
-                            <i className="fas fa-arrow-alt-circle-right"></i>
-                          </DirectionsButton>
-                        </div>
-                      </li>
-                    )
-                  )}
-                </ul>
+                            <img src={image} alt={title} />
+                          </div>
+                          <div className="details">
+                            <h5>
+                              {" "}
+                              <a href={`/#${recipeId}`}>{title}</a>
+                            </h5>
+                            <p>
+                              by <span>{sourceName}</span>
+                            </p>
+                            <LikeButton
+                              recipeId={recipeId}
+                              isLiked={true}
+                              recipe={{ sourceName, sourceUrl, image, title }}
+                            />
+                            <DirectionsButton href={sourceUrl} target="_blank">
+                              <span>Directions</span>
+                              <i className="fas fa-arrow-alt-circle-right"></i>
+                            </DirectionsButton>
+                          </div>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                  {/* {recipesList.results && recipesList.results.length > 0 && <Pagination />} */}
+                  {favRecipes.length > 0 && <FavoriteRecipesPagination />}
+                </>
               )}
             </>
           )}
@@ -196,11 +210,12 @@ const FavoriteRecipes = ({ fetchFavRecipes, favRecipes, isLoading, error }) => {
   );
 };
 
-const mapStateToProps = ({ recipes }) => {
+const mapStateToProps = ({ recipes, auth }) => {
   return {
     favRecipes: recipes.favRecipes,
     isLoading: recipes.isLoadingRecipes,
     error: recipes.recipeError,
+    recipesLiked: auth.user && auth.user.recipesLiked,
   };
 };
 

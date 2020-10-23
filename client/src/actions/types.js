@@ -21,3 +21,4 @@ export const REQUEST_RESET = "request_reset";
 // export const RESET_PASSWORD = "reset_password";
 export const FETCH_USER = "fetch_user";
 export const FETCH_FAV_RECIPES = "fetch_fav_recipes";
+export const FETCH_TOTAL_FAV_RECIPES = "fetch_total_fav_recipes"

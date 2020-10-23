@@ -116,7 +116,7 @@ const RecipeDetailsStyles = styled.div`
   align-items: center;
   justify-content: center;
   padding: 4rem 0rem 1rem 0rem;
-margin: 0 auto;
+  margin: 0 auto;
   div {
     font-size: 1.5rem;
     text-transform: uppercase;
@@ -150,7 +150,6 @@ margin: 0 auto;
   @media only screen and (min-width: 768px) {
     padding: 8rem 3rem 3rem 3rem;
   }
- 
 `;
 
 const IngredientsStyles = styled.div`
@@ -210,7 +209,7 @@ const DirectionsStyles = styled.div`
 const Recipe = ({
   isLoading,
   fetchRecipe,
-  recipeId,
+  recipeId, // prop that comes from HomePage
   error,
   recipe,
   addToShoppingList,
@@ -249,12 +248,17 @@ const Recipe = ({
               <p>{error}</p>
             </ErrorMessage>
           );
-      
+
         const isLiked =
           user && user
-            ? user.recipesLiked.some((item) => item.recipeId === recipeId)
+            ? user.recipesLiked.some((item) => {
+                if (recipeId) {
+                  return item.recipeId === recipeId;
+                }
+                return item.recipeId === recipe.recipeId;
+              })
             : false;
-      
+  
         return (
           <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
             {isLoading ? (
@@ -317,7 +321,7 @@ const Recipe = ({
                     {user && (
                       <LikeButton
                         recipe={recipe}
-                        recipeId={recipeId}
+                        recipeId={recipe.recipeId}
                         isLiked={isLiked}
                       />
                     )}

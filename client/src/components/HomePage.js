@@ -29,6 +29,7 @@ const MainContent = styled.main`
 const HomePage = (props) => {
   // console.log(props)
   const recipeId = props.location.hash.replace("#", "");
+  // console.log(recipeId)
   return (
     <>
       <MainContent>

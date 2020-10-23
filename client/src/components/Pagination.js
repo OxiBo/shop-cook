@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  searchRecipes,
-  isLoadingRecipes,
-  fetchSearchTerm,
-} from "../actions";
+import { searchRecipes, isLoadingRecipes, fetchSearchTerm } from "../actions";
 import PaginationStyles from "./styles/PaginationStyles";
 import { recipesPerPage } from "../utils/utilVars";
 
@@ -19,22 +15,29 @@ const Pagination = ({
 
   useEffect(() => {
     fetchSearchTerm();
-    setPage(1)
+    setPage(1);
   }, [searchTerm, fetchSearchTerm]);
 
-  const getPage = (n) => {
-    setPage(page + n);
-  };
+  const [offset, setOffset] = useState(0);
 
-  const offset = page * recipesPerPage + recipesPerPage;
-//   const offsetForward = page * recipesPerPage - recipesPerPage;
+  // reason why useEffect calls are needed here https://stackoverflow.com/questions/54069253/usestate-set-method-not-reflecting-change-immediately
+  useEffect(() => {
+    setOffset(page * recipesPerPage - recipesPerPage);
+  }, [page, setOffset]);
+
+  // to skip call on initial render - https://stackoverflow.com/questions/53179075/with-useeffect-how-can-i-skip-applying-an-effect-upon-the-initial-render/55409573
+  useEffect(() => {
+    searchRecipes(searchTerm, recipesPerPage, offset);
+  }, [offset, searchTerm, searchRecipes]);
+
   return (
     <PaginationStyles>
       {/* https://stackoverflow.com/questions/52801051/react-site-warning-the-href-attribute-requires-a-valid-address-provide-a-valid */}
-      <a href="/#"
-        onClick={() => {
-          getPage(-1);
-          searchRecipes(searchTerm, recipesPerPage, offset);
+      <a
+        href={`?page=${page}&${offset}`}
+        onClick={(e) => {
+          e.preventDefault()
+          setPage(page - 1);
         }}
         aria-disabled={page <= 1}
       >
@@ -44,10 +47,11 @@ const Pagination = ({
         {page} of {pages || 1}
       </p>
 
-      <a href="/#"
-        onClick={() => {
-          getPage(1);
-          searchRecipes(searchTerm, recipesPerPage, offset);
+      <a
+        href={`/?page=${page}&${offset}`}
+        onClick={(e) => {
+          e.preventDefault()
+          setPage(page + 1);
         }}
         aria-disabled={page >= pages}
       >

@@ -5,6 +5,7 @@ import {
   FETCH_RECIPES,
   FETCH_RECIPE,
   FETCH_FAV_RECIPES,
+  FETCH_TOTAL_FAV_RECIPES,
   IS_LOADING_RECIPES,
   IS_LOADING_RECIPE,
   RECIPES_SEARCH_ERROR,
@@ -20,6 +21,7 @@ const defaultRecipesState = {
   searchRecipesError: "",
   recipeError: "",
   favRecipes: [],
+  totalFavRecipes: null,
   searchTerm: "",
 };
 
@@ -96,6 +98,11 @@ export default (state = defaultRecipesState, action) => {
         isLoadingRecipes: false,
         recipeError: "",
         favRecipes: action.payload,
+      };
+    case FETCH_TOTAL_FAV_RECIPES:
+      return {
+        ...state,
+        totalFavRecipes: action.payload,
       };
     default:
       return state;
