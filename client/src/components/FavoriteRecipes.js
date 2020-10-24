@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchFavRecipes } from "../actions";
@@ -139,8 +139,9 @@ const FavoriteRecipes = ({
   recipesLiked,
 }) => {
   useEffect(() => {
-    fetchFavRecipes(0);
-  }, [recipesLiked, fetchFavRecipes]);
+    if (recipesLiked && recipesLiked.length) fetchFavRecipes(0);
+    // fetchFavRecipes(0);
+  }, [recipesLiked && recipesLiked.length, fetchFavRecipes]);
   // console.log(favRecipes);
 
   return (
@@ -211,11 +212,13 @@ const FavoriteRecipes = ({
 };
 
 const mapStateToProps = ({ recipes, auth }) => {
+  // console.log(auth.user && auth.user.recipesLiked)
   return {
     favRecipes: recipes.favRecipes,
     isLoading: recipes.isLoadingRecipes,
     error: recipes.recipeError,
-    recipesLiked: auth.user && auth.user.recipesLiked,
+    recipesLiked:
+      auth.user && auth.user.recipesLiked.length > 0 && auth.user.recipesLiked,
   };
 };
 

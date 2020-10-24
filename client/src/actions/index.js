@@ -24,7 +24,8 @@ import {
   SIGN_UP,
   FETCH_USER,
   FETCH_FAV_RECIPES,
-  FETCH_TOTAL_FAV_RECIPES
+  FETCH_TOTAL_FAV_RECIPES,
+  // REMOVE_FAVORITE
 } from "./types";
 import { favRecipesPerPage } from "../utils/utilVars";
 
@@ -134,11 +135,11 @@ export const likeRecipe = (details) => async (dispatch) => {
   console.log(details);
   try {
     const res = await axios.post("/api/recipes/add", details);
-    console.log(res.data);
+    // console.log(res.data);
     dispatch({ type: FETCH_USER, payload: res.data });
   } catch (err) {
     console.error(err);
-    //TODO Toast with warning that the recipe was not added
+    //TODO ?? Toast with warning that the recipe was not added
     dispatch({
       type: AUTH_ERROR,
       payload: "Failed to add the recipe to favorites",
@@ -149,6 +150,13 @@ export const likeRecipe = (details) => async (dispatch) => {
     type: LIKE_RECIPE,
   };
 };
+
+// export const removeFavorite = (recipeId) => async (dispatch, getState) => {
+//   dispatch({
+//     type: REMOVE_FAVORITE,
+//     payload: recipeId,
+//   });
+// }
 
 // TODO - how to add recipeId to hash when it is a random recipe on page load
 export const fetchRecipe = (recipeFromResultsId, random = false) => async (

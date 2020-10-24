@@ -1,3 +1,5 @@
+// custom hook example - https://gist.github.com/chaddjohnson/9e91b8e50043989583ab49e4b2096950
+
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { fetchFavRecipes, isLoadingRecipes } from "../actions";
@@ -8,27 +10,26 @@ const FavoriteRecipesPagination = ({ fetchFavRecipes, pages }) => {
   const [page, setPage] = useState(1);
   const [offset, setOffset] = useState(0);
 
-  // reason why useEffect calls are needed here https://stackoverflow.com/questions/54069253/usestate-set-method-not-reflecting-change-immediately
   useEffect(() => {
     setOffset(page * favRecipesPerPage - favRecipesPerPage);
-  }, [page, setOffset]);
+    
+  }, [page]);
 
-  // to skip call on initial render - https://stackoverflow.com/questions/53179075/with-useeffect-how-can-i-skip-applying-an-effect-upon-the-initial-render/55409573
-  // useEffect(() => {
-  //   fetchFavRecipes(offset);
-  //   // return () => {
-  //   //   // do something with dependency
-  //   //   fetchFavRecipes(offset);
-  //   // };
-  // }, [offset, fetchFavRecipes]);
+
 
   useEffect(() => {
     fetchFavRecipes(offset);
-  }, [offset, fetchFavRecipes]);
+  }, [offset])
+  // reason why useEffect calls are needed here https://stackoverflow.com/questions/54069253/usestate-set-method-not-reflecting-change-immediately
+
+  // to skip call on initial render - https://stackoverflow.com/questions/53179075/with-useeffect-how-can-i-skip-applying-an-effect-upon-the-initial-render/55409573
 
   const handleClick = (e, n) => {
     e.preventDefault();
     setPage(page + n);
+    console.log(page);
+    // fetchFavRecipes(offset);
+
     console.log(offset);
     // fetchFavRecipes(offset);
   };

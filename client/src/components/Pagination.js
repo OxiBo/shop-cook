@@ -30,15 +30,16 @@ const Pagination = ({
     searchRecipes(searchTerm, recipesPerPage, offset);
   }, [offset, searchTerm, searchRecipes]);
 
+  const handleClick = (e, n) => {
+    e.preventDefault();
+    setPage(page + n);
+  };
   return (
     <PaginationStyles>
       {/* https://stackoverflow.com/questions/52801051/react-site-warning-the-href-attribute-requires-a-valid-address-provide-a-valid */}
       <a
         href={`?page=${page}&${offset}`}
-        onClick={(e) => {
-          e.preventDefault()
-          setPage(page - 1);
-        }}
+        onClick={(e) => handleClick(e, -1)}
         aria-disabled={page <= 1}
       >
         ← Prev
@@ -49,10 +50,7 @@ const Pagination = ({
 
       <a
         href={`/?page=${page}&${offset}`}
-        onClick={(e) => {
-          e.preventDefault()
-          setPage(page + 1);
-        }}
+        onClick={(e) => handleClick(e, 1)}
         aria-disabled={page >= pages}
       >
         Next →

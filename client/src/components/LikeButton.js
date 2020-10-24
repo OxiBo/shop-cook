@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ButtonRound from "./styles/ButtonRound";
 import { likeRecipe } from "../actions";
-const LikeButton = ({ isLiked, recipe, recipeId,  likeRecipe }) => {
+const LikeButton = ({ isLiked, recipe, recipeId, likeRecipe }) => {
   return (
     <ButtonRound
       onClick={() => {

@@ -6,6 +6,7 @@ import {
   FETCH_RECIPE,
   FETCH_FAV_RECIPES,
   FETCH_TOTAL_FAV_RECIPES,
+  // REMOVE_FAVORITE,
   IS_LOADING_RECIPES,
   IS_LOADING_RECIPE,
   RECIPES_SEARCH_ERROR,
@@ -104,6 +105,13 @@ export default (state = defaultRecipesState, action) => {
         ...state,
         totalFavRecipes: action.payload,
       };
+    // case REMOVE_FAVORITE:
+    //   return {
+    //     ...state,
+    //     favRecipes: state.favRecipes.filter(
+    //       ({ recipeId }) => recipeId !== action.payload
+    //     ),
+    //   };
     default:
       return state;
   }
