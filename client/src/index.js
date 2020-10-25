@@ -16,6 +16,7 @@ import RequestReset from "./components/RequestReset";
 import ResetPassword from './components/ResetPassword'
 import MyShoppingLists from "./components/MyShoppingLists";
 import FavoriteRecipes from "./components/FavoriteRecipes";
+import TestCount from './components/TestCount'
 import * as serviceWorker from "./serviceWorker";
 // import axios from 'axios'
 import reducers from "./reducers";
@@ -58,6 +59,7 @@ ReactDOM.render(
             <Route exact path="/reset" component={ResetPassword}/>
             <Route exact path="/lists" component={MyShoppingLists} />
             <Route exact path="/recipes" component={FavoriteRecipes} />
+            {/* <Route exact path="/test-count" component={TestCount} /> */}
           </App>
         </Switch>
       </BrowserRouter>

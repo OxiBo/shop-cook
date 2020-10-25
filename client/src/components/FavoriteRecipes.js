@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { fetchFavRecipes } from "../actions";
@@ -138,10 +138,11 @@ const FavoriteRecipes = ({
   error,
   recipesLiked,
 }) => {
+  const likedRecipesList = recipesLiked && recipesLiked.length;
   useEffect(() => {
     if (recipesLiked && recipesLiked.length) fetchFavRecipes(0);
     // fetchFavRecipes(0);
-  }, [recipesLiked && recipesLiked.length, fetchFavRecipes]);
+  }, [likedRecipesList, fetchFavRecipes]);
   // console.log(favRecipes);
 
   return (

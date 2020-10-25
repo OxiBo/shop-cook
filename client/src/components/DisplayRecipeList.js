@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { fetchRecipes } from "../actions";
+import { fetchRecipes, searchRecipes, fetchSearchTerm } from "../actions";
+import { recipesPerPage } from "../utils/utilVars";
 import Spinner from "./Spinner";
 import ErrorMessage from "./styles/ErrorMessage";
 import Pagination from "./Pagination";
-import { ErrorText } from "./styles/text";
 const DisplayRecipesStyles = styled.div`
   grid-area: search-recipes-result;
   /* justify-content: center;
@@ -66,8 +66,17 @@ const RecipeItemStyles = styled.li`
   }
 `;
 
-const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
+const DisplayRecipeList = ({
+  isLoading,
+  recipes,
+  error,
+  fetchRecipes,
+  searchTerm,
+  searchRecipes,
+  ...props
+}) => {
   const [recipesList, setRecipes] = useState([]);
+  // const [offset, setOffset ] = useState(0)
 
   useEffect(() => {
     fetchRecipes();
@@ -79,12 +88,24 @@ const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
     // console.log(recipes);
   }, [recipes]); // fetching search results after user search for recipes (submits the search form)
 
+  useEffect(() => {
+    fetchSearchTerm();
+  }, [searchTerm ]);
+
+  const pageChange = (newPage) => {
+    const offset = newPage * recipesPerPage - recipesPerPage;
+    // console.log(newPage);
+    searchRecipes(searchTerm, recipesPerPage, offset);
+  };
+
   return (
     <DisplayRecipesStyles>
       {isLoading ? (
         <Spinner />
       ) : error ? (
-        <ErrorText>{error}</ErrorText>
+        <ErrorMessage>
+          <p>{error}</p>
+        </ErrorMessage>
       ) : recipesList.results && recipesList.results.length === 0 ? (
         <ErrorMessage>
           <p>No recipes found</p>
@@ -106,7 +127,10 @@ const DisplayRecipeList = ({ isLoading, recipes, error, fetchRecipes }) => {
             ))}
         </ul>
       )}
-      {recipesList.results && recipesList.results.length > 0 && <Pagination />}
+      {/* {recipesList.results && recipesList.results.length > 0 && <Pagination pageChange={pageChange}/>} */}
+      {recipesList.results && recipesList.results.length > 0 && (
+        <Pagination pageChange={pageChange} />
+      )}
     </DisplayRecipesStyles>
   );
 };
@@ -116,7 +140,12 @@ const mapStateToProps = ({ recipes }) => {
     recipes: recipes.recipes,
     isLoading: recipes.isLoadingRecipes,
     error: recipes.searchRecipesError,
+    searchTerm: recipes.searchTerm,
   };
 };
 
-export default connect(mapStateToProps, { fetchRecipes })(DisplayRecipeList);
+export default connect(mapStateToProps, {
+  fetchRecipes,
+  searchRecipes,
+  fetchSearchTerm,
+})(DisplayRecipeList);

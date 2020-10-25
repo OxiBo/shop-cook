@@ -88,7 +88,7 @@ export const searchRecipes = (name, recipesPerPage, offset = 0) => async (
   dispatch
 ) => {
   try {
-    // console.log("dispatch");
+    console.log("dispatch search recipes");
     const res = await recipes.get(
       `/complexSearch?query=${name}&number=${recipesPerPage}&offset=${offset}`
     );
@@ -132,7 +132,7 @@ export const isLoadingRecipe = () => {
 };
 
 export const likeRecipe = (details) => async (dispatch) => {
-  console.log(details);
+  // console.log(details);
   try {
     const res = await axios.post("/api/recipes/add", details);
     // console.log(res.data);
@@ -209,7 +209,7 @@ export const fetchRecipe = (recipeFromResultsId, random = false) => async (
       sourceUrl,
       title,
     };
-    console.log(recipe);
+    // console.log(recipe);
     dispatch({ type: FETCH_RECIPE, payload: recipe });
   } catch (error) {
     console.error(error);
@@ -226,7 +226,7 @@ export const fetchFavRecipes = (offset = 0, recipesPerPage = favRecipesPerPage) 
     const res = await axios.get(
       `/api/recipes?limit=${recipesPerPage}&offset=${offset}`
     );
-    console.log(res.data);
+    // console.log(res.data);
     dispatch({
       type: FETCH_FAV_RECIPES,
       payload: res.data.paginatedRecipesList,
