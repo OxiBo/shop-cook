@@ -151,12 +151,6 @@ export const likeRecipe = (details) => async (dispatch) => {
   };
 };
 
-// export const removeFavorite = (recipeId) => async (dispatch, getState) => {
-//   dispatch({
-//     type: REMOVE_FAVORITE,
-//     payload: recipeId,
-//   });
-// }
 
 // TODO - how to add recipeId to hash when it is a random recipe on page load
 export const fetchRecipe = (recipeFromResultsId, random = false) => async (

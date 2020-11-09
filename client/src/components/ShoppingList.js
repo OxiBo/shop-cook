@@ -14,7 +14,7 @@ import Button from "./styles/Button";
 import ErrorText from "./styles/ErrorText";
 const ShoppingListStyles = styled.div`
   grid-area: shopping-list;
-  padding: 3rem 4rem;
+  padding: 3rem 3rem;
   display: flex;
   flex-direction: column;
   form {
@@ -23,7 +23,7 @@ const ShoppingListStyles = styled.div`
     ul {
       list-style: none;
       max-height: 77rem;
-      overflow: scroll;
+      overflow: auto;
       li {
         display: flex;
         align-items: center;

@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { recipesPerPage } from "../utils/utilVars";
 import PaginationStyles from "./styles/PaginationStyles";
 
-const PaginationTest = ({ totalPages, searchTerm, pageChange, ...props }) => {
+const PaginationTest = ({ totalPages, searchTerm, pageChange }) => {
   const [page, setPage] = useState(2);
   
   useEffect(() => {
     setPage(1);
   }, [searchTerm]);
 
+// useState set method not reflecting change immediately https://stackoverflow.com/questions/54069253/usestate-set-method-not-reflecting-change-immediately
 
   const handleClick = (e, n) => {
     e.preventDefault();
