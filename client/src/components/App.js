@@ -50,6 +50,7 @@ const Footer = styled.footer`
   font-weight: 700;
 `;
 const App = (props) => {
+  const footerRef = React.createRef();
   return (
     <ThemeProvider theme={theme}>
       <AppContainer>

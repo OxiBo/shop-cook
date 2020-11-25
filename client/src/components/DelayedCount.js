@@ -10,19 +10,12 @@ export default function DelayedCount() {
       }, 1000);
     }
   
-    const memoizedCallback = useCallback(
-        () => {
-          setCount(count => count + 1);
-          console.log(count)
-        },
-        [count],
-      );
-
+  
 
     function handleClickSync() {
         
       setCount(count + 1);
-      memoizedCallback()
+      
     //   console.log(count)
     }
   

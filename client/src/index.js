@@ -1,4 +1,4 @@
-// TODO - add helmet for dynamic pages names 
+// TODO - add helmet for dynamic pages names
 // TODO change time format in the reset password later and adjust it to the user time zone
 import React from "react";
 import ReactDOM from "react-dom";
@@ -13,14 +13,14 @@ import App from "./components/App";
 import HomePage from "./components/HomePage";
 import SignIn from "./components/SignIn";
 import RequestReset from "./components/RequestReset";
-import ResetPassword from './components/ResetPassword'
+import ResetPassword from "./components/ResetPassword";
 import MyShoppingLists from "./components/MyShoppingLists";
 import FavoriteRecipes from "./components/FavoriteRecipes";
-// import TestCount from './components/TestCount'
+import Test from './components/Test'
 import * as serviceWorker from "./serviceWorker";
 // import axios from 'axios'
 import reducers from "./reducers";
-import DelayedCount from "./components/DelayedCount";
+// import DelayedCount from "./components/DelayedCount";
 
 // for redux debug tool in the browser
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -57,10 +57,10 @@ ReactDOM.render(
             <Route exact path="/" component={HomePage} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/request-reset" component={RequestReset} />
-            <Route exact path="/reset" component={ResetPassword}/>
+            <Route exact path="/reset" component={ResetPassword} />
             <Route exact path="/lists" component={MyShoppingLists} />
             <Route exact path="/recipes" component={FavoriteRecipes} />
-            <Route exact path="/test-count" component={DelayedCount} />
+            <Route exact path="/test" component={Test} />
           </App>
         </Switch>
       </BrowserRouter>

@@ -5,6 +5,7 @@ import { device } from "./styles/breakpoints";
 import DisplayRecipeList from "./DisplayRecipeList";
 import Recipe from "./Recipe";
 import ShoppingList from "./ShoppingList";
+import User from "./RenderProp/User";
 
 const MainContent = styled.main`
   flex: 1;
@@ -31,14 +32,19 @@ const HomePage = (props) => {
   const recipeId = props.location.hash.replace("#", "");
   // console.log(recipeId)
   return (
-    <>
-      <MainContent>
-        <DisplayRecipeList />
-        <Recipe recipeId={recipeId} />
-        <ShoppingList />
-      </MainContent>
-      
-    </>
+    <User>
+      {(data, error) => {
+        console.log(data);
+
+        return (
+          <MainContent>
+            <DisplayRecipeList />
+            <Recipe recipeId={recipeId} user={data} userError={error}/>
+            <ShoppingList user={data} userError={error} />
+          </MainContent>
+        );
+      }}
+    </User>
   );
 };
 export default HomePage;

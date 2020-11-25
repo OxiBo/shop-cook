@@ -41,7 +41,7 @@ const NavStyles = styled.nav`
     border-radius: 1px;
     /* flex-wrap: wrap; */
     li.with-google {
-        /* https://stackoverflow.com/questions/52578726/fontawesome-5-multi-color-icon */
+      /* https://stackoverflow.com/questions/52578726/fontawesome-5-multi-color-icon */
       i {
         padding-right: 0.5rem;
         font-size: 3rem;
@@ -170,7 +170,7 @@ const Nav = () => {
                   {" "}
                   <li className="with-google">
                     <a href="/auth/google">
-                     <i className="fab fa-google"></i> Sign in
+                      <i className="fab fa-google"></i> Sign in
                     </a>
                   </li>
                   <li>

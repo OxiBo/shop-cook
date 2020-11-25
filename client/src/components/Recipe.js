@@ -208,6 +208,8 @@ const DirectionsStyles = styled.div`
 
 const Recipe = ({
   isLoading,
+  user,
+  userError,
   fetchRecipe,
   recipeId, // prop that comes from HomePage
   error,
@@ -238,142 +240,135 @@ const Recipe = ({
   }, [recipe]);
 
   const size = useWindowSize();
+  const isLiked =
+    user && user
+      ? user.recipesLiked.some((item) => {
+          if (recipeId) {
+            return item.recipeId === recipeId;
+          }
+          return item.recipeId === recipe.recipeId;
+        })
+      : false;
 
-  return (
-    <User>
+  // return (
+  {
+    /* <User>
       {(user, error) => {
         if (error)
           return (
             <ErrorMessage>
               <p>{error}</p>
             </ErrorMessage>
-          );
+          ); */
+  }
 
-        const isLiked =
-          user && user
-            ? user.recipesLiked.some((item) => {
-                if (recipeId) {
-                  return item.recipeId === recipeId;
-                }
-                return item.recipeId === recipe.recipeId;
-              })
-            : false;
-  
-        return (
-          <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
-            {isLoading ? (
-              <Spinner />
-            ) : error ? (
-              <DirectionsStyles>
-                <ErrorText>{error}</ErrorText>
-              </DirectionsStyles>
-            ) : (
-              recipe && (
-                <>
-                  <RecipeFigStyles>
-                    <img src={recipe.image} alt={recipe.title} />
-                    <h1>
-                      <span>{recipe.title}</span>
-                    </h1>
-                  </RecipeFigStyles>
-                  <RecipeDetailsStyles>
-                    <div>
-                      <i className="fas fa-stopwatch"></i>
-                      <span className="recipe__info-data">
-                        {recipe.readyInMinutes}
-                      </span>
-                      <span> minutes</span>
-                    </div>
-                    <div>
-                      <i className="fas fa-male"></i>
-                      <span className="recipe__info-data">
-                        {recipe.servings}
-                      </span>
-                      <span> servings</span>
+  return (
+    <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
+      {isLoading ? (
+        <Spinner />
+      ) : error ? (
+        <DirectionsStyles>
+          <ErrorText>{error}</ErrorText>
+        </DirectionsStyles>
+      ) : userError ? (
+        <ErrorMessage>
+          <p>{userError}</p>
+        </ErrorMessage>
+      ) : (
+        recipe && (
+          <>
+            <RecipeFigStyles>
+              <img src={recipe.image} alt={recipe.title} />
+              <h1>
+                <span>{recipe.title}</span>
+              </h1>
+            </RecipeFigStyles>
+            <RecipeDetailsStyles>
+              <div>
+                <i className="fas fa-stopwatch"></i>
+                <span className="recipe__info-data">
+                  {recipe.readyInMinutes}
+                </span>
+                <span> minutes</span>
+              </div>
+              <div>
+                <i className="fas fa-male"></i>
+                <span className="recipe__info-data">{recipe.servings}</span>
+                <span> servings</span>
 
-                      <div className="tiny-buttons">
-                        <ButtonTiny
-                          onClick={async () =>
-                            changeServings(
-                              recipe.servings,
-                              1,
-                              recipe.ingredients
-                            )
-                          }
-                        >
-                          <i className="fas fa-plus-circle"></i>
-                        </ButtonTiny>
-                        <ButtonTiny
-                          onClick={() => {
-                            if (newServings >= 2) {
-                              changeServings(
-                                recipe.servings,
-                                -1,
-                                recipe.ingredients
-                              );
-                            }
-                          }}
-                        >
-                          <i className="fas fa-minus-circle"></i>
-                        </ButtonTiny>
-                      </div>
-                    </div>
-                    {user && (
-                      <LikeButton
-                        recipe={recipe}
-                        recipeId={recipe.recipeId}
-                        isLiked={isLiked}
-                      />
-                    )}
-                  </RecipeDetailsStyles>
+                <div className="tiny-buttons">
+                  <ButtonTiny
+                    onClick={async () =>
+                      changeServings(recipe.servings, 1, recipe.ingredients)
+                    }
+                  >
+                    <i className="fas fa-plus-circle"></i>
+                  </ButtonTiny>
+                  <ButtonTiny
+                    onClick={() => {
+                      if (newServings >= 2) {
+                        changeServings(recipe.servings, -1, recipe.ingredients);
+                      }
+                    }}
+                  >
+                    <i className="fas fa-minus-circle"></i>
+                  </ButtonTiny>
+                </div>
+              </div>
+              {user && (
+                <LikeButton
+                  recipe={recipe}
+                  recipeId={recipe.recipeId}
+                  isLiked={isLiked}
+                />
+              )}
+            </RecipeDetailsStyles>
 
-                  <IngredientsStyles>
-                    <ul>
-                      {recipe &&
-                        recipe.ingredients &&
-                        recipe.ingredients.map(
-                          ({ amount, name, unit, original }, index) => (
-                            <li key={index}>
-                              <i className="far fa-check-circle"></i>
-                              <div className="recipe__count">{amount}</div>
-                              <div>
-                                <span>{unit} </span>
-                                {name}
-                              </div>
-                            </li>
-                          )
-                        )}
-                    </ul>
+            <IngredientsStyles>
+              <ul>
+                {recipe &&
+                  recipe.ingredients &&
+                  recipe.ingredients.map(
+                    ({ amount, name, unit, original }, index) => (
+                      <li key={index}>
+                        <i className="far fa-check-circle"></i>
+                        <div className="recipe__count">{amount}</div>
+                        <div>
+                          <span>{unit} </span>
+                          {name}
+                        </div>
+                      </li>
+                    )
+                  )}
+              </ul>
 
-                    {recipe && recipe.ingredients && (
-                      <Button
-                        onClick={() => addToShoppingList(recipe.ingredients)}
-                      >
-                        <i className="fas fa-shopping-cart"></i>
-                        <span>Add to shopping list</span>
-                      </Button>
-                    )}
-                  </IngredientsStyles>
+              {recipe && recipe.ingredients && (
+                <Button onClick={() => addToShoppingList(recipe.ingredients)}>
+                  <i className="fas fa-shopping-cart"></i>
+                  <span>Add to shopping list</span>
+                </Button>
+              )}
+            </IngredientsStyles>
 
-                  <DirectionsStyles>
-                    <Heading2>How to cook it</Heading2>
-                    <p className="directions-text">
-                      This recipe was carefully designed and tested by{" "}
-                      <span className="recipe__by">{recipe.sourceName}</span>.
-                      Please check out directions at their website.
-                    </p>
-                    <ALikeButton href={recipe.sourceUrl} target="_blank">
-                      <span>Directions</span>
-                      <i className="fas fa-arrow-alt-circle-right"></i>
-                    </ALikeButton>
-                  </DirectionsStyles>
-                </>
-              )
-            )}
-          </RecipeContainerStyles>
-        );
-      }}
-    </User>
+            <DirectionsStyles>
+              <Heading2>How to cook it</Heading2>
+              <p className="directions-text">
+                This recipe was carefully designed and tested by{" "}
+                <span className="recipe__by">{recipe.sourceName}</span>. Please
+                check out directions at their website.
+              </p>
+              <ALikeButton href={recipe.sourceUrl} target="_blank">
+                <span>Directions</span>
+                <i className="fas fa-arrow-alt-circle-right"></i>
+              </ALikeButton>
+            </DirectionsStyles>
+          </>
+        )
+      )}
+    </RecipeContainerStyles>
+    //     );
+    //   }}
+    // </User>
   );
 };
 

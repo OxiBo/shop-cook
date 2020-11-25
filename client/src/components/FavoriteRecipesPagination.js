@@ -15,12 +15,10 @@ const FavoriteRecipesPagination = ({ fetchFavRecipes, pages }) => {
 
   const handleClick = (e, n) => {
     e.preventDefault();
-    // setPage(page => page + n);
-    setTimeout(function delay() {
-      setPage(page => page + n);
-    }, 1000);
+    setPage((page) => page + n);
+
     console.log(page);
-    // fetchFavRecipes((page + n) * favRecipesPerPage - favRecipesPerPage);
+    fetchFavRecipes((page + n) * favRecipesPerPage - favRecipesPerPage);
   };
 
   return (

@@ -90,7 +90,7 @@ const DisplayRecipeList = ({
 
   useEffect(() => {
     fetchSearchTerm();
-  }, [searchTerm ]);
+  }, [searchTerm]);
 
   const pageChange = (newPage) => {
     const offset = newPage * recipesPerPage - recipesPerPage;

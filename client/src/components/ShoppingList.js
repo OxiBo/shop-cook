@@ -186,7 +186,7 @@ const ShoppingList = ({
   const [shoppingItems, setShoppingItems] = useState(shoppingList);
   // state for the form "add item"
   const [addedItem, setAddedItem] = useState({});
-  
+
   // state for the emailing the list
   const [mailIt, setMailIt] = useState(false);
   const [myEmail, setMyEmail] = useState(userDefaultEmail);
@@ -240,7 +240,6 @@ const ShoppingList = ({
   return (
     <User>
       {(user) => {
-     
         return (
           <ShoppingListStyles>
             <Heading2>My Shopping List</Heading2>
@@ -276,7 +275,7 @@ const ShoppingList = ({
                           } else if (amount < 1) {
                             step = Math.ceil(amount * 100) / 100;
                           }
-                       
+
                           //    {/* step={step} */}
                           return (
                             <li key={index}>
