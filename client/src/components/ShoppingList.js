@@ -1,5 +1,4 @@
 // TODO - rethink the overall structure
-
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -282,7 +281,6 @@ const ShoppingList = ({
                     step = Math.ceil(amount * 100) / 100;
                   }
 
-                  //    {/* step={step} */}
                   return (
                     <li key={index}>
                       <div>
