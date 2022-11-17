@@ -201,13 +201,6 @@ const ShoppingList = ({
   const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
-    console.log('items');
-    console.log(shoppingItems);
-    console.log('list');
-    console.log(shoppingList);
-  }, [shoppingItems, shoppingList]);
-
-  useEffect(() => {
     // isLoadingShoppingList();
     // fetchShoppingList();
     setShoppingItems(shoppingList);
