@@ -1,17 +1,18 @@
 import {
   ADD_TO_SHOPPING_LIST,
-  CREATE_SHOPPING_LIST,
+  EMPTY_SHOPPING_LIST,
+  CREATE_SHOPPING_LIST, // email the list
   FETCH_SHOPPING_LIST,
   IS_LOADING_SHOPPING_LIST,
   SHOPPING_LIST_ERROR,
-} from "../actions/types";
+} from '../actions/types';
 
 const defaultShoppingListState = {
   isLoading: false,
   shoppingList: [],
-  message: "",
-  createListError: "",
-  error: "",
+  message: '',
+  createListError: '',
+  error: '',
 };
 
 export default (state = defaultShoppingListState, action) => {
@@ -22,6 +23,12 @@ export default (state = defaultShoppingListState, action) => {
         ...state,
         isLoading: false,
         shoppingList: action.payload,
+      };
+    case EMPTY_SHOPPING_LIST:
+      return {
+        ...state,
+        isLoading: false,
+        shoppingList: [],
       };
     case IS_LOADING_SHOPPING_LIST:
       return {
@@ -37,7 +44,7 @@ export default (state = defaultShoppingListState, action) => {
     case CREATE_SHOPPING_LIST:
       return {
         ...state,
-        createListError: "",
+        createListError: '',
         message: action.payload,
       };
     case SHOPPING_LIST_ERROR:

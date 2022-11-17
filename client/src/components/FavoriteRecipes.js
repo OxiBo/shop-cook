@@ -1,3 +1,5 @@
+// TODO - issue - not able to delete last recipe from list of favorites or update page after deleting
+
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
@@ -138,11 +140,12 @@ const FavoriteRecipes = ({
   error,
   recipesLiked,
 }) => {
-  const likedRecipesList = recipesLiked && recipesLiked.length;
+  console.log(recipesLiked)
+  //const likedRecipesList = recipesLiked && recipesLiked.length;
   useEffect(() => {
     if (recipesLiked && recipesLiked.length) fetchFavRecipes(0);
     // fetchFavRecipes(0);
-  }, [likedRecipesList, fetchFavRecipes]);
+  }, [ recipesLiked, fetchFavRecipes]);
   // console.log(favRecipes);
 
   return (

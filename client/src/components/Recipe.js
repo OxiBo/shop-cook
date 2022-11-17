@@ -12,9 +12,9 @@ import {
 } from "../actions";
 import LikeButton from "./LikeButton";
 import useWindowSize from "../utils/useWindowSize";
-import User from "./RenderProp/User";
+// import User from "./RenderProp/User";
 import Button from "./styles/Button";
-import ErrorMessage from "./styles/ErrorMessage";
+// import ErrorMessage from "./styles/ErrorMessage";
 import { Heading2, ErrorText } from "./styles/text";
 
 const RecipeContainerStyles = styled.div`
@@ -209,7 +209,7 @@ const DirectionsStyles = styled.div`
 const Recipe = ({
   isLoading,
   user,
-  userError,
+  // userError,
   fetchRecipe,
   recipeId, // prop that comes from HomePage
   error,
@@ -251,7 +251,7 @@ const Recipe = ({
       : false;
 
   // return (
-  {
+  
     /* <User>
       {(user, error) => {
         if (error)
@@ -260,7 +260,7 @@ const Recipe = ({
               <p>{error}</p>
             </ErrorMessage>
           ); */
-  }
+  
 
   return (
     <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
@@ -270,11 +270,13 @@ const Recipe = ({
         <DirectionsStyles>
           <ErrorText>{error}</ErrorText>
         </DirectionsStyles>
-      ) : userError ? (
+      ) 
+     /* : userError ? (
         <ErrorMessage>
           <p>{userError}</p>
         </ErrorMessage>
-      ) : (
+      ) */
+      : (
         recipe && (
           <>
             <RecipeFigStyles>

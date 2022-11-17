@@ -1,12 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
-import { device } from "./styles/breakpoints";
+
 
 import DisplayRecipeList from "./DisplayRecipeList";
 import Recipe from "./Recipe";
 import ShoppingList from "./ShoppingList";
-import User from "./RenderProp/User";
-
+// import User from "./RenderProp/User";
+import { getUserFromStore } from "../actions";
 const MainContent = styled.main`
   flex: 1;
   width: 100%;
@@ -27,24 +28,39 @@ const MainContent = styled.main`
   }
 `;
 
-const HomePage = (props) => {
+const HomePage = ({ location, user }) => {
   // console.log(props)
-  const recipeId = props.location.hash.replace("#", "");
+  const recipeId = location.hash.replace("#", "");
   // console.log(recipeId)
-  return (
-    <User>
-      {(data, error) => {
-        console.log(data);
+  // useEffect(() => {
+  //   getUserFromStore();
+  // }, []);
 
-        return (
-          <MainContent>
+  // return (
+  //   <User>
+  //     {(data, error) => {
+  // console.log(data);
+  return (
+    <MainContent>
+      <DisplayRecipeList />
+      <Recipe recipeId={recipeId} user={user} />
+      <ShoppingList user={user} />
+    </MainContent>
+    /* <MainContent>
             <DisplayRecipeList />
-            <Recipe recipeId={recipeId} user={data} userError={error}/>
+            <Recipe recipeId={recipeId} user={data} userError={error} />
             <ShoppingList user={data} userError={error} />
-          </MainContent>
-        );
-      }}
-    </User>
+          </MainContent>*/
   );
+  //    }}
+  // </User>
+  // );
 };
-export default HomePage;
+
+const mapStateToProps = ({ auth }) => {
+  // console.log(auth.user);
+  return {
+    user: auth.user,
+  };
+};
+export default connect(mapStateToProps, { getUserFromStore })(HomePage);

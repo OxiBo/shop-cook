@@ -11,18 +11,18 @@ const router = require("express").Router(),
 router.use(bodyParser.urlencoded({ extended: true }));
 
 // create and mail shopping list
-// TODO add isLoggedIn middleware
-router.patch("/api/shoppingList/new", isLoggedIn, async (req, res) => {
+// patch???
+router.post("/api/shoppingList/new", isLoggedIn, async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      {
-        shoppingList: req.body,
-      },
-      { new: true }
-    );
+    // const user = await User.findByIdAndUpdate(
+    //   req.user.id,
+    //   {
+    //     shoppingList: req.body,
+    //   },
+    //   { new: true }
+    // );
     // console.log(user);
-
+    const user = await User.findById(req.user.id);
     const shoppingList = req.body;
     // remove last element which is email address
     let email = shoppingList.pop().email;
@@ -31,7 +31,7 @@ router.patch("/api/shoppingList/new", isLoggedIn, async (req, res) => {
     if (!email) {
       email = sendToMyself;
     }
-    
+
     sendEmail(shoppingList, email, sendToMyself);
   } catch (err) {
     console.log(err);

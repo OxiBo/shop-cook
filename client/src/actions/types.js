@@ -9,6 +9,7 @@ export const RECIPES_SEARCH_ERROR = "recipes_search_error";
 export const RECIPE_ERROR = "recipe_error";
 export const LIKE_RECIPE = "like_recipe";
 export const ADD_TO_SHOPPING_LIST = "add_to_shopping_list";
+export const EMPTY_SHOPPING_LIST = "empty_shopping_list";
 export const CREATE_SHOPPING_LIST = "create_shopping_list";
 export const SHOPPING_LIST_ERROR = "shopping_list_error";
 // export const UPDATE_SHOPPING_LIST = 'update_shopping_list'

@@ -1,6 +1,6 @@
-import axios from "axios";
-import recipes from "../utils/spoonacularAPI";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import recipes from '../utils/spoonacularAPI';
+import { toast } from 'react-toastify';
 
 // import { toastOptions, errorToastStyle } from "../components/styles/toastify";
 import {
@@ -15,6 +15,7 @@ import {
   RECIPES_SEARCH_ERROR,
   RECIPE_ERROR,
   ADD_TO_SHOPPING_LIST,
+  EMPTY_SHOPPING_LIST,
   CREATE_SHOPPING_LIST,
   SHOPPING_LIST_ERROR,
   FETCH_SHOPPING_LIST,
@@ -26,17 +27,25 @@ import {
   FETCH_FAV_RECIPES,
   FETCH_TOTAL_FAV_RECIPES,
   // REMOVE_FAVORITE
-} from "./types";
-import { favRecipesPerPage } from "../utils/utilVars";
+} from './types';
+import { favRecipesPerPage } from '../utils/utilVars';
 
 export const fetchUser = () => async (dispatch) => {
   try {
-    const res = await axios.get("/api/user");
+    console.log('fetching user');
+    const res = await axios.get('/api/user');
     dispatch({ type: FETCH_USER, payload: res.data });
   } catch (err) {
     console.error(err);
     dispatch({ type: AUTH_ERROR, payload: err.message });
   }
+};
+
+export const getUserFromStore = () => async (dispatch, getState) => {
+  const storedInState = getState();
+  console.log(storedInState);
+  console.log('????');
+  dispatch({ type: 'GET_STORED_USER' });
 };
 
 export const signUp = (userInfo, history) => async (dispatch) => {
@@ -49,12 +58,12 @@ export const signUp = (userInfo, history) => async (dispatch) => {
   // console.log(res)
   try {
     const res = await axios.post(
-      `/api/${userInfo.name !== "" ? "signup" : "login"}`,
+      `/api/${userInfo.name !== '' ? 'signup' : 'login'}`,
       userInfo
     );
     // console.log(res);
     dispatch({ type: SIGN_UP, payload: res.data });
-    history.push("/");
+    history.push('/');
   } catch (err) {
     console.error(err);
     dispatch({ type: AUTH_ERROR, payload: err.response.data.message });
@@ -64,7 +73,7 @@ export const signUp = (userInfo, history) => async (dispatch) => {
 export const clearAuthError = () => {
   return {
     type: AUTH_ERROR,
-    payload: "",
+    payload: '',
   };
 };
 
@@ -72,12 +81,12 @@ export const resetPassword = (resetToken, password, history) => async (
   dispatch
 ) => {
   try {
-    const res = await axios.patch("/api/reset", { resetToken, password });
+    const res = await axios.patch('/api/reset', { resetToken, password });
 
     await dispatch({ type: FETCH_USER, payload: res.data });
 
-    toast("Your password has been reset successfully!");
-    history.push("/");
+    toast('Your password has been reset successfully!');
+    history.push('/');
   } catch (err) {
     console.error(err);
     dispatch({ type: AUTH_ERROR, payload: err.response.data.message });
@@ -88,7 +97,7 @@ export const searchRecipes = (name, recipesPerPage, offset = 0) => async (
   dispatch
 ) => {
   try {
-    console.log("dispatch search recipes");
+    // console.log("dispatch search recipes");
     const res = await recipes.get(
       `/complexSearch?query=${name}&number=${recipesPerPage}&offset=${offset}`
     );
@@ -96,7 +105,7 @@ export const searchRecipes = (name, recipesPerPage, offset = 0) => async (
     dispatch({ type: SEARCH_RECIPES, payload: res.data });
   } catch (error) {
     console.error(error);
-    dispatch({ type: RECIPES_SEARCH_ERROR, payload: "Failed to load recipes" });
+    dispatch({ type: RECIPES_SEARCH_ERROR, payload: 'Failed to load recipes' });
   }
 };
 
@@ -132,9 +141,10 @@ export const isLoadingRecipe = () => {
 };
 
 export const likeRecipe = (details) => async (dispatch) => {
-  // console.log(details);
+  console.log(details);
+
   try {
-    const res = await axios.post("/api/recipes/add", details);
+    const res = await axios.post('/api/recipes/add', details);
     // console.log(res.data);
     dispatch({ type: FETCH_USER, payload: res.data });
   } catch (err) {
@@ -142,15 +152,14 @@ export const likeRecipe = (details) => async (dispatch) => {
     //TODO ?? Toast with warning that the recipe was not added
     dispatch({
       type: AUTH_ERROR,
-      payload: "Failed to add the recipe to favorites",
+      payload: 'Failed to add the recipe to favorites',
     });
   }
 
-  return {
-    type: LIKE_RECIPE,
-  };
+  // return {
+  //   type: LIKE_RECIPE,
+  // };
 };
-
 
 // TODO - how to add recipeId to hash when it is a random recipe on page load
 export const fetchRecipe = (recipeFromResultsId, random = false) => async (
@@ -160,7 +169,7 @@ export const fetchRecipe = (recipeFromResultsId, random = false) => async (
     let res;
     // console.log(random)
     if (random) {
-      res = await recipes.get("/random?number=1");
+      res = await recipes.get('/random?number=1');
       res.data = res.data.recipes[0];
       // console.log(res.data);
     } else {
@@ -184,7 +193,7 @@ export const fetchRecipe = (recipeFromResultsId, random = false) => async (
       (acc, { amount, name, measures, original }) => {
         const parsedIngredient = {
           amount: Math.round(amount * 100) / 100,
-          name: name === "seasoning" ? original : name,
+          name: name === 'seasoning' ? original : name,
           unit: measures.us.unitShort,
           original,
         };
@@ -207,13 +216,14 @@ export const fetchRecipe = (recipeFromResultsId, random = false) => async (
     dispatch({ type: FETCH_RECIPE, payload: recipe });
   } catch (error) {
     console.error(error);
-    dispatch({ type: RECIPE_ERROR, payload: "Failed to load recipe details" });
+    dispatch({ type: RECIPE_ERROR, payload: 'Failed to load recipe details' });
   }
 };
 
-export const fetchFavRecipes = (offset = 0, recipesPerPage = favRecipesPerPage) => async (
-  dispatch
-) => {
+export const fetchFavRecipes = (
+  offset = 0,
+  recipesPerPage = favRecipesPerPage
+) => async (dispatch) => {
   try {
     // const res = await axios.get("/api/recipes");
 
@@ -271,16 +281,13 @@ export const addToShoppingList = (ingredients) => async (
 
 export const createShoppingList = (list) => async (dispatch) => {
   try {
-    // console.log(list);
-    await axios.patch("./api/shoppingList/new", list);
-    // console.log(res);
     dispatch({
       type: CREATE_SHOPPING_LIST,
-      payload: "Success!The list has been emailed to the email provided!",
+      payload: 'Success!The list has been emailed to the email provided!',
     });
 
     toast(
-      "Success! Your shopping list has been sent to provided email address!"
+      'Success! Your shopping list has been sent to provided email address!'
     );
     // toast(
     //   "Success! Your shopping list has been sent to provided email address!",
@@ -289,6 +296,19 @@ export const createShoppingList = (list) => async (dispatch) => {
   } catch (err) {
     console.error(err);
     dispatch({ type: SHOPPING_LIST_ERROR, payload: err });
+  }
+};
+
+// TODO - empty shopping list
+export const emptyShoppingList = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: EMPTY_SHOPPING_LIST,
+    });
+
+    toast('Success! Your shopping list has been deleted!');
+  } catch (err) {
+    console.error(err);
   }
 };
 

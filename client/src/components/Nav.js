@@ -77,6 +77,7 @@ const NavStyles = styled.nav`
         display: flex;
         align-items: center;
         justify-content: center;
+        color: inherit;
         :visited {
           color: inherit;
         }

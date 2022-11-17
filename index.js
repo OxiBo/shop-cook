@@ -12,7 +12,7 @@ require("./models/User");
 require("./models/Recipe");
 const User = mongoose.model("users");
 const Recipe = mongoose.model("recipes");
-// const User = mongoose.model("users");
+
 require("./services/passportLocal");
 require("./services/passportGoogle");
 

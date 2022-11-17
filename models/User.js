@@ -18,7 +18,6 @@ const userSchema = new Schema({
     name: String,
     token: String,
   },
-  shoppingList: {type: Array, default: []},
   recipesLiked: [
     {
       recipe: { type: Schema.Types.ObjectId, ref: "Recipe" },

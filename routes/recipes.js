@@ -1,15 +1,15 @@
 // TODO - add isLoggedin middleware
 
-const router = require("express").Router(),
-  mongoose = require("mongoose"),
-  bodyParser = require("body-parser"),
-  isLoggedIn = require("../middlewares/isLoggedIn"),
-  User = mongoose.model("users"),
-  Recipe = mongoose.model("recipes");
+const router = require('express').Router(),
+  mongoose = require('mongoose'),
+  bodyParser = require('body-parser'),
+  isLoggedIn = require('../middlewares/isLoggedIn'),
+  User = mongoose.model('users'),
+  Recipe = mongoose.model('recipes');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.post("/api/recipes/add", isLoggedIn, async (req, res) => {
+router.post('/api/recipes/add', isLoggedIn, async (req, res) => {
   console.log(req.body);
   //   console.log(req.user);
 
@@ -29,7 +29,7 @@ router.post("/api/recipes/add", isLoggedIn, async (req, res) => {
       //   console.log(alreadyLikedRecipe);
 
       if (alreadyLikedRecipe) {
-        // if the user already "liked" the recipe, delete it from the favorites list (deleted it from user model and delete it form recipe (users array))
+        // if the user already "liked" the recipe, delete it from the favorites list (deleted it from user model and delete it from recipe (users array))
         const updatedRecipe = await Recipe.findByIdAndUpdate(
           recipeExists.id,
           {
@@ -54,7 +54,7 @@ router.post("/api/recipes/add", isLoggedIn, async (req, res) => {
 
         res.send(updatedUser);
       } else {
-        // if the user did not "like" the recipe, add it to the list of user favorite recipes and add the user to the recipe (users array)"
+        // if the user did not "like" the recipe, add it to the list of user's favorite recipes and add the user to the recipe (users array)"
         const addedLikeRecipe = await Recipe.findByIdAndUpdate(
           recipeExists.id,
           { $push: { users: req.user.id } },
@@ -91,16 +91,18 @@ router.post("/api/recipes/add", isLoggedIn, async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message: "Failed to save the recipe" });
+    res.status(500).send({ message: 'Failed to save the recipe' });
   }
 });
 
-router.get("/fav", async (req, res) => {
+router.get('/fav', async (req, res) => {
+  //??????
   const results = await User.aggregate([
-    { $match: { _id: mongoose.Types.ObjectId("5f8fabd8850fefe690bf749c") } },
+    // { $match: { _id: mongoose.Types.ObjectId("5f8fabd8850fefe690bf749c") } },
+    { $match: { _id: req.user._id } },
     {
       $project: {
-        recipe: "$recipesLiked",
+        recipe: '$recipesLiked',
         // numberOfRecipes: { $size: "$recipesLiked" },
       },
     },
@@ -112,7 +114,7 @@ router.get("/fav", async (req, res) => {
     //     as: "recipeFull",
     //   },
     // },
-    { $unwind: "$recipe" },
+    { $unwind: '$recipe' },
 
     // https://stackoverflow.com/questions/20348093/mongodb-aggregation-how-to-get-total-records-count
     {
@@ -120,7 +122,7 @@ router.get("/fav", async (req, res) => {
         paginatedRecipesList: [{ $skip: 0 }, { $limit: 4 }],
         totalCount: [
           {
-            $count: "count",
+            $count: 'count',
           },
         ],
       },
@@ -128,15 +130,15 @@ router.get("/fav", async (req, res) => {
   ]).exec();
 
   const test2 = await User.populate(results, {
-    path: "paginatedRecipesList.recipe.recipe",
+    path: 'paginatedRecipesList.recipe.recipe',
     model: Recipe,
-    select: "-users -_id -__v",
+    select: '-users -_id -__v',
   });
 
   res.send(test2);
 });
 
-router.get("/api/recipes", isLoggedIn, async (req, res) => {
+router.get('/api/recipes', isLoggedIn, async (req, res) => {
   console.log(req.query);
   const { limit, offset } = req.query;
   try {
@@ -144,10 +146,10 @@ router.get("/api/recipes", isLoggedIn, async (req, res) => {
       { $match: { _id: mongoose.Types.ObjectId(req.user.id) } },
       {
         $project: {
-          recipe: "$recipesLiked",
+          recipe: '$recipesLiked',
         },
       },
-      { $unwind: "$recipe" },
+      { $unwind: '$recipe' },
       // https://stackoverflow.com/questions/20348093/mongodb-aggregation-how-to-get-total-records-count
       {
         $facet: {
@@ -157,7 +159,7 @@ router.get("/api/recipes", isLoggedIn, async (req, res) => {
           ],
           totalCount: [
             {
-              $count: "count",
+              $count: 'count',
             },
           ],
         },
@@ -165,15 +167,15 @@ router.get("/api/recipes", isLoggedIn, async (req, res) => {
     ]).exec();
     // console.log(results)
     const recipesList = await User.populate(results, {
-      path: "paginatedRecipesList.recipe.recipe",
+      path: 'paginatedRecipesList.recipe.recipe',
       model: Recipe,
-      select: "-users -_id -__v",
+      select: '-users -_id -__v',
     });
-
+    console.log(recipesList[0]);
     const paginated = recipesList[0].paginatedRecipesList.map(
       ({ recipe }) => recipe.recipe
     );
-    // console.log(paginated);
+    
     recipesList[0].paginatedRecipesList = paginated;
     recipesList[0].total = recipesList[0].totalCount[0].count;
     delete recipesList[0].totalCount;
