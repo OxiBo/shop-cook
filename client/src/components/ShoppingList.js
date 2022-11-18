@@ -12,30 +12,47 @@ import {
 import { Heading2 } from './styles/text';
 import Button from './styles/Button';
 import ErrorText from './styles/ErrorText';
+import { device } from './styles/breakpoints';
+console.log(device.tablet);
 const ShoppingListStyles = styled.div`
   grid-area: shopping-list;
-  padding: 3rem 3rem;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
+  //background-color: mistyrose;
   form {
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     ul {
       list-style: none;
       max-height: 77rem;
       overflow: auto;
+      border-bottom: 1px solid #f2efee;
+      li:not(:last-child) {
+        border-bottom: 1px solid #f2efee;
+      }
+
       li {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 1.3rem 0;
-        border-bottom: 1px solid #f2efee;
         position: relative;
-        :hover button {
-          opacity: 1;
-          visibility: visible;
+
+        button {
+          //opacity: 1;
+          display: none;
           transform: translateY(-1px);
         }
+
+        :hover button {
+          display: block;
+          opacity: 1;
+          visibility: visible;
+          //  background-color: red;
+          transform: translateY(-1px);
+        }
+
         div {
           flex: 0 0 10rem;
           min-width: 10rem;
@@ -43,7 +60,7 @@ const ShoppingListStyles = styled.div`
           border: 1px solid #f2efee;
           border-radius: 3px;
           margin-right: 2rem;
-          cursor: pointer;
+          //cursor: pointer;// TODO -WHY?
           display: flex;
           justify-content: space-between;
           input {
@@ -81,7 +98,7 @@ const ShoppingListStyles = styled.div`
           right: 0;
           background-image: linear-gradient(
             to right,
-            transparent 0%,
+            transparent 50%,
             #fff 40%,
             #fff 100%
           );
@@ -90,7 +107,7 @@ const ShoppingListStyles = styled.div`
           visibility: hidden;
           opacity: 0;
           transition: all 0.5s;
-
+          z-index: 10;
           i {
             color: ${(props) => props.theme.themeColor};
             :active {
@@ -100,6 +117,11 @@ const ShoppingListStyles = styled.div`
           :focus {
             outline: none;
           }
+          @media only screen and (max-width: 768px) {
+            opacity: 1;
+            visibility: visible;
+            display: block;
+          }
         }
       }
     }
@@ -108,11 +130,6 @@ const ShoppingListStyles = styled.div`
     h3 {
       text-align: center;
       padding: 1rem;
-    }
-  }
-  @media only screen and (min-width: 768px) {
-    form {
-      width: 100%;
     }
   }
 `;
@@ -249,7 +266,7 @@ const ShoppingList = ({
   //     {(user) => {
 
   return (
-    <ShoppingListStyles>
+    <ShoppingListStyles breakPoint={device}>
       <Heading2>My Shopping List</Heading2>
       {shoppingItems.length > 0 ? (
         <>
@@ -270,17 +287,22 @@ const ShoppingList = ({
                   // TODO - need a better algorithm to calc step
                   let step;
                   if (amount < 10 && amount > 1) {
-                    step = amount % amount;
+                   // step = amount % amount;
+                   step = 1;
                   } else if (amount > 10 && amount < 100) {
                     step = Math.ceil(amount / 10);
-                  } else if (amount < 1) {
-                    step = amount;
-                  } else if (amount > 100) {
+                  } 
+              
+                  else if (amount > 100) {
                     step = 100;
                   } else if (amount < 1) {
                     step = Math.ceil(amount * 100) / 100;
                   }
-
+     {/* else if (amount < 1) {
+                    step = amount;
+                  }  */}
+                  
+                  //    {/* step={step} */}
                   return (
                     <li key={index}>
                       <div>
