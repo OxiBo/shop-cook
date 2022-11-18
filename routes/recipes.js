@@ -10,7 +10,7 @@ const router = require('express').Router(),
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.post('/api/recipes/add', isLoggedIn, async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   //   console.log(req.user);
 
   try {
@@ -139,7 +139,7 @@ router.get('/fav', async (req, res) => {
 });
 
 router.get('/api/recipes', isLoggedIn, async (req, res) => {
-  console.log(req.query);
+  //console.log(req.query);
   const { limit, offset } = req.query;
   try {
     const results = await User.aggregate([
@@ -171,7 +171,7 @@ router.get('/api/recipes', isLoggedIn, async (req, res) => {
       model: Recipe,
       select: '-users -_id -__v',
     });
-    console.log(recipesList[0]);
+   // console.log(recipesList[0]);
     const paginated = recipesList[0].paginatedRecipesList.map(
       ({ recipe }) => recipe.recipe
     );
