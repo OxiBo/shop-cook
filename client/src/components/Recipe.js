@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import Spinner from "./Spinner";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Spinner from './Spinner';
 import {
   fetchRecipe,
   isLoadingRecipe,
@@ -9,13 +9,13 @@ import {
   changeServings,
   likeRecipe,
   fetchUser,
-} from "../actions";
-import LikeButton from "./LikeButton";
-import useWindowSize from "../utils/useWindowSize";
+} from '../actions';
+import LikeButton from './LikeButton';
+import useWindowSize from '../utils/useWindowSize';
 // import User from "./RenderProp/User";
-import Button from "./styles/Button";
+import Button from './styles/Button';
 // import ErrorMessage from "./styles/ErrorMessage";
-import { Heading2, ErrorText } from "./styles/text";
+import { Heading2, ErrorText } from './styles/text';
 
 const RecipeContainerStyles = styled.div`
   grid-area: recipe;
@@ -23,7 +23,7 @@ const RecipeContainerStyles = styled.div`
 `;
 
 const ALikeButton = styled(Button).attrs({
-  as: "a",
+  as: 'a',
 })`
   text-decoration: none;
   span {
@@ -67,7 +67,7 @@ const RecipeFigStyles = styled.figure`
     transform: scale(1.07) translateY(-1px);
   }
   :before {
-    content: "";
+    content: '';
     display: block;
     height: 100%;
     width: 100%;
@@ -251,8 +251,8 @@ const Recipe = ({
       : false;
 
   // return (
-  
-    /* <User>
+
+  /* <User>
       {(user, error) => {
         if (error)
           return (
@@ -260,23 +260,21 @@ const Recipe = ({
               <p>{error}</p>
             </ErrorMessage>
           ); */
-  
 
   return (
-    <RecipeContainerStyles id={size < 768 ? recipeId : ""}>
+    <RecipeContainerStyles id={size < 768 ? recipeId : ''}>
       {isLoading ? (
         <Spinner />
       ) : error ? (
         <DirectionsStyles>
           <ErrorText>{error}</ErrorText>
         </DirectionsStyles>
-      ) 
-     /* : userError ? (
+      ) : (
+        /* : userError ? (
         <ErrorMessage>
           <p>{userError}</p>
         </ErrorMessage>
       ) */
-      : (
         recipe && (
           <>
             <RecipeFigStyles>
@@ -355,7 +353,7 @@ const Recipe = ({
             <DirectionsStyles>
               <Heading2>How to cook it</Heading2>
               <p className="directions-text">
-                This recipe was carefully designed and tested by{" "}
+                This recipe was carefully designed and tested by{' '}
                 <span className="recipe__by">{recipe.sourceName}</span>. Please
                 check out directions at their website.
               </p>

@@ -2,6 +2,7 @@ import {
   ADD_TO_SHOPPING_LIST,
   EMPTY_SHOPPING_LIST,
   CREATE_SHOPPING_LIST, // email the list
+  UPDATE_SHOPPING_LIST_ITEM,
   FETCH_SHOPPING_LIST,
   IS_LOADING_SHOPPING_LIST,
   SHOPPING_LIST_ERROR,
@@ -24,6 +25,12 @@ export default (state = defaultShoppingListState, action) => {
         isLoading: false,
         shoppingList: action.payload,
       };
+      case UPDATE_SHOPPING_LIST_ITEM:
+        return {
+          ...state,
+          isLoading: false,
+          shoppingList: action.payload,
+        };
     case EMPTY_SHOPPING_LIST:
       return {
         ...state,

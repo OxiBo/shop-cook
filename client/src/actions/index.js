@@ -16,6 +16,7 @@ import {
   RECIPE_ERROR,
   ADD_TO_SHOPPING_LIST,
   EMPTY_SHOPPING_LIST,
+  UPDATE_SHOPPING_LIST_ITEM,
   CREATE_SHOPPING_LIST,
   SHOPPING_LIST_ERROR,
   FETCH_SHOPPING_LIST,
@@ -245,6 +246,7 @@ export const addToShoppingList = (ingredients) => async (
   dispatch,
   getState
 ) => {
+  console.log(ingredients);
   // need to create a deep copy of the current shopping list. https://redux.js.org/recipes/structuring-reducers/immutable-update-patterns
   const currentShoppingList = getState().shoppingLists.shoppingList;
 
@@ -279,6 +281,34 @@ export const addToShoppingList = (ingredients) => async (
   }
 };
 
+export const updateShoppingListItem = (ingredient) => async (
+  dispatch,
+  getState
+) => {
+  // get current shopping list from state
+  const currentShoppingList = getState().shoppingLists.shoppingList;
+
+  // create a deep copy of the state
+  // https://www.freecodecamp.org/news/how-to-clone-an-array-in-javascript-1d3183468f6a/
+  const ingredientsListCopy = JSON.parse(JSON.stringify(currentShoppingList));
+  //find index of the item to update
+  const indexOfItem = ingredientsListCopy.findIndex(
+    (item) => item.name === ingredient.name
+  );
+
+  // check if the ingredient is already in the list, if it is  - update, if not - add
+  if (indexOfItem >= 0) {
+    ingredientsListCopy[indexOfItem] = ingredient;
+  } else {
+    ingredientsListCopy.push(ingredient);
+  }
+  // update the ingredient
+  dispatch({
+    type: UPDATE_SHOPPING_LIST_ITEM,
+    payload: ingredientsListCopy,
+  });
+};
+
 export const createShoppingList = (list) => async (dispatch) => {
   try {
     dispatch({
@@ -299,7 +329,6 @@ export const createShoppingList = (list) => async (dispatch) => {
   }
 };
 
-// TODO - empty shopping list
 export const emptyShoppingList = () => async (dispatch) => {
   try {
     dispatch({

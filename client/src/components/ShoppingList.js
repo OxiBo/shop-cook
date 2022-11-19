@@ -5,9 +5,11 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 // import User from "./RenderProp/User";
 import {
+  updateShoppingListItem,
   emptyShoppingList,
   fetchShoppingList,
   isLoadingShoppingList,
+  addToShoppingList,
   createShoppingList,
 } from '../actions';
 import { Heading2 } from './styles/text';
@@ -196,6 +198,8 @@ const SingleButtonDiv = styled.div`
 const ShoppingList = ({
   user,
   userError,
+  updateShoppingListItem,
+  addToShoppingList,
   shoppingList,
   emptyShoppingList,
   fetchShoppingList,
@@ -223,9 +227,11 @@ const ShoppingList = ({
     setShoppingItems(shoppingList);
   }, [shoppingList, fetchShoppingList, isLoadingShoppingList]);
 
+  // TODO - add single item to shopping list in the app state not just local component state: use this action - addToShoppingList(recipe.ingredients) with the single ingredient
+
   const handleChange = (e, index, name, unit, original = '') => {
     const values = [...shoppingItems];
-    values[index] = { ...values[index], amount: e.target.value };
+    values[index] = { ...values[index], amount: +e.target.value };
     setShoppingItems(values);
   };
   const handleDelete = (index) => {
@@ -241,6 +247,7 @@ const ShoppingList = ({
       );
       // console.log(itemExists);
       if (itemExists >= 0) {
+        console.log(typeof values[itemExists].amount);
         const newAmount = values[itemExists].amount + item.amount;
         values[itemExists].amount = newAmount;
       } else {
@@ -265,7 +272,7 @@ const ShoppingList = ({
   // return (
   //   <User>
   //     {(user) => {
-
+  // TODO - prevent form submission on ENTER key press
   return (
     <ShoppingListStyles breakPoint={device}>
       <Heading2>My Shopping List</Heading2>
@@ -284,37 +291,28 @@ const ShoppingList = ({
               {shoppingList &&
                 shoppingItems.length !== 0 &&
                 shoppingItems.map(({ amount, name, unit, original }, index) => {
-                  console.log(amount, name, unit, original);
-                  // TODO - need a better algorithm to calc step
-                  let step;
-                  if (amount < 10 && amount > 1) {
-                   // step = amount % amount;
-                   step = 1;
-                  } else if (amount > 10 && amount < 100) {
-                    step = Math.ceil(amount / 10);
-                  } 
-              
-                  else if (amount > 100) {
-                    step = 100;
-                  } else if (amount < 1) {
-                    step = Math.ceil(amount * 100) / 100;
+                  {
+                    /* console.log(amount, name, unit, original); */
                   }
-     {/* else if (amount < 1) {
-                    step = amount;
-                  }  */}
-                  
-                  //    {/* step={step} */}
+
                   return (
                     <li key={index}>
                       <div>
                         <input
-                          type="number"
+                          type="text"
                           name={name}
                           value={shoppingItems[index].amount}
                           onChange={(e) =>
                             handleChange(e, index, name, unit, original)
                           }
-                          step={step}
+                          onBlur={(e) => {
+                            updateShoppingListItem({
+                              amount: +e.target.value,
+                              name,
+                              unit,
+                              original,
+                            });
+                          }}
                           min={0}
                         />
                         <p>{unit}</p>
@@ -426,7 +424,6 @@ const ShoppingList = ({
         </div>
         <SingleButtonDiv>
           <Button type="submit">
-            {' '}
             <i className="fas fa-plus-circle"></i> <span>Add Item</span>
           </Button>
         </SingleButtonDiv>
@@ -464,8 +461,10 @@ const mapStateToProps = ({ shoppingLists, auth: { user } }) => {
 };
 
 export default connect(mapStateToProps, {
+  addToShoppingList,
   emptyShoppingList,
   fetchShoppingList,
   isLoadingShoppingList,
   createShoppingList,
+  updateShoppingListItem,
 })(ShoppingList);
