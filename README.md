@@ -93,15 +93,5 @@ Additionally, create a keys.js file in the /config folder to determine which set
     npm run dev
     ```
 
-    The application should now be running on `http://localhost:3000`.
-
-
-### Usage
-
-- **Register/Login**: Create an account or log in to your existing account.
-- **Search for Recipes**: Use the search functionality to find recipes.
-- **Adjust Servings**: Modify the number of servings to adjust the ingredients list.
-- **Create Shopping List**: Add recipes to your shopping list.
-- **Email Shopping List**: Send the shopping list to your email.
-- **Save Recipes**: Save your favorite recipes to your account.
+    The application should now be running on `http://localhost:3007`.
 
