@@ -48,3 +48,39 @@ Shop-Cook App is an application designed to help users find recipes, modify the 
    ```sh
    git clone https://github.com/OxiBo/shop-cook.git
    cd shop-cook
+
+2. **Install dependencies:**
+
+    ```sh
+    npm install 
+    cd client
+    npm install
+    cd ..
+    ```
+3. **Set up environment variables:**
+
+   Create two files in the `/config` folder: `dev.js` and `prod.js`. These files should contain the necessary environment variables for development and production environments, respectively.
+
+   Example `dev.js`:
+   ```js
+   // dev.js - Don't commit this
+   module.exports = {
+      googleClientID: process.env.GOOGLE_CLIENT_ID,
+      googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      sendGridKey: process.env.SENDGRID_KEY,
+      mongoURI: process.env.MONGO_URI,
+      cookieKey: process.env.COOKIE_KEY,
+      redirectDomain: process.env.REDIRECT_DOMAIN
+   };
+   ```
+
+   Additionally, create a keys.js file in the /config folder to determine which set of credentials to use based on the environment:
+```js
+   if (process.env.NODE_ENV === "production") {
+  // we are in production
+  module.exports = require("./prod");
+} else {
+  // we are in development
+  module.exports = require("./dev");
+}
+```
