@@ -59,9 +59,9 @@ Shop-Cook App is an application designed to help users find recipes, modify the 
     ```
 3. **Set up environment variables:**
 
-   Create two files in the `/config` folder: `dev.js` and `prod.js`. These files should contain the necessary environment variables for development and production environments, respectively.
+Create two files in the `/config` folder: `dev.js` and `prod.js`. These files should contain the necessary environment variables for development and production environments, respectively.
 
-   Example `dev.js`:
+Example `dev.js`:
    ```js
    // dev.js - Don't commit this
    module.exports = {
@@ -74,13 +74,34 @@ Shop-Cook App is an application designed to help users find recipes, modify the 
    };
    ```
 
-   Additionally, create a keys.js file in the /config folder to determine which set of credentials to use based on the environment:
+
+Additionally, create a keys.js file in the /config folder to determine which set of credentials to use based on the environment:
 ```js
    if (process.env.NODE_ENV === "production") {
   // we are in production
-  module.exports = require("./prod");
-} else {
+     module.exports = require("./prod");
+   } else {
   // we are in development
-  module.exports = require("./dev");
-}
-```
+     module.exports = require("./dev");
+   }
+   ```
+
+
+4. **Run the application:**
+
+    ```sh
+    npm run dev
+    ```
+
+    The application should now be running on `http://localhost:3000`.
+
+
+### Usage
+
+- **Register/Login**: Create an account or log in to your existing account.
+- **Search for Recipes**: Use the search functionality to find recipes.
+- **Adjust Servings**: Modify the number of servings to adjust the ingredients list.
+- **Create Shopping List**: Add recipes to your shopping list.
+- **Email Shopping List**: Send the shopping list to your email.
+- **Save Recipes**: Save your favorite recipes to your account.
+
