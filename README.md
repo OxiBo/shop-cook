@@ -65,12 +65,12 @@ Shop-Cook App is an application designed to help users find recipes, modify the 
    ```js
    // dev.js - Don't commit this
    module.exports = {
-      googleClientID: process.env.GOOGLE_CLIENT_ID,
-      googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      sendGridKey: process.env.SENDGRID_KEY,
-      mongoURI: process.env.MONGO_URI,
-      cookieKey: process.env.COOKIE_KEY,
-      redirectDomain: process.env.REDIRECT_DOMAIN
+     googleClientID: 'your_google_client_id_here',
+     googleClientSecret: 'your_google_client_secret_here',
+     sendGridKey:    'your_sendgrid_api_key_here',
+     mongoURI:  'your_mongodb_connection_string_here',
+     cookieKey: 'your_cookie_key_here',
+     redirectDomain: 'your_redirect_domain_here'
    };
    ```
 
